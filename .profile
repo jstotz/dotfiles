@@ -80,6 +80,14 @@ _generate()
 
 complete -F _generate $default generate
 
+# Cache, and complete, Cheats
+if [ ! -r ~/.cheats ] || [[ ! "" == `find ~ '.cheats' -ctime 1 -maxdepth 0` ]]; then
+  echo "Rebuilding Cheat cache... " 
+  cheat sheets | egrep '^ ' | awk {'print $1'} > ~/.cheats
+fi
+complete -W "$(cat ~/.cheats)" cheat
+
+
 # creates or reconnects to an existing session based on a
 # .screenrc file keyword provided as an argument
 # http://ilovett.com/blog/programming/screenrc-for-rails
