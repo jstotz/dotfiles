@@ -17,3 +17,10 @@ IRB.conf[:LOAD_MODULES] = [] unless IRB.conf.key?(:LOAD_MODULES)
 unless IRB.conf[:LOAD_MODULES].include?('irb/completion')
   IRB.conf[:LOAD_MODULES] << 'irb/completion'
 end
+
+# Restart the current IRB process
+def restart!
+  current_command = `ps #{Process.pid} -o "command="`.strip
+  puts "Restarting current process: #{current_command}"
+  exec(current_cmd)
+end
