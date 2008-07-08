@@ -11,9 +11,6 @@ fi
 
 export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
 
-# Project switcher completion
-complete -C ~/bin/bash_completion/project_switcher_complete.rb -o default p
-
 # Rake task completion
 complete -C ~/bin/bash_completion/rake_complete.rb -o default rake
 
