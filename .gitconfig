@@ -1,0 +1,11 @@
+[user]
+	name = Jay Stotz
+	email = jason.stotz@gmail.com
+[color]
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[merge]
+  tool = opendiff
