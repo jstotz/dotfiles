@@ -12,10 +12,10 @@ fi
 export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
 
 # Project switcher completion
-complete -C ~/.scripts/project_switcher_complete.rb -o default p
+complete -C ~/bin/bash_completion/project_switcher_complete.rb -o default p
 
 # Rake task completion
-complete -C ~/.scripts/rake_complete.rb -o default rake
+complete -C ~/bin/bash_completion/rake_complete.rb -o default rake
 
 # mategem script completion
 _mategem()
