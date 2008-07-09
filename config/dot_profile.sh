@@ -1,3 +1,15 @@
+# project switcher
+p() { cd ~/Projects/$@ ;}
+_p_complete()
+{
+    COMPREPLY=()
+    curw=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=($(compgen -W '$(ls ~/Projects)' -- $curw));
+    return 0
+}
+complete -F _p_complete -o dirnames p
+
+
 # set TextMate as default editor
 export EDITOR="mate -w"
 
@@ -8,6 +20,13 @@ export PATH=$PATH:~/bin:~/Scripts:/opt/jruby/bin:/opt/local/bin:/opt/local/sbin
 
 # add opt to man path
 export MANPATH=/opt/local/share/man:$MANPATH
+
+
+# add ant and junit to java classpath
+export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
+
+
+# colorize ls output
 alias ls='ls -G'
 
 
@@ -15,10 +34,6 @@ alias ls='ls -G'
 if [ -f /opt/local/etc/bash_completion ]; then
     . /opt/local/etc/bash_completion
 fi
-
-
-# add ant and junit to java classpath
-export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
 
 
 # rake task completion
