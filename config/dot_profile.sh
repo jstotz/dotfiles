@@ -1,20 +1,31 @@
-# alias for editing this file
-alias profile='mate -w ~/.profile && source ~/.profile'
+# set TextMate as default editor
+export EDITOR="mate -w"
 
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+# set path
+export PATH=$PATH:~/bin:~/Scripts:/opt/jruby/bin:/opt/local/bin:/opt/local/sbin
+
+
+# add opt to man path
 export MANPATH=/opt/local/share/man:$MANPATH
 alias ls='ls -G'
 
+
+# load system-wide bash completion scripts
 if [ -f /opt/local/etc/bash_completion ]; then
     . /opt/local/etc/bash_completion
 fi
 
+
+# add ant and junit to java classpath
 export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
 
-# Rake task completion
+
+# rake task completion
 complete -C ~/bin/bash_completion/rake_complete.rb -o default rake
 
-# mategem script completion
+
+# mategem command completion
 _mategem()
 {
     local curw
@@ -26,7 +37,8 @@ _mategem()
 }
 complete -F _mategem -o dirnames mategem
 
-#gemdoc
+
+# add gemdoc command for viewing locally installed gem rdocs
 export GEMDIR=`gem env gemdir`
 
 gemdoc() {
@@ -41,7 +53,7 @@ _gemdocomplete() {
 complete -o default -o nospace -F _gemdocomplete gemdoc
 
 
-# script/generate completion
+# rails script/generate completion
 _generate()
 {
   local cur
@@ -77,7 +89,8 @@ _generate()
 
 complete -F _generate $default generate
 
-# Cache, and complete, Cheats
+
+# ruby cheats completion and caching
 if [ ! -r ~/.cheats ] || [[ ! "" == `find ~ '.cheats' -ctime 1 -maxdepth 0` ]]; then
   echo "Rebuilding Cheat cache... " 
   cheat sheets | egrep '^ ' | awk {'print $1'} > ~/.cheats
@@ -85,23 +98,19 @@ fi
 complete -W "$(cat ~/.cheats)" cheat
 
 
-# creates or reconnects to an existing session based on a
-# .screenrc file keyword provided as an argument
-# http://ilovett.com/blog/programming/screenrc-for-rails
-function s() {
-	 screen -D -R -c ~/.screenrc-$1
-}
+# git settings
+export GIT_EDITOR="mate -w"
 
-# git
-GIT_EDITOR="mate -w"
-export GIT_EDITOR
+
+# git aliases
 alias staged="git diff --cached" 
 alias unstaged="git diff" 
 alias both="git diff HEAD"
+
+
+# make terminal prompt indicate current git repository and branch
 PS1='\h:\W$(__git_ps1 "(%s)") \u\$ '
 
-PATH=$PATH:~/Scripts:/opt/jruby/bin
-export PATH
 
-EDITOR="mate -w"
-export EDITOR
+# alias for editing and reloading this file
+alias profile='mate -w ~/.profile && source ~/.profile'
