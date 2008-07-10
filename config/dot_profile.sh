@@ -15,7 +15,7 @@ export EDITOR="mate -w"
 
 
 # set path
-export PATH=$PATH:~/bin:~/Scripts:/opt/jruby/bin:/opt/local/bin:/opt/local/sbin
+export PATH=~/bin:~/Scripts:/opt/local/bin:/opt/local/sbin:/opt/jruby/bin:$PATH
 
 
 # add opt to man path
