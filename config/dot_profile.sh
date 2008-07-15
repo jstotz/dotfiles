@@ -121,6 +121,7 @@ export GIT_EDITOR="mate -w"
 alias staged="git diff --cached" 
 alias unstaged="git diff" 
 alias both="git diff HEAD"
+alias gs="git status"
 
 
 # make terminal prompt indicate current git repository and branch
@@ -129,3 +130,15 @@ PS1='\h:\W$(__git_ps1 "(%s)") \u\$ '
 
 # alias for editing and reloading this file
 alias profile='mate -w ~/.profile && source ~/.profile'
+
+
+# alias for opening current directory in TextMate
+alias m='mate .'
+
+
+# alias for opening current directory in Finder
+alias o='open .'
+
+
+# alias for opening new terminal tab in current directory
+alias t='new-terminal-tab'
