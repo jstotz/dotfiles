@@ -105,14 +105,6 @@ _generate()
 complete -F _generate $default generate
 
 
-# ruby cheats completion and caching
-if [ ! -r ~/.cheats ] || [[ ! "" == `find ~ '.cheats' -ctime 1 -maxdepth 0` ]]; then
-  echo "Rebuilding Cheat cache... " 
-  cheat sheets | egrep '^ ' | awk {'print $1'} > ~/.cheats
-fi
-complete -W "$(cat ~/.cheats)" cheat
-
-
 # git settings
 export GIT_EDITOR="mate -w"
 
@@ -122,6 +114,7 @@ alias staged="git diff --cached"
 alias unstaged="git diff" 
 alias both="git diff HEAD"
 alias gs="git status"
+alias gp="git pull && nub"
 
 
 # make terminal prompt indicate current git repository and branch
