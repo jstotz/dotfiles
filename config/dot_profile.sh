@@ -22,7 +22,8 @@ export PATH=~/bin:~/Scripts:/opt/local/bin:/opt/local/sbin:/opt/jruby/bin:$PATH
 export MANPATH=/opt/local/share/man:$MANPATH
 
 
-# add ant and junit to java classpath
+# set up java environment
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
 export CLASSPATH=/usr/share/ant/lib/:/usr/share/junit/junit.jar:/usr/share/junit/
 
 
@@ -114,7 +115,6 @@ alias staged="git diff --cached"
 alias unstaged="git diff" 
 alias both="git diff HEAD"
 alias gs="git status"
-alias gp="git pull && nub"
 
 
 # make terminal prompt indicate current git repository and branch
