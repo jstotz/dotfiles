@@ -126,7 +126,7 @@ alias profile='mate -w ~/.profile && source ~/.profile'
 
 
 # alias for opening current directory in TextMate
-alias m='mate .'
+alias m='mate_wrapper'
 
 
 # alias for opening current directory in Finder
