@@ -22,6 +22,8 @@ set directory=~/.vim/backup
 
 set showcmd " shows partial commands in status bar
 
+set colorcolumn=100
+
 " Whitespace
 set tabstop=2
 set shiftwidth=2
