@@ -1,5 +1,38 @@
+set nocompatible
+
 call pathogen#infect()
 call pathogen#helptags()
 
-set nocompatible
 colorscheme Tomorrow-Night
+
+set number " line numbers
+set ruler " show cursor position
+set encoding=utf-8
+
+set laststatus=2
+
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+set showcmd " shows partial commands in status bar
+
+" Whitespace
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+" Tab completion
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
+
+" File types
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
+au BufNewFile,BufRead *.json set ft=javascript
+
+filetype plugin indent on
+
+let g:syntastic_enable_signs=1
+let g:syntastic_quiet_warnings=1

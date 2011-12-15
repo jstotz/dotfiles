@@ -1,0 +1,4 @@
+desc "Update submodules"
+task :update do
+  system 'cd .. && git submodule foreach git pull origin master'
+end
