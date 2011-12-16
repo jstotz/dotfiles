@@ -50,3 +50,5 @@ map <Leader>n :NERDTreeToggle<CR>
 set history=1000
 
 nnoremap <F5> :GundoToggle<CR>
+
+let g:ctrlp_extensions = ['tag', 'dir']
