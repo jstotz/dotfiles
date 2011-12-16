@@ -1,3 +1,4 @@
+" --- Core ---
 set nocompatible
 
 call pathogen#infect()
@@ -23,6 +24,7 @@ set directory=~/.vim/backup
 set showcmd " shows partial commands in status bar
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
+set history=1000
 
 set colorcolumn=100
 
@@ -31,6 +33,7 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
+set list listchars=tab:\ \ ,trail:·
 
 " Tab completion
 set wildmode=list:longest,list:full
@@ -42,17 +45,23 @@ au BufNewFile,BufRead *.json set ft=javascript
 
 filetype plugin indent on
 
+" --- Plugins ---
+
+" Syntastic
 let g:syntastic_enable_signs=1
 let g:syntastic_quiet_warnings=1
 
-" NERDTree configuration
+" NERDTree
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 map <Leader>n :NERDTreeToggle<CR>
+let NERDTreeShowBookmarks=1
 
-set history=1000
-
+"Gundo
 nnoremap <F5> :GundoToggle<CR>
 
-let g:ctrlp_extensions = ['tag', 'dir']
+" CtrlP
+nnoremap <c-b> :CtrlPBuffer<CR>
 
-let NERDTreeShowBookmarks=1
+" Taglist
+let Tlist_GainFocus_On_ToggleOpen = 1
+nnoremap <Leader>t :TlistToggle<CR>
