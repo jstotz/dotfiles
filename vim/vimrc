@@ -46,3 +46,7 @@ let g:syntastic_quiet_warnings=1
 " NERDTree configuration
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 map <Leader>n :NERDTreeToggle<CR>
+
+set history=1000
+
+nnoremap <F5> :GundoToggle<CR>
