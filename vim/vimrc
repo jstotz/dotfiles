@@ -1,5 +1,7 @@
 " --- Core ---
 set nocompatible
+syntax on
+filetype plugin indent on
 
 call pathogen#infect()
 call pathogen#helptags()
@@ -23,6 +25,9 @@ set directory=~/.vim/backup
 
 set showcmd " shows partial commands in status bar
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 set history=1000
 
@@ -40,10 +45,22 @@ set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 
 " File types
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
 au BufNewFile,BufRead *.json set ft=javascript
 
-filetype plugin indent on
+" Automatically source .vimrc on change
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
+
+" --- Custom keyboard mappings ---
+
+" Clear search highlight on enter
+nnoremap <CR> :noh<CR><CR>
 
 " --- Plugins ---
 
@@ -57,7 +74,7 @@ map <Leader>n :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1
 
 "Gundo
-nnoremap <F5> :GundoToggle<CR>
+nnoremap <Leader>g :GundoToggle<CR>
 
 " CtrlP
 nnoremap <c-b> :CtrlPBuffer<CR>
