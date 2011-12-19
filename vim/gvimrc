@@ -1,2 +1,2 @@
-set guioptions+=T
+set guioptions-=T
 set guifont=Inconsolata:h14
