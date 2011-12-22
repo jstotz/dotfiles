@@ -57,11 +57,21 @@ augroup END
 " % to bounce from do to end etc.
 runtime! macros/matchit.vim
 
-" --- Custom keyboard mappings ---
+" --- Custom commands and keyboard mappings ---
 
 " Clear search highlight on enter
 nnoremap <CR> :noh<CR><CR>
 
+" Save with sudo
+cmap w!! %!sudo tee > /dev/null %
+
+" Disable arrow keys to try to get used to h/j/k/l movement
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
+
+cmap cdp cd ~/Projects/
 " --- Plugins ---
 
 " Syntastic
