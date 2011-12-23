@@ -11,6 +11,7 @@ colorscheme Tomorrow-Night
 set number " line numbers
 set ruler " show cursor position
 set encoding=utf-8
+set cursorline " highlight current line
 
 set laststatus=2
 
@@ -57,7 +58,13 @@ augroup END
 " % to bounce from do to end etc.
 runtime! macros/matchit.vim
 
+" Allow usage of hidden buffers
+set hidden
+
 " --- Custom commands and keyboard mappings ---
+
+" Assign leader
+let mapleader = ","
 
 " Clear search highlight on enter
 nnoremap <CR> :noh<CR><CR>
@@ -71,7 +78,8 @@ noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
 
-cmap cdp cd ~/Projects/
+" Shortcut for cd-ing into a Projects subdirectory
+map <Leader>c <ESC>:cd ~/Projects/
 " --- Plugins ---
 
 " Syntastic
