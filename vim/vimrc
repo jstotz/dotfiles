@@ -43,7 +43,7 @@ set list listchars=tab:\ \ ,trail:·
 
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,.DS_Store
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,.DS_Store,yard/*
 
 " File types
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
@@ -66,20 +66,23 @@ set hidden
 " Assign leader
 let mapleader = ","
 
+" Enter command mode with SPACE instead of :
+noremap <Space> :
+
+" Exit insert mode with jj (double J) instead of ESC
+imap jj <Esc>
+
 " Clear search highlight on enter
 nnoremap <CR> :noh<CR><CR>
 
 " Save with sudo
 cmap w!! %!sudo tee > /dev/null %
 
-" Disable arrow keys to try to get used to h/j/k/l movement
-noremap   <Up>     <NOP>
-noremap   <Down>   <NOP>
-noremap   <Left>   <NOP>
-noremap   <Right>  <NOP>
-
 " Shortcut for cd-ing into a Projects subdirectory
 map <Leader>c <ESC>:cd ~/Projects/
+
+" Open vimrc in new tab
+nmap <leader>v :tabedit $MYVIMRC<CR>
 " --- Plugins ---
 
 " Syntastic
