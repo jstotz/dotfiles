@@ -43,7 +43,7 @@ set list listchars=tab:\ \ ,trail:·
 
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,.DS_Store,yard/*
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*
 
 " File types
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
@@ -62,6 +62,16 @@ runtime! macros/matchit.vim
 set hidden
 
 " --- Custom commands and keyboard mappings ---
+
+" Disable arrow keys
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
 
 " Assign leader
 let mapleader = ","
@@ -89,11 +99,6 @@ nmap <leader>v :tabedit $MYVIMRC<CR>
 let g:syntastic_enable_signs=1
 let g:syntastic_quiet_warnings=1
 
-" NERDTree
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-map <Leader>n :NERDTreeToggle<CR>
-let NERDTreeShowBookmarks=1
-
 "Gundo
 nnoremap <Leader>g :GundoToggle<CR>
 
@@ -103,3 +108,17 @@ nnoremap <c-b> :CtrlPBuffer<CR>
 " Taglist
 let Tlist_GainFocus_On_ToggleOpen = 1
 nnoremap <Leader>t :TlistToggle<CR>
+
+" Ack
+nnoremap <Leader>a :Ack --smart-case 
+
+" NERDTree
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
+map <Leader>n :NERDTreeToggle<CR>
+let NERDTreeShowBookmarks=1
+map <leader>r :NERDTreeFind<cr>
+
+" Indent Guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+
