@@ -10,25 +10,26 @@ colorscheme Tomorrow-Night
 
 set number " line numbers
 set ruler " show cursor position
+
 set encoding=utf-8
 set cursorline " highlight current line
-
-set laststatus=2
 
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
 
-" Directories for swp files
-set backupdir=~/.vim/backup
-set directory=~/.vim/backup
+" Disable swap files
+set noswapfile
+set nobackup
+set nowb
 
 set showcmd " shows partial commands in status bar
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set laststatus=2
 
 set history=1000
 
@@ -79,9 +80,6 @@ let mapleader = ","
 " Enter command mode with SPACE instead of :
 noremap <Space> :
 
-" Exit insert mode with jj (double J) instead of ESC
-imap jj <Esc>
-
 " Clear search highlight on enter
 nnoremap <CR> :noh<CR><CR>
 
@@ -93,6 +91,22 @@ map <Leader>c <ESC>:cd ~/Projects/
 
 " Open vimrc in new tab
 nmap <leader>v :tabedit $MYVIMRC<CR>
+
+" Strip trailing whitespace
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
+nmap <Leader>s :StripTrailingWhitespaces<CR>
+
 " --- Plugins ---
 
 " Syntastic
@@ -110,7 +124,7 @@ let Tlist_GainFocus_On_ToggleOpen = 1
 nnoremap <Leader>t :TlistToggle<CR>
 
 " Ack
-nnoremap <Leader>a :Ack --smart-case 
+nnoremap <Leader>a :Ack --smart-case
 
 " NERDTree
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
@@ -121,4 +135,3 @@ map <leader>r :NERDTreeFind<cr>
 " Indent Guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-
