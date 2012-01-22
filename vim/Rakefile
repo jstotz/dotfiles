@@ -1,4 +1,7 @@
-desc "Update submodules"
-task :update do
-  system 'cd .. && git submodule foreach git pull origin master'
+desc "Install Vundle and bundles"
+task :vundle do
+  if !File.exists?('./bundle/vundle')
+    sh "git clone http://github.com/gmarik/vundle.git ./bundle/vundle"
+  end
+  sh "vim +BundleInstall +qall"
 end
