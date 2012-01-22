@@ -1,10 +1,39 @@
-" --- Core ---
+" --- Vundle ---
 set nocompatible
-syntax on
-filetype plugin indent on
+filetype off " required
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+" let Vundle manage Vundle (required)
+Bundle 'gmarik/vundle'
 
-call pathogen#infect()
-call pathogen#helptags()
+" My Bundles
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive'
+Bundle 'ervandew/supertab'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'mileszs/ack.vim'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'pangloss/vim-javascript'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
+Bundle 'sjl/gundo.vim'
+Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'vim-scripts/AutoTag'
+Bundle 'majutsushi/tagbar'
+Bundle 'kana/vim-textobj-user'
+Bundle 'kien/ctrlp.vim'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'minibufexpl.vim'
+
+filetype plugin indent on " required
+" --- /Vundle ---
+
+" --- Core ---
+syntax on
+
 
 colorscheme Tomorrow-Night
 
@@ -119,9 +148,8 @@ nnoremap <Leader>g :GundoToggle<CR>
 " CtrlP
 nnoremap <c-b> :CtrlPBuffer<CR>
 
-" Taglist
-let Tlist_GainFocus_On_ToggleOpen = 1
-nnoremap <Leader>t :TlistToggle<CR>
+" Tagbar
+nnoremap <Leader>t :TagbarToggle<CR>
 
 " Ack
 nnoremap <Leader>a :Ack --smart-case
