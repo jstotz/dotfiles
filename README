@@ -1,3 +1,0 @@
-These are a bunch of scripts and config files that live in my home directory. They do various useful things.
-
-I keep my scripts and config files in a checkout of this repository and install them with symbolic links.
