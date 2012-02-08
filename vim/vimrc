@@ -24,11 +24,14 @@ Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/AutoTag'
 Bundle 'majutsushi/tagbar'
 Bundle 'kana/vim-textobj-user'
+Bundle 'YankRing.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'minibufexpl.vim'
 Bundle 'commentary.vim'
 Bundle 'ChrisKempson/Vim-Tomorrow-Theme'
+Bundle 'camelcasemotion'
+Bundle 'vim-json-bundle'
 
 filetype plugin indent on " required
 " --- /Vundle ---
@@ -78,7 +81,6 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,
 
 " File types
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
-au BufNewFile,BufRead *.json set ft=javascript
 
 " Automatically source .vimrc on change
 augroup myvimrc
@@ -92,17 +94,10 @@ runtime! macros/matchit.vim
 " Allow usage of hidden buffers
 set hidden
 
-" --- Custom commands and keyboard mappings ---
+" Make backspace behave in a sane manner.
+set backspace=indent,eol,start
 
-" Disable arrow keys
-inoremap  <Up>     <NOP>
-inoremap  <Down>   <NOP>
-inoremap  <Left>   <NOP>
-inoremap  <Right>  <NOP>
-noremap   <Up>     <NOP>
-noremap   <Down>   <NOP>
-noremap   <Left>   <NOP>
-noremap   <Right>  <NOP>
+" --- Custom commands and keyboard mappings ---
 
 " Move between windows
 map <C-h> <C-w>h
@@ -118,6 +113,7 @@ noremap <Space> :
 
 " Clear search highlight on enter
 nnoremap <CR> :noh<CR><CR>
+nnoremap <Esc> :noh<CR>
 
 " Save with sudo
 cmap w!! %!sudo tee > /dev/null %
@@ -145,6 +141,10 @@ nmap <Leader>s :StripTrailingWhitespaces<CR>
 
 " --- Plugins ---
 
+" YankRing
+let g:yankring_replace_n_pkey = '<m-p>'
+let g:yankring_replace_n_nkey = '<m-n>'
+
 " Syntastic
 let g:syntastic_enable_signs=1
 let g:syntastic_quiet_warnings=1
@@ -153,13 +153,28 @@ let g:syntastic_quiet_warnings=1
 nnoremap <Leader>g :GundoToggle<CR>
 
 " CtrlP
-nnoremap <c-b> :CtrlPBuffer<CR>
+noremap <c-b> :CtrlPBuffer<CR>
+inoremap <c-b> <Esc>:CtrlPBuffer<CR>
+let g:ctrlp_root_markers = ['.root.dir']
 
 " Tagbar
 nnoremap <Leader>t :TagbarToggle<CR>
+let g:tagbar_type_coffee = {
+  \ 'kinds' : [
+  \   'f:functions',
+  \   'o:object'
+  \ ],
+  \ 'kind2scope' : {
+  \  'f' : 'object',
+  \   'o' : 'object'
+  \},
+  \ 'sro' : ".",
+  \ 'ctagsbin' : 'coffeetags',
+  \ 'ctagsargs' : ' ',
+  \}
 
 " Ack
-nnoremap <Leader>a :Ack --smart-case
+nnoremap <Leader>a :Ack --smart-case 
 
 " NERDTree
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
@@ -170,3 +185,4 @@ map <leader>r :NERDTreeFind<cr>
 " Indent Guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
+
