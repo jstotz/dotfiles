@@ -32,6 +32,7 @@ Bundle 'commentary.vim'
 Bundle 'ChrisKempson/Vim-Tomorrow-Theme'
 Bundle 'camelcasemotion'
 Bundle 'vim-json-bundle'
+Bundle 'EasyMotion'
 
 filetype plugin indent on " required
 " --- /Vundle ---
