@@ -27,12 +27,13 @@ Bundle 'kana/vim-textobj-user'
 Bundle 'YankRing.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'nelstrom/vim-textobj-rubyblock'
-Bundle 'minibufexpl.vim'
 Bundle 'tComment'
 Bundle 'ChrisKempson/Vim-Tomorrow-Theme'
 Bundle 'camelcasemotion'
 Bundle 'vim-json-bundle'
 Bundle 'EasyMotion'
+Bundle 'Rename2'
+Bundle 'Buffergator'
 
 filetype plugin indent on " required
 " --- /Vundle ---
