@@ -34,13 +34,13 @@ Bundle 'vim-json-bundle'
 Bundle 'EasyMotion'
 Bundle 'Rename2'
 Bundle 'Buffergator'
+Bundle 'SQLUtilities'
 
 filetype plugin indent on " required
 " --- /Vundle ---
 
 " --- Core ---
 syntax on
-
 colorscheme Tomorrow-Night
 
 set number " line numbers
@@ -141,6 +141,9 @@ endfunction
 command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap <Leader>s :StripTrailingWhitespaces<CR>
 
+" Reveal in current file in file browser
+map <leader>r :maca revealInFileBrowser:<CR>
+
 " --- Plugins ---
 
 " YankRing
@@ -182,7 +185,6 @@ nnoremap <Leader>a :Ack --smart-case
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 map <Leader>n :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1
-map <leader>r :NERDTreeFind<cr>
 
 " Indent Guides
 let g:indent_guides_start_level = 2
