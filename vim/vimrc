@@ -6,42 +6,53 @@ call vundle#rc()
 " let Vundle manage Vundle (required)
 Bundle 'gmarik/vundle'
 
-" My Bundles
+" Plugins
+Bundle 'kien/ctrlp.vim'
+Bundle 'ervandew/supertab'
+Bundle 'mileszs/ack.vim'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
-Bundle 'ervandew/supertab'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'mileszs/ack.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'pangloss/vim-javascript'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/gundo.vim'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/AutoTag'
 Bundle 'majutsushi/tagbar'
 Bundle 'kana/vim-textobj-user'
 Bundle 'YankRing.vim'
-Bundle 'kien/ctrlp.vim'
 Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'tComment'
-Bundle 'chriskempson/Vim-Tomorrow-Theme'
 Bundle 'camelcasemotion'
-Bundle 'vim-json-bundle'
 Bundle 'EasyMotion'
 Bundle 'Rename2'
 Bundle 'Buffergator'
 Bundle 'SQLUtilities'
+
+" File Types
+Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-repeat'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'pangloss/vim-javascript'
+Bundle 'vim-json-bundle'
+
+" Color Schemes
+Bundle 'chriskempson/Vim-Tomorrow-Theme'
+Bundle 'jellybeans.vim'
+Bundle 'molokai'
+Bundle 'Mustang2'
+Bundle 'tir_black'
+Bundle 'xoria256.vim'
+Bundle 'kemiller/vim-ir_black'
+Bundle 'twilight'
 
 filetype plugin indent on " required
 " --- /Vundle ---
 
 " --- Core ---
 syntax on
-colorscheme Tomorrow-Night
+colorscheme jellybeans
 
 set number " line numbers
 set ruler " show cursor position
@@ -101,6 +112,9 @@ set backspace=indent,eol,start
 
 " --- Custom commands and keyboard mappings ---
 
+" Make Y behave like the other capital letter actions
+nnoremap Y y$
+
 " Move between windows
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -114,14 +128,11 @@ let mapleader = ","
 noremap <Space> :
 
 " Clear search highlight on enter
-nnoremap <CR> :noh<CR><CR>
-nnoremap <Esc> :noh<CR>
+nnoremap <silent> <CR> :noh<CR><CR>
+nnoremap <silent> <Esc> :noh<CR>
 
 " Save with sudo
 cmap w!! %!sudo tee > /dev/null %
-
-" Shortcut for cd-ing into a Projects subdirectory
-map <Leader>c <ESC>:cd ~/Projects/
 
 " Open vimrc in new tab
 nmap <leader>v :tabedit $MYVIMRC<CR>
@@ -160,7 +171,10 @@ nnoremap <Leader>g :GundoToggle<CR>
 " CtrlP
 noremap <c-b> :CtrlPBuffer<CR>
 inoremap <c-b> <Esc>:CtrlPBuffer<CR>
-let g:ctrlp_root_markers = ['.root.dir']
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_extensions = ['dir']
+map <Leader>c <ESC>:CtrlPDir ~/Projects<CR>
 
 " Tagbar
 nnoremap <Leader>t :TagbarToggle<CR>
@@ -177,6 +191,10 @@ let g:tagbar_type_coffee = {
   \ 'ctagsbin' : 'coffeetags',
   \ 'ctagsargs' : ' ',
   \}
+
+" Buffergator
+let g:buffergator_suppress_keymaps = 1
+nnoremap <Leader>b :BuffergatorToggle<CR>
 
 " Ack
 nnoremap <Leader>a :Ack --smart-case 
