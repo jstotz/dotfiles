@@ -60,6 +60,12 @@ set ruler " show cursor position
 set encoding=utf-8
 set cursorline " highlight current line
 
+set history=1000
+
+set colorcolumn=80,120
+hi ColorColumn guibg=#2d2d2d 
+
+" Search
 set hlsearch
 set incsearch
 set ignorecase
@@ -70,16 +76,17 @@ set noswapfile
 set nobackup
 set nowb
 
+" Persistent undo
+set undofile  
+set undodir=~/.vim/tmp/undo
+
+" Status line
 set showcmd " shows partial commands in status bar
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
-
-set history=1000
-
-set colorcolumn=100
 
 " Whitespace
 set tabstop=2
