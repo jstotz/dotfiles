@@ -32,6 +32,7 @@ Bundle 'SQLUtilities'
 
 " File Types
 Bundle 'tpope/vim-markdown'
+Bundle 'nelstrom/vim-markdown-preview'
 Bundle 'tpope/vim-repeat'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'pangloss/vim-javascript'
@@ -215,3 +216,5 @@ let NERDTreeShowBookmarks=1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
+" vim-markdown-preview
+command! MarkdownPreview :call PreviewMKD()
