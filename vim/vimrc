@@ -201,7 +201,7 @@ let g:tagbar_type_coffee = {
 
 " Buffergator
 let g:buffergator_suppress_keymaps = 1
-nnoremap <Leader>b :BuffergatorToggle<CR>
+nnoremap <Leader>bu :BuffergatorToggle<CR>
 
 " Ack
 nnoremap <Leader>a :Ack --smart-case 
