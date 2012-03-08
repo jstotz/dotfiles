@@ -63,7 +63,7 @@ set cursorline " highlight current line
 set history=1000
 
 set colorcolumn=80,120
-hi ColorColumn guibg=#2d2d2d 
+hi ColorColumn guibg=#1C1C1C
 
 " Search
 set hlsearch
