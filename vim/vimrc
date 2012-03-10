@@ -115,7 +115,7 @@ runtime! macros/matchit.vim
 " Allow usage of hidden buffers
 set hidden
 
-" Make backspace behave in a sane manner.
+" make backspace behave in a sane manner.
 set backspace=indent,eol,start
 
 " --- Custom commands and keyboard mappings ---
@@ -132,7 +132,7 @@ map <C-l> <C-w>l
 " Assign leader
 let mapleader = ","
 
-" Enter command mode with SPACE instead of :
+" Enter command mode with space
 noremap <Space> :
 
 " Clear search highlight on enter
@@ -143,7 +143,10 @@ nnoremap <silent> <Esc> :noh<CR>
 cmap w!! %!sudo tee > /dev/null %
 
 " Open vimrc in new tab
-nmap <leader>v :tabedit $MYVIMRC<CR>
+nmap <Leader>v :tabedit $MYVIMRC<CR>
+
+" Quit shortcut
+nnoremap <Leader>q :q<CR>
 
 " Strip trailing whitespace
 function! <SID>StripTrailingWhitespaces()
@@ -161,7 +164,11 @@ command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap <Leader>s :StripTrailingWhitespaces<CR>
 
 " Reveal in current file in file browser
-map <leader>r :maca revealInFileBrowser:<CR>
+map <Leader>r :maca revealInFileBrowser:<CR>
+
+" Reselect visual block after indent:
+vnoremap < <gv 
+vnoremap > >gv 
 
 " --- Plugins ---
 
