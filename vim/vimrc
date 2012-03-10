@@ -174,7 +174,7 @@ let g:yankring_replace_n_pkey = '<m-p>'
 let g:yankring_replace_n_nkey = '<m-n>'
 
 " Syntastic
-let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
 let g:syntastic_quiet_warnings=1
 
 "Gundo
