@@ -29,6 +29,7 @@ Bundle 'EasyMotion'
 Bundle 'Rename2'
 Bundle 'Buffergator'
 Bundle 'SQLUtilities'
+Bundle 'Lokaltog/vim-powerline'
 
 " File Types
 Bundle 'tpope/vim-markdown'
@@ -83,10 +84,6 @@ set undodir=~/.vim/tmp/undo
 
 " Status line
 set showcmd " shows partial commands in status bar
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 set laststatus=2
 
 " Whitespace
@@ -225,3 +222,6 @@ let g:indent_guides_guide_size = 1
 
 " vim-markdown-preview
 command! MarkdownPreview :call PreviewMKD()
+
+" Powerline
+let g:Powerline_symbols = 'fancy'
