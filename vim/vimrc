@@ -30,6 +30,7 @@ Bundle 'Rename2'
 Bundle 'Buffergator'
 Bundle 'SQLUtilities'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'unimpaired.vim'
 
 " File Types
 Bundle 'tpope/vim-markdown'
@@ -166,6 +167,14 @@ map <Leader>r :maca revealInFileBrowser:<CR>
 " Reselect visual block after indent:
 vnoremap < <gv 
 vnoremap > >gv 
+
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
 
 " --- Plugins ---
 
