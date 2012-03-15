@@ -41,7 +41,7 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'vim-json-bundle'
 
 " Color Schemes
-Bundle 'chriskempson/Vim-Tomorrow-Theme'
+Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'jellybeans.vim'
 Bundle 'molokai'
 Bundle 'Mustang2'
@@ -66,7 +66,7 @@ set cursorline " highlight current line
 set history=1000
 
 set colorcolumn=80,120
-hi ColorColumn guibg=#1C1C1C
+hi ColorColumn guibg=#1F1F1F
 
 " Search
 set hlsearch
@@ -99,7 +99,7 @@ set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*
 
 " File types
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Capfile,config.ru} set ft=ruby
 
 " Automatically source .vimrc on change
 augroup myvimrc
