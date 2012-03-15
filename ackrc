@@ -1,0 +1,3 @@
+--ignore-dir=yard
+--type-add=js=.coffee
+--type-add=html=.liquid
