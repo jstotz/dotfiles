@@ -125,7 +125,6 @@ noremap <Space> :
 
 " Clear search highlight on enter
 nnoremap <silent> <CR> :noh<CR><CR>
-nnoremap <silent> <Esc> :noh<CR>
 
 " Save with sudo
 cmap w!! %!sudo tee > /dev/null %
