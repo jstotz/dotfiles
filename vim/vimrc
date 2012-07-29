@@ -11,10 +11,8 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
 Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-surround'
@@ -25,30 +23,22 @@ Bundle 'YankRing.vim'
 Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'tComment'
 Bundle 'camelcasemotion'
-Bundle 'EasyMotion'
 Bundle 'Rename2'
 Bundle 'Buffergator'
 Bundle 'SQLUtilities'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'unimpaired.vim'
+Bundle 'tpope/vim-repeat'
 
 " File Types
 Bundle 'tpope/vim-markdown'
 Bundle 'nelstrom/vim-markdown-preview'
-Bundle 'tpope/vim-repeat'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'pangloss/vim-javascript'
 Bundle 'vim-json-bundle'
 
 " Color Schemes
-Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'jellybeans.vim'
-Bundle 'molokai'
-Bundle 'Mustang2'
-Bundle 'tir_black'
-Bundle 'xoria256.vim'
-Bundle 'kemiller/vim-ir_black'
-Bundle 'twilight'
 
 filetype plugin indent on " required
 " --- /Vundle ---
@@ -99,7 +89,7 @@ set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*
 
 " File types
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Capfile,config.ru} set ft=ruby
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Capfile,Guardfile,config.ru} set ft=ruby
 
 " Automatically source .vimrc on change
 augroup myvimrc
@@ -143,9 +133,6 @@ cmap w!! %!sudo tee > /dev/null %
 " Open vimrc in new tab
 nmap <Leader>v :tabedit $MYVIMRC<CR>
 
-" Quit shortcut
-nnoremap <Leader>q :q<CR>
-
 " Strip trailing whitespace
 function! <SID>StripTrailingWhitespaces()
     " Preparation: save last search, and cursor position.
@@ -164,10 +151,6 @@ nmap <Leader>s :StripTrailingWhitespaces<CR>
 " Reveal in current file in file browser
 map <Leader>r :maca revealInFileBrowser:<CR>
 
-" Reselect visual block after indent:
-vnoremap < <gv 
-vnoremap > >gv 
-
 " Bubble single lines
 nmap <C-Up> [e
 nmap <C-Down> ]e
@@ -179,6 +162,7 @@ vmap <C-Down> ]egv
 " --- Plugins ---
 
 " YankRing
+nnoremap <Leader>y :YRShow<CR>
 let g:yankring_replace_n_pkey = '<m-p>'
 let g:yankring_replace_n_nkey = '<m-n>'
 
@@ -186,7 +170,7 @@ let g:yankring_replace_n_nkey = '<m-n>'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_quiet_warnings=1
 
-"Gundo
+" Gundo
 nnoremap <Leader>g :GundoToggle<CR>
 
 " CtrlP
@@ -215,19 +199,10 @@ let g:tagbar_type_coffee = {
 
 " Buffergator
 let g:buffergator_suppress_keymaps = 1
-nnoremap <Leader>bu :BuffergatorToggle<CR>
+nnoremap <Leader>l :BuffergatorToggle<CR>
 
 " Ack
 nnoremap <Leader>a :Ack --smart-case 
-
-" NERDTree
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-map <Leader>n :NERDTreeToggle<CR>
-let NERDTreeShowBookmarks=1
-
-" Indent Guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
 
 " vim-markdown-preview
 command! MarkdownPreview :call PreviewMKD()
