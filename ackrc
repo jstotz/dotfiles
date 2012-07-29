@@ -1,3 +1,6 @@
 --ignore-dir=yard
 --type-add=js=.coffee
 --type-add=html=.liquid
+--type-add=html=.eco
+--type-add=html=.ejs
+--type-add=ruby=.ru
