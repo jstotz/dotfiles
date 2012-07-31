@@ -29,6 +29,7 @@ Bundle 'SQLUtilities'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'unimpaired.vim'
 Bundle 'tpope/vim-repeat'
+Bundle 'jeffkreeftmeijer/vim-numbertoggle.git'
 
 " File Types
 Bundle 'tpope/vim-markdown'
@@ -47,7 +48,7 @@ filetype plugin indent on " required
 syntax on
 colorscheme jellybeans
 
-set number " line numbers
+set relativenumber " relative line numbers
 set ruler " show cursor position
 
 set encoding=utf-8
