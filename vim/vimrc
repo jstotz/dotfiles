@@ -48,20 +48,27 @@ filetype plugin indent on " required
 syntax on
 colorscheme jellybeans
 
-set relativenumber " relative line numbers
+if version >= 703
+  " Relative line numbers
+  set relativenumber
+
+  " Persistent undo
+  set undofile  
+  set undodir=~/.vim/tmp/undo
+
+  " Column markers
+  set colorcolumn=80,120
+  hi ColorColumn guibg=#1F1F1F
+else
+  set number
+endif
+
 set ruler " show cursor position
 
 set encoding=utf-8
 set cursorline " highlight current line
 
 set history=1000
-
-try
-  set colorcolumn=80,120
-  hi ColorColumn guibg=#1F1F1F
-catch /Unknown option/
-  " Vim prior to 7.3
-endtry
 
 " Search
 set hlsearch
@@ -73,10 +80,6 @@ set smartcase
 set noswapfile
 set nobackup
 set nowb
-
-" Persistent undo
-set undofile  
-set undodir=~/.vim/tmp/undo
 
 " Status line
 set showcmd " shows partial commands in status bar
