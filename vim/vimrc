@@ -56,8 +56,12 @@ set cursorline " highlight current line
 
 set history=1000
 
-set colorcolumn=80,120
-hi ColorColumn guibg=#1F1F1F
+try
+  set colorcolumn=80,120
+  hi ColorColumn guibg=#1F1F1F
+catch /Unknown option/
+  " Vim prior to 7.3
+endtry
 
 " Search
 set hlsearch
