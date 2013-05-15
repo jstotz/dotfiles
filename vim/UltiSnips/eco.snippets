@@ -1,0 +1,56 @@
+snippet if "if"
+<% if ${1:something}: %>
+$0
+<% end %>
+endsnippet
+
+snippet ifelse "if/else"
+<% if ${1:something}: %>
+$2
+<% else: %>
+$0
+<% end %>
+endsnippet
+
+snippet unless "unless"
+<% unless ${1:something}: %>
+$0
+<% end %>
+endsnippet
+
+snippet end "end"
+<% end %>
+endsnippet
+
+snippet else "else"
+<% else: %>
+endsnippet
+
+snippet < "<% ... %>" i
+<% $0 %>
+endsnippet
+
+snippet = "<%= ... %>" i
+<%= $0 %>
+endsnippet
+
+snippet - "<%- ... %>" i
+<%- $0 %>
+endsnippet
+
+snippet for "for"
+<% for ${1:model} in ${2:@collection.models}: %>
+$0
+<% end %>
+endsnippet
+
+snippet forc "for model in collection"
+<% for model in @collection.models: %>
+$0
+<% end %>
+endsnippet
+
+snippet =mg "<%= @model.get('...') %>" i
+<%= $0@model.get('${1:attr}') %>
+endsnippet
+

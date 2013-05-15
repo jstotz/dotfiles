@@ -8,8 +8,10 @@ Bundle 'gmarik/vundle'
 
 " Plugins
 Bundle 'kien/ctrlp.vim'
-Bundle 'ervandew/supertab'
-Bundle 'mileszs/ack.vim'
+Bundle 'rking/ag.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'UltiSnips'
+Bundle 'ArgsAndMore'
 Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
@@ -19,7 +21,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/AutoTag'
 Bundle 'majutsushi/tagbar'
 Bundle 'kana/vim-textobj-user'
-Bundle 'YankRing.vim'
+Bundle 'yankstack'
 Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'tComment'
 Bundle 'camelcasemotion'
@@ -29,14 +31,23 @@ Bundle 'SQLUtilities'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'unimpaired.vim'
 Bundle 'tpope/vim-repeat'
-Bundle 'jeffkreeftmeijer/vim-numbertoggle.git'
+Bundle 'skwp/vim-ruby-conque'
+Bundle 'rson/vim-conque'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ZenCoding.vim'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'MatchTag'
 
 " File Types
 Bundle 'tpope/vim-markdown'
 Bundle 'nelstrom/vim-markdown-preview'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'AndrewRadev/vim-eco'
 Bundle 'pangloss/vim-javascript'
-Bundle 'vim-json-bundle'
+Bundle 'elzr/vim-json'
+" haml/sass/scss
+Bundle 'tpope/vim-haml'
 
 " Color Schemes
 Bundle 'jellybeans.vim'
@@ -49,26 +60,23 @@ syntax on
 colorscheme jellybeans
 
 if version >= 703
-  " Relative line numbers
-  set relativenumber
-
   " Persistent undo
-  set undofile  
+  set undofile
   set undodir=~/.vim/tmp/undo
 
   " Column markers
   set colorcolumn=80,120
   hi ColorColumn guibg=#1F1F1F
-else
-  set number
 endif
 
+set number " show line numbers
 set ruler " show cursor position
 
 set encoding=utf-8
 set cursorline " highlight current line
 
 set history=1000
+set visualbell
 
 " Search
 set hlsearch
@@ -94,10 +102,14 @@ set list listchars=tab:\ \ ,trail:·
 
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*,_site
+set ofu=syntaxcomplete#Complete
 
 " File types
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Capfile,Guardfile,config.ru} set ft=ruby
+au BufRead,BufNewFile *.scss	set filetype=scss.css
+au BufRead,BufNewFile *.eco	set filetype=eco.html
+au BufRead,BufNewFile *.erb	set filetype=eruby.erb.html
 
 " Automatically source .vimrc on change
 augroup myvimrc
@@ -155,9 +167,6 @@ endfunction
 command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap <Leader>s :StripTrailingWhitespaces<CR>
 
-" Reveal in current file in file browser
-map <Leader>r :maca revealInFileBrowser:<CR>
-
 " Bubble single lines
 nmap <C-Up> [e
 nmap <C-Down> ]e
@@ -166,29 +175,28 @@ nmap <C-Down> ]e
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
+" Abbreviations
+cnoreabbrev W w
+cnoreabbrev Wq wq
+
 " --- Plugins ---
 
-" YankRing
-nnoremap <Leader>y :YRShow<CR>
-let g:yankring_replace_n_pkey = '<m-p>'
-let g:yankring_replace_n_nkey = '<m-n>'
-
-" Syntastic
+" [Syntastic]
 let g:syntastic_auto_loc_list=1
-let g:syntastic_quiet_warnings=1
 
-" Gundo
+" [Gundo]
 nnoremap <Leader>g :GundoToggle<CR>
 
-" CtrlP
-noremap <c-b> :CtrlPBuffer<CR>
-inoremap <c-b> <Esc>:CtrlPBuffer<CR>
+" [CtrlP]
+let g:ctrlp_cmd = 'CtrlPMixed'
+noremap <Leader>b :CtrlPBuffer<CR>
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_extensions = ['dir']
+let g:ctrlp_extensions = ['dir', 'mixed']
 map <Leader>c <ESC>:CtrlPDir ~/Projects<CR>
+map <Leader>d <ESC>:CtrlPDir<CR>
 
-" Tagbar
+" [Tagbar]
 nnoremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_type_coffee = {
   \ 'kinds' : [
@@ -204,15 +212,53 @@ let g:tagbar_type_coffee = {
   \ 'ctagsargs' : ' ',
   \}
 
-" Buffergator
+" [Buffergator]
 let g:buffergator_suppress_keymaps = 1
+let g:buffergator_sort_regime = 'mru'
 nnoremap <Leader>l :BuffergatorToggle<CR>
 
-" Ack
-nnoremap <Leader>a :Ack --smart-case 
+" [The Silver Searcher (Ag)]
+nnoremap <Leader>a :Ag --smart-case 
 
-" vim-markdown-preview
+" [vim-markdown-preview]
 command! MarkdownPreview :call PreviewMKD()
 
-" Powerline
+" [Powerline]
 let g:Powerline_symbols = 'fancy'
+
+" [NERD Tree]
+let NERDTreeHijackNetrw=1
+map <Leader>r :NERDTreeFind<CR>
+map <Leader>f :edit .<CR>
+
+" [YouCompleteMe]
+let g:ycm_key_detailed_diagnostics = ''
+
+" function! <SID>nerdtree_revealPath(path)
+"     try
+"         let p = g:NERDTreePath.New(expand(a:path))
+"     catch /^NERDTree.InvalidArgumentsError/
+"         call nerdtree#echo("path not found")
+"         return
+"     endtry
+" 
+"     execute 'edit .'
+" 
+"     call b:NERDTreeRoot.reveal(p)
+" endfunction
+" command! -n=1 -bar NERDTreeFindPath call <SID>nerdtree_revealPath('<args>')
+
+" [ZenCoding]
+let g:user_zen_expandabbr_key = '<c-y>'
+let g:use_zen_complete_tag = 1
+
+" [gitgutter]
+highlight clear SignColumn
+
+" [ArgsAndMore]
+command! QuickfixToArgs CListToArgs
+
+" [UltiSnips]
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"

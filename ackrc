@@ -4,3 +4,5 @@
 --type-add=html=.eco
 --type-add=html=.ejs
 --type-add=ruby=.ru
+--type-add=css=.sass
+--type-add=css=.scss
