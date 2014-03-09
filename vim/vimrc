@@ -7,51 +7,55 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Plugins
-Bundle 'kien/ctrlp.vim'
-Bundle 'rking/ag.vim'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'UltiSnips'
-Bundle 'ArgsAndMore'
-Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/neomru.vim'
+Bundle 'Shougo/vimproc.vim'
+Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/gundo.vim'
-Bundle 'tpope/vim-surround'
+Bundle 'SirVer/ultisnips'
+Bundle 'tComment'
+Bundle 'bling/vim-airline'
+Bundle 'scrooloose/nerdtree'
+Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'vim-scripts/AutoTag'
 Bundle 'majutsushi/tagbar'
-Bundle 'kana/vim-textobj-user'
-Bundle 'yankstack'
-Bundle 'nelstrom/vim-textobj-rubyblock'
-Bundle 'tComment'
 Bundle 'camelcasemotion'
-Bundle 'Rename2'
-Bundle 'Buffergator'
-Bundle 'SQLUtilities'
-Bundle 'bling/vim-airline'
-Bundle 'unimpaired.vim'
-Bundle 'tpope/vim-repeat'
-Bundle 'skwp/vim-ruby-conque'
-Bundle 'Conque-Shell'
-Bundle 'scrooloose/nerdtree'
-Bundle 'ZenCoding.vim'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'MatchTag'
-Bundle 'junegunn/fzf'
+Bundle "mattn/emmet-vim"
+
+" On Probation
+" ------------
+" Bundle 'Buffergator'
+" Bundle 'ArgsAndMore'
+" Bundle 'michaeljsmith/vim-indent-object'
+" Bundle 'kana/vim-textobj-user'
+" Bundle 'nelstrom/vim-textobj-rubyblock'
+" Bundle 'Rename2'
+" Bundle 'SQLUtilities'
+" Bundle 'unimpaired.vim'
+" Bundle 'skwp/vim-ruby-conque'
+" Bundle 'Conque-Shell'
+" Bundle 'airblade/vim-gitgutter'
+" Bundle 'MatchTag'
+" Bundle 'kien/ctrlp.vim'
+" Bundle 'yankstack'
+" Bundle 'rking/ag.vim'
 
 " File Types
-Bundle 'tpope/vim-markdown'
-Bundle 'nelstrom/vim-markdown-preview'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'AndrewRadev/vim-eco'
 Bundle 'pangloss/vim-javascript'
 Bundle 'elzr/vim-json'
 " haml/sass/scss
 Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-markdown'
 
 " Color Schemes
-Bundle 'jellybeans.vim'
+Bundle 'nanotech/jellybeans.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'chriskempson/base16-vim'
 
@@ -62,6 +66,11 @@ filetype plugin indent on " required
 syntax on
 set background=dark
 colorscheme solarized
+
+" Enable per-project .vimrc files
+set exrc
+" Only execute safe per-project vimrc commands
+set secure
 
 if version >= 703
   " Persistent undo
@@ -163,7 +172,7 @@ nnoremap <silent> <CR> :noh<CR><CR>
 cmap w!! %!sudo tee > /dev/null %
 
 " Open vimrc in new tab
-nmap <Leader>v :tabedit $MYVIMRC<CR>
+nmap <Leader>v :edit $MYVIMRC<CR>
 
 " Strip trailing whitespace
 function! <SID>StripTrailingWhitespaces()
@@ -200,14 +209,46 @@ let g:syntastic_auto_loc_list=1
 " [Gundo]
 nnoremap <Leader>g :GundoToggle<CR>
 
-" [CtrlP]
-let g:ctrlp_cmd = 'CtrlPMixed'
-noremap <Leader>b :CtrlPBuffer<CR>
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_extensions = ['dir', 'mixed']
-map <Leader>c <ESC>:CtrlPDir ~/Projects<CR>
-map <Leader>d <ESC>:CtrlPDir<CR>
+" [Unite]
+let g:unite_source_history_yank_enable = 1
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nogroup --nocolor --column --smart-case'
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_rec_max_cache_files = 0
+call unite#filters#sorter_default#use(['sorter_rank'])
+	call unite#custom#source('file,file/new,buffer,file_rec,file_mru,file_rec/async', 'filters',
+	\ ['converter_relative_word', 'matcher_fuzzy',
+	\  'sorter_rank', 'converter_relative_abbr'])
+call unite#custom#source('file_rec,file_rec/async',
+  \ 'max_candidates', 0)
+nnoremap <C-P> :<C-u>Unite -start-insert -sync buffer file_rec/async file_mru file/new<cr>
+nnoremap <leader>y :<C-u>Unite -start-insert history/yank<cr>
+nnoremap <leader>d :<C-u>Unite -start-insert -input=**/ directory<cr>
+nnoremap <leader>f :<C-u>Unite -start-insert file<cr>
+nnoremap <leader>b :<C-u>Unite -quick-match buffer<cr>
+nnoremap <leader>a :<C-u>Unite grep:.<cr>
+nnoremap <leader>j :<C-u>Unite -start-insert jump<cr>
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
+
+" " [CtrlP]
+" let g:ctrlp_cmd = 'CtrlPMixed'
+" noremap <Leader>b :CtrlPBuffer<CR>
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_working_path_mode = 0
+" let g:ctrlp_extensions = ['dir', 'mixed']
+" map <Leader>c <ESC>:CtrlPDir ~/Projects<CR>
+" map <Leader>d <ESC>:CtrlPDir<CR>
 
 " [Tagbar]
 nnoremap <Leader>t :TagbarToggle<CR>
@@ -225,16 +266,13 @@ let g:tagbar_type_coffee = {
   \ 'ctagsargs' : ' ',
   \}
 
-" [Buffergator]
-let g:buffergator_suppress_keymaps = 1
-let g:buffergator_sort_regime = 'mru'
-nnoremap <Leader>l :BuffergatorToggle<CR>
+" " [Buffergator]
+" let g:buffergator_suppress_keymaps = 1
+" let g:buffergator_sort_regime = 'mru'
+" nnoremap <Leader>l :BuffergatorToggle<CR>
 
-" [The Silver Searcher (Ag)]
-nnoremap <Leader>a :Ag --smart-case 
-
-" [vim-markdown-preview]
-command! MarkdownPreview :call PreviewMKD()
+" " [The Silver Searcher (Ag)]
+" nnoremap <Leader>a :Ag --smart-case 
 
 " [airline]
 let g:airline_powerline_fonts = 1
@@ -242,28 +280,13 @@ let g:airline_powerline_fonts = 1
 " [NERD Tree]
 let NERDTreeHijackNetrw=1
 map <Leader>r :NERDTreeFind<CR>
-map <Leader>f :edit .<CR>
+" map <Leader>f :edit .<CR>
 
 " [YouCompleteMe]
 let g:ycm_key_detailed_diagnostics = ''
 
-" function! <SID>nerdtree_revealPath(path)
-"     try
-"         let p = g:NERDTreePath.New(expand(a:path))
-"     catch /^NERDTree.InvalidArgumentsError/
-"         call nerdtree#echo("path not found")
-"         return
-"     endtry
-" 
-"     execute 'edit .'
-" 
-"     call b:NERDTreeRoot.reveal(p)
-" endfunction
-" command! -n=1 -bar NERDTreeFindPath call <SID>nerdtree_revealPath('<args>')
-
-" [ZenCoding]
-let g:user_zen_expandabbr_key = '<c-y>'
-let g:use_zen_complete_tag = 1
+" [Emmet]
+let g:use_emmet_complete_tag = 1
 
 " [gitgutter]
 highlight clear SignColumn
@@ -275,3 +298,6 @@ command! QuickfixToArgs CListToArgs
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+" [vim-coffee-script]
+let g:coffee_lint_options = '-f /Users/jstotz/.coffeelint.json'
