@@ -1,0 +1,19 @@
+snippet srdc "SR: define UI component" b
+Sagamore.defineComponent '${1:Path}',
+  render: ->
+    ${2}
+endsnippet
+
+snippet sric "SR: import components to 'C' variable" b
+C = Sagamore.Components
+endsnippet
+
+snippet rid "React: import tags from React.DOM" b
+{${1:tag}} = React.DOM
+endsnippet
+
+snippet rcdm "React: define componentDidMount method" b
+componentDidMount: ->
+  ${1}
+endsnippet
+
