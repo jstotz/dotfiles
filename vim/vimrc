@@ -12,13 +12,14 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
+Bundle 'dhruvasagar/vim-vinegar'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/gundo.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'tComment'
 Bundle 'bling/vim-airline'
-Bundle 'scrooloose/nerdtree'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'vim-scripts/AutoTag'
 Bundle 'majutsushi/tagbar'
@@ -27,6 +28,7 @@ Bundle "mattn/emmet-vim"
 Bundle 'rking/ag.vim'
 Bundle 'maxbrunsfeld/vim-yankstack'
 Bundle 'christoomey/ctrlp-generic'
+Bundle 'Blackrush/vim-gocode'
 
 " On Probation
 " ------------
@@ -129,6 +131,8 @@ filetype off
 filetype plugin indent off
 set runtimepath+=$GOROOT/misc/vim
 filetype plugin indent on
+autocmd BufWritePre *.go Fmt
+let g:gofmt_command = "goimports"
 
 " Automatically source .vimrc on change
 augroup myvimrc
@@ -222,6 +226,7 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_extensions = ['dir', 'mixed', 'tag']
 map <Leader>c <ESC>:CtrlPDir ~/Projects<CR>
 map <Leader>d <ESC>:CtrlPDir<CR>
+map <Leader>b <ESC>:CtrlPBuffer<CR>
 
 " [Tagbar]
 nnoremap <Leader>t :TagbarToggle<CR>
@@ -244,11 +249,6 @@ nnoremap <Leader>a :Ag --smart-case
 
 " [airline]
 let g:airline_powerline_fonts = 1
-
-" [NERD Tree]
-let NERDTreeHijackNetrw=1
-map <Leader>r :NERDTreeFind<CR>
-map <Leader>f :edit .<CR>
 
 " [YouCompleteMe]
 " prevent mapping <Leader>d
