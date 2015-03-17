@@ -1,64 +1,77 @@
 " --- Vundle ---
 set nocompatible
 filetype off " required
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " let Vundle manage Vundle (required)
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 " Plugins
-Bundle 'kien/ctrlp.vim'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdtree'
-Bundle 'dhruvasagar/vim-vinegar'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'sjl/gundo.vim'
-Bundle 'SirVer/ultisnips'
-Bundle 'tComment'
-Bundle 'bling/vim-airline'
-Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'vim-scripts/AutoTag'
-Bundle 'majutsushi/tagbar'
-Bundle 'camelcasemotion'
-Bundle "mattn/emmet-vim"
-Bundle 'rking/ag.vim'
-Bundle 'maxbrunsfeld/vim-yankstack'
-Bundle 'christoomey/ctrlp-generic'
-Bundle 'Blackrush/vim-gocode'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'dhruvasagar/vim-vinegar'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/syntastic'
+Plugin 'sjl/gundo.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'tComment'
+Plugin 'bling/vim-airline'
+Plugin 'nelstrom/vim-visual-star-search'
+Plugin 'vim-scripts/AutoTag'
+Plugin 'majutsushi/tagbar'
+Plugin 'camelcasemotion'
+Plugin 'mattn/emmet-vim'
+Plugin 'rking/ag.vim'
+Plugin 'maxbrunsfeld/vim-yankstack'
+Plugin 'christoomey/ctrlp-generic'
+Plugin 'Blackrush/vim-gocode'
+Plugin 'kana/vim-textobj-user'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'unimpaired.vim'
+Plugin 'bronson/vim-trailing-whitespace'
 
 " On Probation
 " ------------
-" Bundle 'Buffergator'
-" Bundle 'ArgsAndMore'
-" Bundle 'michaeljsmith/vim-indent-object'
-" Bundle 'kana/vim-textobj-user'
-" Bundle 'nelstrom/vim-textobj-rubyblock'
-" Bundle 'Rename2'
-" Bundle 'SQLUtilities'
-" Bundle 'unimpaired.vim'
-" Bundle 'skwp/vim-ruby-conque'
-" Bundle 'Conque-Shell'
-" Bundle 'airblade/vim-gitgutter'
-" Bundle 'MatchTag'
+" Plugin 'Buffergator'
+" Plugin 'ArgsAndMore'
+" Plugin 'michaeljsmith/vim-indent-object'
+" Plugin 'kana/vim-textobj-user'
+" Plugin 'Rename2'
+" Plugin 'SQLUtilities'
+" Plugin 'skwp/vim-ruby-conque'
+" Plugin 'Conque-Shell'
+" Plugin 'airblade/vim-gitgutter'
+" Plugin 'MatchTag'
 
 " File Types
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'AndrewRadev/vim-eco'
-Bundle 'pangloss/vim-javascript'
-Bundle 'elzr/vim-json'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'lukaszkorecki/CoffeeTags'
+Plugin 'AndrewRadev/vim-eco'
+Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
+Plugin 't9md/vim-ruby-xmpfilter'
+Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'mxw/vim-jsx'
+Plugin 'mtscout6/vim-cjsx'
 " haml/sass/scss
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-markdown'
+Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-markdown'
+Plugin 'kelan/gyp.vim'
+Plugin 'wting/rust.vim'
+Plugin 'ekalinin/Dockerfile.vim'
 
 " Color Schemes
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'chriskempson/base16-vim'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 
+call vundle#end()
 filetype plugin indent on " required
 " --- /Vundle ---
 
@@ -113,11 +126,10 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set list listchars=tab:\ \ ,trail:·
 
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*,_site
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,vendor/bundle/*,.DS_Store,yard/*,_site,*/tmp/*
 set ofu=syntaxcomplete#Complete
 
 " File types
@@ -179,19 +191,7 @@ cmap w!! %!sudo tee > /dev/null %
 nmap <Leader>v :edit $MYVIMRC<CR>
 
 " Strip trailing whitespace
-function! <SID>StripTrailingWhitespaces()
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    %s/\s\+$//e
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
-nmap <Leader>s :StripTrailingWhitespaces<CR>
+nmap <Leader>s :FixWhitespace<CR>
 
 " Bubble single lines
 nmap <C-Up> [e
@@ -214,6 +214,7 @@ vmap <Leader>y "+y
 
 " [Syntastic]
 let g:syntastic_auto_loc_list=1
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " [Gundo]
 nnoremap <Leader>g :GundoToggle<CR>
@@ -230,19 +231,6 @@ map <Leader>b <ESC>:CtrlPBuffer<CR>
 
 " [Tagbar]
 nnoremap <Leader>t :TagbarToggle<CR>
-let g:tagbar_type_coffee = {
-  \ 'kinds' : [
-  \   'f:functions',
-  \   'o:object'
-  \ ],
-  \ 'kind2scope' : {
-  \  'f' : 'object',
-  \   'o' : 'object'
-  \},
-  \ 'sro' : ".",
-  \ 'ctagsbin' : 'coffeetags',
-  \ 'ctagsargs' : ' ',
-  \}
 
 " [The Silver Searcher (Ag)]
 nnoremap <Leader>a :Ag --smart-case 
@@ -270,6 +258,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " [vim-coffee-script]
 let g:coffee_lint_options = '-f ~/.coffeelint.json'
+let coffee_compiler = 'cjsx'
 
 " [yankstack]
 " Equivalent to <M-P> and <M-p> in iTerm2
@@ -290,3 +279,38 @@ function! MyGreatCallback(selected_value)
     call setreg('@', a:selected_value)
     exec normal p
 endfunction
+
+" [xmpfilter]
+let g:xmpfilter_cmd = "seeing_is_believing"
+
+autocmd FileType ruby nmap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
+autocmd FileType ruby xmap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
+autocmd FileType ruby imap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
+
+autocmd FileType ruby nmap <buffer> <D-c> <Plug>(seeing_is_believing-clean)
+autocmd FileType ruby xmap <buffer> <D-c> <Plug>(seeing_is_believing-clean)
+autocmd FileType ruby imap <buffer> <D-c> <Plug>(seeing_is_believing-clean)
+
+" xmpfilter compatible
+autocmd FileType ruby nmap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
+autocmd FileType ruby xmap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
+autocmd FileType ruby imap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
+
+" auto insert mark at appropriate spot.
+autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing_is_believing-run)
+autocmd FileType ruby xmap <buffer> <F5> <Plug>(seeing_is_believing-run)
+autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing_is_believing-run)
+
+au FocusGained,BufEnter * :silent! !
+
+" [postgresql]
+command! PgFormat %!pg_format -
+
+" [xml]
+au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+
+" [gist]
+let g:gist_detect_filetype = 1
+let g:gist_post_private = 1
+let g:gist_open_browser_after_post = 1
+let g:gist_clip_command = 'pbcopy'
