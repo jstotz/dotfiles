@@ -29,12 +29,13 @@ Plugin 'mattn/emmet-vim'
 Plugin 'rking/ag.vim'
 Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'christoomey/ctrlp-generic'
-Plugin 'Blackrush/vim-gocode'
+Plugin 'fatih/vim-go'
 Plugin 'kana/vim-textobj-user'
 Plugin 'mattn/webapi-vim'
 Plugin 'mattn/gist-vim'
 Plugin 'unimpaired.vim'
 Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'tpope/vim-rbenv'
 
 " On Probation
 " ------------
@@ -66,6 +67,7 @@ Plugin 'kelan/gyp.vim'
 Plugin 'wting/rust.vim'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'nginx.vim'
+Plugin 'keith/swift.vim'
 
 " Color Schemes
 Plugin 'nanotech/jellybeans.vim'
@@ -139,14 +141,6 @@ au BufRead,BufNewFile *.scss	set filetype=scss.css
 au BufRead,BufNewFile *.eco	set filetype=eco.html
 au BufRead,BufNewFile *.erb	set filetype=eruby.erb.html
 
-" golang
-filetype off
-filetype plugin indent off
-set runtimepath+=$GOROOT/misc/vim
-filetype plugin indent on
-autocmd BufWritePre *.go Fmt
-let g:gofmt_command = "goimports"
-
 " Automatically source .vimrc on change
 augroup myvimrc
     autocmd!
@@ -216,6 +210,7 @@ vmap <Leader>y "+y
 " [Syntastic]
 let g:syntastic_auto_loc_list=1
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_rubocop_exec = 'rubocop-vim'
 
 " [Gundo]
 nnoremap <Leader>g :GundoToggle<CR>
@@ -315,3 +310,11 @@ let g:gist_detect_filetype = 1
 let g:gist_post_private = 1
 let g:gist_open_browser_after_post = 1
 let g:gist_clip_command = 'pbcopy'
+
+" [vim-go]
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_fmt_command = 'goimports'
