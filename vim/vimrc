@@ -7,11 +7,14 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Plugins
+Plugin 'janko-m/vim-test'
+Plugin 'benmills/vimux'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-dispatch'
 Plugin 'scrooloose/nerdtree'
 Plugin 'dhruvasagar/vim-vinegar'
 Plugin 'Valloric/YouCompleteMe'
@@ -20,7 +23,7 @@ Plugin 'sjl/gundo.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tComment'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
 Plugin 'nelstrom/vim-visual-star-search'
 Plugin 'vim-scripts/AutoTag'
 Plugin 'majutsushi/tagbar'
@@ -36,6 +39,8 @@ Plugin 'mattn/gist-vim'
 Plugin 'unimpaired.vim'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'tpope/vim-rbenv'
+Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'qpkorr/vim-renamer'
 
 " On Probation
 " ------------
@@ -55,6 +60,7 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'AndrewRadev/vim-eco'
 Plugin 'pangloss/vim-javascript'
+Plugin 'pmsorhaindo/syntastic-local-eslint.vim'
 Plugin 'elzr/vim-json'
 Plugin 't9md/vim-ruby-xmpfilter'
 Plugin 'nelstrom/vim-textobj-rubyblock'
@@ -73,6 +79,7 @@ Plugin 'keith/swift.vim'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
+Plugin 'mhartington/oceanic-next'
 
 call vundle#end()
 filetype plugin indent on " required
@@ -81,7 +88,13 @@ filetype plugin indent on " required
 " --- Core ---
 syntax on
 set background=dark
-colorscheme solarized
+colorscheme OceanicNext
+" for vim 7
+set t_Co=256
+" for vim 8
+if (has("termguicolors"))
+ set termguicolors
+endif
 
 " Enable per-project .vimrc files
 set exrc
@@ -173,6 +186,9 @@ map <C-l> <C-w>l
 " Assign leader
 let mapleader = ","
 
+" Redraw screen
+noremap <Leader>r :redraw!<CR>
+
 " Enter command mode with space
 noremap <Space> :
 
@@ -233,6 +249,7 @@ nnoremap <Leader>a :Ag --smart-case
 
 " [airline]
 let g:airline_powerline_fonts = 1
+let g:airline_theme = 'oceanicnext'
 
 " [YouCompleteMe]
 " prevent mapping <Leader>d
@@ -254,6 +271,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " [vim-coffee-script]
 let g:coffee_lint_options = '-f ~/.coffeelint.json'
+let g:coffee_linter = ''
 let coffee_compiler = 'cjsx'
 
 " [yankstack]
@@ -318,3 +336,15 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = 'goimports'
+
+" [vim-test]
+nmap <silent> <leader>T :TestNearest<CR>
+nmap <silent> <leader>t :TestFile<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+let test#ruby#rspec#executable = 'sr rspec'
+let g:test#strategy = 'vimux'
+
+" [javascript/jsx]
+let g:jsx_ext_required = 0
+let g:syntastic_javascript_checkers = ['eslint']
