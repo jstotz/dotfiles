@@ -3,7 +3,7 @@ rvm:
   - 2.0.0
 os:
   - linux
-  - osx
+  # - osx
 install:
   - ./build/install.sh
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y zsh; fi
