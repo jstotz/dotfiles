@@ -16,6 +16,7 @@ git config --global user.email "dotfiles@demo.com"
 # bootstrap the mighty
 echo 'running ./script/bootstrap...'
 ./script/bootstrap
+source ~/.zshrc
 # echo 'done running ./script/bootstrap...'
 #
 # # load zshrc and check if antibody is working
