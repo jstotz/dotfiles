@@ -1,5 +1,4 @@
 # this block is in alphabetic order
-# djui/alias-tips
 mafredri/zsh-async
 zsh-users/zsh-completions
 

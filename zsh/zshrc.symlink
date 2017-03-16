@@ -14,17 +14,14 @@ config_files=($DOTFILES/*/*.zsh)
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}; do
-  echo "> sourcing path $file"
   source "$file"
 done
 
 # load antibody plugins
-echo "> sourcing ~/.bundles.txt"
 source ~/.bundles.txt
 
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
-  echo "> sourcing zsh $file"
   source "$file"
 done
 
@@ -38,7 +35,6 @@ fi
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
-  echo "> sourcing completion $file"
   source "$file"
 done
 
@@ -47,7 +43,4 @@ unset config_files updated_at
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.
 # shellcheck disable=SC1090
-echo "> sourcing ~/.localrc if exists"
 [ -f ~/.localrc ] && . ~/.localrc
-
-echo "done loading ~/.zshrc"
