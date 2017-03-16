@@ -1,0 +1,62 @@
+"*":
+  "atom-beautify":
+    general:
+      _analyticsUserId: "7e616daa-35fb-49cb-af8d-1b1bac6ce416"
+  "bracket-matcher":
+    autocompleteBrackets: false
+  core:
+    disabledPackages: [
+      "markdown-preview"
+      "language-javascript"
+      "deprecation-cop"
+    ]
+    projectHome: "~/Projects"
+    telemetryConsent: "limited"
+    themes: [
+      "nucleus-dark-ui"
+      "oceanic-next"
+    ]
+  editor:
+    fontFamily: "Inconsolata-dz"
+  "exception-reporting":
+    userId: "50fb0a2b-eb7a-d78a-808c-4c63bf413d5f"
+  "file-icons": {}
+  "find-and-replace": {}
+  fonts: {}
+  "fuzzy-finder": {}
+  "go-debug": {}
+  "go-plus": {}
+  gofmt: {}
+  "gometalinter-linter": {}
+  linter: {}
+  "linter-rubocop": {}
+  "linter-ui-default":
+    showPanel: true
+  "markdown-preview": {}
+  "markdown-preview-enhanced": {}
+  "markdown-preview-plus": {}
+  metrics: {}
+  minimap: {}
+  proton:
+    core:
+      selectedLayers: [
+        "core"
+        "tools/git"
+        "tools/linter"
+      ]
+  react: {}
+  "release-notes": {}
+  rspec:
+    command: "bundle exec rspec"
+  "seti-ui": {}
+  "spec-maker": {}
+  "split-diff":
+    diffWords: true
+    ignoreWhitespace: true
+    leftEditorColor: "red"
+    rightEditorColor: "green"
+    syncHorizontalScroll: true
+  "tree-view": {}
+  "vim-mode-plus": {}
+  welcome:
+    showOnStartup: false

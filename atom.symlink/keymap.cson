@@ -1,0 +1,38 @@
+# Your keymap
+#
+# Atom keymaps work similarly to stylesheets. Just as stylesheets use selectors
+# to apply styles to elements, Atom keymaps use selectors to associate
+# keystrokes with events in specific contexts.
+#
+# You can create a new keybinding in this file by typing "key" and then hitting
+# tab.
+#
+# Here's an example taken from Atom's built-in keymap:
+#
+# '.editor':
+#   'enter': 'editor:newline'
+#
+# '.workspace':
+#   'ctrl-P': 'core:move-up'
+#   'ctrl-p': 'core:move-down'
+#
+'atom-text-editor.vim-mode-plus.normal-mode':
+  ':': 'vim-mode-plus-ex-mode:open'
+  '!': 'vim-mode-plus-ex-mode:toggle-setting'
+
+  'g c':    'vim-mode-plus:select-latest-change'
+
+  'ctrl-w z': 'vim-mode-plus:maximize-pane'
+
+  'g [': 'vim-mode-plus:insert-at-previous-fold-start'
+  'g ]': 'vim-mode-plus:insert-at-next-fold-start'
+
+  'y s': 'vim-mode-plus:surround'
+  'y s w': 'vim-mode-plus:surround-word'
+  'y m s':  'vim-mode-plus:map-surround'
+  'd s': 'vim-mode-plus:delete-surround-any-pair'
+  'c s': 'vim-mode-plus:change-surround-any-pair'
+
+'.fuzzy-finder atom-text-editor[mini]':
+  'ctrl-v': 'pane:split-right'
+  'ctrl-s': 'pane:split-down'

@@ -1,0 +1,52 @@
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = true
+[merge]
+	tool = sourcetree
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  lg = log -p
+  who = shortlog -s --
+  rb = rebase
+  cp = cherry-pick
+  pf = push --force
+  du = diff @{upstream}
+  wip = commit -m WIP
+[bash]
+  showDirtyState = true
+[core]
+	quotepath = false
+	excludesfile = ~/.gitignore
+	autocrlf = input
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[branch]
+	autosetupmerge = true
+[web]
+	browser = open
+[difftool]
+	prompt = false
+[mergetool]
+	prompt = false
+	keepBackup = false
+[credential]
+	helper = osxkeychain
+[commit]
+	template = ~/.stCommitMsg
+[ghi]
+	token = !security find-internet-password -a jstotz -s github.com -w
+	pager = less
+[push]
+	default = simple
+[submodule]
+	fetchJobs = 4
