@@ -1,5 +1,5 @@
 #!/bin/zsh
-set -ex
+set -e
 
 # Lint files
 ./build/build.sh
@@ -18,6 +18,8 @@ git config --global user.email "dotfiles@demo.com"
 
 # load zshrc and check if antibody is working
 source ~/.zshrc
+
+echo 'done loading ~/.zshrc'
 
 test $(antibody list | wc -l) -gt 5 || {
   echo "expecting 5+ bundles loaded" >&2
