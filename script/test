@@ -19,8 +19,8 @@ git config --global user.email "dotfiles@demo.com"
 # load zshrc and check if antibody is working
 source ~/.zshrc
 
-test $(antibody list | wc -l) -gt 10 || {
-  echo "expecting 10+ bundles loaded" >&2
+test $(antibody list | wc -l) -gt 5 || {
+  echo "expecting 5+ bundles loaded" >&2
   exit 1
 }
 
@@ -28,6 +28,3 @@ test -s ~/.zcompdump || {
   echo "zcompdump file is empty" >&2
   exit 1
 }
-
-# check if a random plugin is working (meaning that the bundles were loaded)
-jvm
