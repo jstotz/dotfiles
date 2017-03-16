@@ -1,5 +1,9 @@
 #!/bin/sh
-alias git='hub'
+
+if which hub > /dev/null 2>&1; then
+  alias git='hub'
+fi
+
 alias gl='git pull --prune'
 alias glg='git log --graph --decorate --oneline --abbrev-commit'
 alias glga='glg --all'
