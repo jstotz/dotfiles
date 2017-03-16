@@ -20,7 +20,7 @@ git config --global user.email "dotfiles@demo.com"
 source ~/.zshrc
 
 test $(antibody list | wc -l) -gt 4 || {
-  echo "expecting 5+ bundles loaded" >&2
+  echo "expecting 4+ bundles loaded" >&2
   exit 1
 }
 
