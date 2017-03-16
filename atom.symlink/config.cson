@@ -29,9 +29,9 @@
   gofmt: {}
   "gometalinter-linter": {}
   linter: {}
-  "linter-rubocop": {}
-  "linter-ui-default":
-    showPanel: true
+  "linter-rubocop":
+    command: "/Users/jstotz/.rbenv/shims/rubocop"
+  "linter-ui-default": {}
   "markdown-preview": {}
   "markdown-preview-enhanced": {}
   "markdown-preview-plus": {}
