@@ -68,6 +68,8 @@ if test "$(which apm)"; then
     vim-mode-plus-ex-mode
   "
   for module in $modules; do
-    apm install "$module" || true
+    test -d ~/.atom/packages/$module || {
+      apm install "$module" || true
+    }
   done
 fi
