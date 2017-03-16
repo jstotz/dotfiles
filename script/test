@@ -32,3 +32,5 @@ test -s ~/.zcompdump || {
   echo "zcompdump file is empty" >&2
   exit 1
 }
+
+echo 'Tests passed!'
