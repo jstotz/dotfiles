@@ -47,4 +47,7 @@ unset config_files updated_at
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.
 # shellcheck disable=SC1090
+echo "> sourcing ~/.localrc if exists"
 [ -f ~/.localrc ] && . ~/.localrc
+
+echo "done loading ~/.zshrc"
