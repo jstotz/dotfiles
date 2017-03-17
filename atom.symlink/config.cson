@@ -31,6 +31,8 @@
   linter: {}
   "linter-rubocop":
     command: "/Users/jstotz/.rbenv/shims/rubocop"
+  "linter-ruby":
+    rubyExecutablePath: "/Users/jstotz/.rbenv/shims/ruby"
   "linter-ui-default": {}
   "markdown-preview": {}
   "markdown-preview-enhanced": {}
