@@ -1,4 +1,5 @@
 # this block is in alphabetic order
+hkupty/ssh-agent
 mafredri/zsh-async
 zsh-users/zsh-completions
 
