@@ -29,13 +29,16 @@
   gofmt: {}
   "gometalinter-linter": {}
   linter: {}
+  "linter-eslint": {}
   "linter-rubocop":
     command: "/Users/jstotz/.rbenv/shims/rubocop"
   "linter-ruby":
     rubyExecutablePath: "/Users/jstotz/.rbenv/shims/ruby"
-  "linter-ui-default": {}
+  "linter-ui-default":
+    showPanel: true
   "markdown-preview": {}
-  "markdown-preview-enhanced": {}
+  "markdown-preview-enhanced":
+    previewTheme: "mpe-github-syntax"
   "markdown-preview-plus": {}
   metrics: {}
   minimap: {}
