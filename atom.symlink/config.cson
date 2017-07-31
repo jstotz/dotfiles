@@ -16,6 +16,7 @@
       "nucleus-dark-ui"
       "oceanic-next"
     ]
+    titleBar: "custom"
   editor:
     fontFamily: "Inconsolata-dz"
   "exception-reporting":
@@ -24,8 +25,12 @@
   "find-and-replace": {}
   fonts: {}
   "fuzzy-finder": {}
+  "git-blame":
+    columnWidth: 438
   "go-debug": {}
-  "go-plus": {}
+  "go-plus":
+    navigator:
+      mode: "guru"
   gofmt: {}
   "gometalinter-linter": {}
   linter: {}
@@ -35,6 +40,7 @@
   "linter-ruby":
     rubyExecutablePath: "/Users/jstotz/.rbenv/shims/ruby"
   "linter-ui-default":
+    panelHeight: 60
     showPanel: true
   "markdown-preview": {}
   "markdown-preview-enhanced":
@@ -42,6 +48,12 @@
   "markdown-preview-plus": {}
   metrics: {}
   minimap: {}
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+      isDisabledIfNotInPackageJson: true
+    prettierEslintOptions:
+      prettierLast: true
   proton:
     core:
       selectedLayers: [
@@ -63,5 +75,7 @@
     syncHorizontalScroll: true
   "tree-view": {}
   "vim-mode-plus": {}
+  "vim-mode-plus-ex-mode":
+    notifiedUseExMode: true
   welcome:
     showOnStartup: false
