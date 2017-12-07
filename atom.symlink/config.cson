@@ -22,6 +22,8 @@
   "exception-reporting":
     userId: "50fb0a2b-eb7a-d78a-808c-4c63bf413d5f"
   "file-icons": {}
+  "file-types":
+    "^Dockerfile\\..*$": "source.dockerfile"
   "find-and-replace": {}
   fonts: {}
   "fuzzy-finder": {}
@@ -43,8 +45,7 @@
     panelHeight: 60
     showPanel: true
   "markdown-preview": {}
-  "markdown-preview-enhanced":
-    previewTheme: "mpe-github-syntax"
+  "markdown-preview-enhanced": {}
   "markdown-preview-plus": {}
   metrics: {}
   minimap: {}
@@ -73,7 +74,8 @@
     leftEditorColor: "red"
     rightEditorColor: "green"
     syncHorizontalScroll: true
-  "tree-view": {}
+  "tree-view":
+    hideVcsIgnoredFiles: true
   "vim-mode-plus": {}
   "vim-mode-plus-ex-mode":
     notifiedUseExMode: true
