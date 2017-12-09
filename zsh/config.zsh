@@ -57,7 +57,9 @@ bindkey -e
 
 # [Ctrl-r] - Search backward incrementally for a specified string.
 # The string may begin with ^ to anchor the search to the beginning of the line.
-bindkey '^r' history-incremental-search-backward
+zle     -N   fzf-history-widget
+bindkey '^R' fzf-history-widget
+
 # [PageUp] - Up a line of history
 if [[ ! -z "$terminfo[kpp]" ]]; then
   bindkey "$terminfo[kpp]" up-line-or-history
@@ -105,3 +107,6 @@ else
   bindkey "^[3;5~" delete-char
   bindkey "\e[3~" delete-char
 fi
+
+# ALT-C - cd into the selected directory
+bindkey '\ec' fzf-cd-widget
