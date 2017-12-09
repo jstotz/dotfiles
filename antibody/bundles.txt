@@ -2,7 +2,6 @@
 hkupty/ssh-agent
 mafredri/zsh-async
 zsh-users/zsh-completions
-zsh-users/zsh-history-substring-search
 
 # these should be at last!
 sindresorhus/pure
