@@ -41,8 +41,6 @@
 	keepBackup = false
 [credential]
 	helper = osxkeychain
-[commit]
-	template = ~/.stCommitMsg
 [ghi]
 	token = !security find-internet-password -a jstotz -s github.com -w
 	pager = less

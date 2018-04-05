@@ -1,2 +1,2 @@
 #!/bin/sh
-export PATH="$PATH:$DOTFILES/bin"
+export PATH="$PATH:/snap/bin:$DOTFILES/bin"

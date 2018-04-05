@@ -1,5 +1,5 @@
 #!/bin/sh
-export PATH="$HOME/.rbenv/shims:$PATH"
+export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
 __rbenv_started=0
 
