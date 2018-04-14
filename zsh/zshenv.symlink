@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+# Prevent default zshrc on Ubuntu from running compinit too early
+skip_global_compinit=1
