@@ -1,4 +1,4 @@
 export NVM_DIR="$HOME/.nvm"
 
-# shellcheck disable=SC1090,SC2086
-test -f /usr/local/opt/nvm/nvm.sh && . $_
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
