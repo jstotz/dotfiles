@@ -1,0 +1,32 @@
+[global_config]
+  always_on_top = True
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, Logger, LaunchpadBugURLHandler
+  focus = system
+  title_hide_sizetext = True
+  title_inactive_bg_color = "#2b303b"
+  title_inactive_fg_color = "#c0c5ce"
+  title_transmit_bg_color = "#2b303b"
+  title_transmit_fg_color = "#a3be8c"
+[keybindings]
+  split_horiz = <Primary><Shift>d
+  toggle_zoom = <Shift><Alt>Return
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = Oceanic Next
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    allow_bold = False
+    background_color = "#1b2b34"
+    copy_on_selection = True
+    cursor_color = "#c0c5ce"
+    foreground_color = "#c0c5ce"
+    palette = "#1b2b34:#ec5f67:#99c794:#fac863:#6699cc:#c594c5:#5fb3b3:#a7adba:#4f5b66:#ec5f67:#99c794:#fac863:#6699cc:#c594c5:#5fb3b3:#d8dee9"
+    scrollback_infinite = True
+    use_system_font = False
