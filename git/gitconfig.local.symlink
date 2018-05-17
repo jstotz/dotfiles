@@ -24,12 +24,6 @@
 	quotepath = false
 	excludesfile = ~/.gitignore
 	autocrlf = input
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [branch]
 	autosetupmerge = true
 [web]
@@ -39,8 +33,6 @@
 [mergetool]
 	prompt = false
 	keepBackup = false
-[credential]
-	helper = osxkeychain
 [ghi]
 	token = !security find-internet-password -a jstotz -s github.com -w
 	pager = less
