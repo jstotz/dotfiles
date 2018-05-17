@@ -1,6 +1,8 @@
 #!/bin/zsh
 
 # shellcheck disable=SC1090,SC2086
+test -f /usr/share/fzf/key-bindings.zsh && . $_
+test -f /usr/share/fzf/completions.zsh && . $_
 test -f ~/.fzf.zsh && . $_
 
 # vimf - Open selected file in Vim
