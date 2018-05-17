@@ -2,6 +2,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+exec --no-startup-id feh --bg-scale $HOME/wallpaper.jpg
 exec --no-startup-id nm-applet
 exec --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id xinput --set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
