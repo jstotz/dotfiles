@@ -1,0 +1,67 @@
+{
+    "gitlens.keymap": "chorded",
+    "projectManager.vscode.baseFolders": [
+        "$home/Projects",
+        "$home/go/src/github.com/jstotz",
+        "$home/go/src/github.com/springboardretail"
+    ],
+    "projectManager.vscode.ignoredFolders": [
+        "build",
+        "node_modules",
+        "out",
+        "typings",
+        "test",
+        "Carthage"
+    ],
+    "projectManager.git.baseFolders": [
+        "$home/Projects",
+        "$home/go/src/github.com/jstotz",
+        "$home/go/src/github.com/springboardretail"
+    ],
+    "projectManager.git.ignoredFolders": [
+        "build",
+        "node_modules",
+        "out",
+        "typings",
+        "test",
+        "Carthage"
+    ],
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "keyboard.dispatch": "keyCode",
+    "vim.handleKeys": {
+        "<C-d>": true,
+        "<C-c>": false,
+        "<C-f>": false,
+        "<C-n>": false,
+        "<C-a>": false,
+        "<C-w>": false
+    },
+    "[ruby]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": false
+    },
+    "workbench.colorTheme": "Oceanic Plus",
+    "files.exclude": {
+        ".vscode": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        ".byebug_history": true,
+        "tmp": true
+    },
+    "editor.autoClosingBrackets": false,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+}
