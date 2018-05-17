@@ -42,19 +42,6 @@ Plugin 'tpope/vim-rbenv'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'qpkorr/vim-renamer'
 
-" On Probation
-" ------------
-" Plugin 'Buffergator'
-" Plugin 'ArgsAndMore'
-" Plugin 'michaeljsmith/vim-indent-object'
-" Plugin 'kana/vim-textobj-user'
-" Plugin 'Rename2'
-" Plugin 'SQLUtilities'
-" Plugin 'skwp/vim-ruby-conque'
-" Plugin 'Conque-Shell'
-" Plugin 'airblade/vim-gitgutter'
-" Plugin 'MatchTag'
-
 " File Types
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'lukaszkorecki/CoffeeTags'
@@ -76,9 +63,6 @@ Plugin 'nginx.vim'
 Plugin 'keith/swift.vim'
 
 " Color Schemes
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'chriskempson/base16-vim'
 Plugin 'mhartington/oceanic-next'
 
 call vundle#end()

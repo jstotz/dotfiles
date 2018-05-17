@@ -1,4 +1,23 @@
 #!/bin/zsh
 
+# shortcut to this dotfiles path is $DOTFILES
+export DOTFILES="$HOME/.dotfiles"
+
+# your project folder that we can `c [tab]` to
+export PROJECTS="$HOME/Projects"
+
+# your default editor
+export EDITOR='vim'
+
+# load the path files
+for file in ${(M)config_files:#*/path.zsh}; do
+  source "$file"
+done
+
 # Prevent default zshrc on Ubuntu from running compinit too early
 skip_global_compinit=1
+
+# use .localenv for SUPER SECRET CRAP that you don't
+# want in your public, versioned repo.
+# shellcheck disable=SC1090
+[ -f ~/Private/localenv ] && . ~/Private/localenv

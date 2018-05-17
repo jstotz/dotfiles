@@ -3,4 +3,4 @@ Host *
 
 IdentityFile ~/Private/keys/id_rsa
 
-Include ~/.ssh/config.local
+Include ~/Private/ssh/config
