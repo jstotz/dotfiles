@@ -34,6 +34,7 @@ bindsym $mod+Shift+q kill
 
 # start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh -show combi
+bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # change focus
 bindsym $mod+j focus left
