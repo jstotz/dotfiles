@@ -33,6 +33,20 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
+# pulse audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%; exec pkill -RTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%; exec pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle; exec pkill -RTMIN+10 i3blocks
+
+# media player controls
+bindsym $mod+shift+p exec --no-startup-id playerctl play-pause
+bindsym $mod+shift+bracketleft exec --no-startup-id playerctl previous
+bindsym $mod+shift+bracketright exec --no-startup-id playerctl next
+
+# screen brightness controls
+bindsym XF86MonBrightnessUp exec light -A 10
+bindsym XF86MonBrightnessDown exec light -U 10
+
 # start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh -show combi
 bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
