@@ -63,5 +63,6 @@
     },
     "editor.autoClosingBrackets": false,
     "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "gitlens.historyExplorer.enabled": true
 }
