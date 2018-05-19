@@ -6,8 +6,13 @@ gaps inner 5
 
 exec --no-startup-id feh --bg-scale $HOME/wallpaper.jpg
 exec --no-startup-id nm-applet
+exec --no-startup-id dropbox
+exec --no-startup-id greenclip daemon
 exec --no-startup-id setxkbmap -option caps:escape
+
+# touchpad
 exec --no-startup-id xinput --set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+exec --no-startup-id "xinput --set-prop \"SynPS/2 Synaptics TouchPad\" \"libinput Click Method Enabled\" 0, 1"
 
 set $mod Mod4
 
@@ -50,8 +55,9 @@ bindsym XF86MonBrightnessUp exec light -A 10
 bindsym XF86MonBrightnessDown exec light -U 10
 
 # start rofi (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh -show combi
+bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh#"clipboard:greenclip print" -show combi -display-combi ">>>" -display-drun "🚀" -display-window "🗔"
 bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $mod+equal exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
 
 # change focus
 bindsym $mod+j focus left
