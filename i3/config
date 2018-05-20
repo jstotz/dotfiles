@@ -2,6 +2,25 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# color palette
+set $darkbg0 #1b2b34
+set $darkbg1 #343d46
+set $darkbg2 #4f5b66
+set $darkbg3 #65737e
+set $brownish #ab7967
+set $red #ec5f67
+set $orange #f99157
+set $yellow #fac863
+set $teal #5fb3b3
+set $blue #6699cc
+set $neutral #a7adba
+set $green #99c794
+set $pink #c594c5
+set $lightgray0 #c0c5ce
+set $lightgray1 #cdd3de
+set $lightgray2 #d8dee9
+set $white #ffffff
+
 gaps inner 5
 
 exec --no-startup-id feh --bg-scale $HOME/wallpaper.jpg
@@ -173,17 +192,17 @@ bindsym $mod+r mode "resize"
 bar {
   status_command i3status
   colors {
-    separator #65737E
-    background #1B2B34
-    statusline #D8DEE9
-    focused_workspace #6699CC #6699CC #1B2B34
-    active_workspace #5FB3B3 #5FB3B3 #1B2B34
-    inactive_workspace #343D46 #343D46 #D8DEE9
-    urgent_workspace #EC5f67 #EC5f67 #1B2B34
+    separator $darkbg3
+    background $darkbg0
+    statusline $lightgray2
+    focused_workspace $teal $teal $darkbg0
+    active_workspace $blue $blue $darkbg0
+    inactive_workspace $darkbg1 $darkbg1 $lightgray2
+    urgent_workspace $red $red $darkbg0
   }
 }
 
-client.focused #6699CC #6699CC #1B2B34 #6699CC
-client.focused_inactive #5FB3B3 #5FB3B3 #D8DEE9 #A7ADBA
-client.unfocused #343D46 #343D46 #D8DEE9 #343D46
-client.urgent #EC5f67 #EC5f67 #1B2B34 #EC5f67
+client.focused $teal $teal $darkbg0 $blue
+client.focused_inactive $blue $blue $lightgray2 $neutral
+client.unfocused $darkbg1 $darkbg1 $lightgray2 $darkbg1
+client.urgent $red $red $darkbg0 $red
