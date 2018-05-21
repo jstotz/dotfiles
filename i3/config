@@ -25,6 +25,7 @@ gaps inner 5
 
 exec --no-startup-id feh --bg-scale $HOME/wallpaper.jpg
 exec --no-startup-id nm-applet
+exec --no-startup-id xfce4-power-manager
 exec --no-startup-id dropbox
 exec --no-startup-id greenclip daemon
 exec --no-startup-id pasystray
@@ -202,7 +203,8 @@ bar {
   }
 }
 
-client.focused $teal $teal $darkbg0 $blue
-client.focused_inactive $blue $blue $lightgray2 $neutral
-client.unfocused $darkbg1 $darkbg1 $lightgray2 $darkbg1
-client.urgent $red $red $darkbg0 $red
+# colorclass            border   bg       text        indicator  child_border
+client.focused          $darkbg1 $darkbg0 $green      $yellow
+client.focused_inactive $darkbg1 $darkbg0 $neutral    $neutral
+client.unfocused        $darkbg1 $darkbg0 $darkbg3    $neutral
+client.urgent           $red     $red     $darkbg0    $red
