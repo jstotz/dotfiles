@@ -64,6 +64,7 @@ Plugin 'keith/swift.vim'
 
 " Color Schemes
 Plugin 'mhartington/oceanic-next'
+Plugin 'chriskempson/base16-vim'
 
 call vundle#end()
 filetype plugin indent on " required
@@ -72,13 +73,14 @@ filetype plugin indent on " required
 " --- Core ---
 syntax on
 set background=dark
-colorscheme OceanicNext
 " for vim 7
 set t_Co=256
 " for vim 8
 if (has("termguicolors"))
  set termguicolors
 endif
+
+colorscheme base16-oceanicnext
 
 " Enable per-project .vimrc files
 set exrc
@@ -210,7 +212,6 @@ vmap <Leader>y "+y
 " [Syntastic]
 let g:syntastic_auto_loc_list=1
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-let g:syntastic_ruby_rubocop_exec = 'rubocop-vim'
 
 " [Gundo]
 nnoremap <Leader>g :GundoToggle<CR>
