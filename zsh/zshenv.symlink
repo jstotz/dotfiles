@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+if [[ -z "$ZSH_CACHE_DIR" ]]; then
+  ZSH_CACHE_DIR="$HOME/.zsh/cache"
+fi
+
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES="$HOME/.dotfiles"
 
