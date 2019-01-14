@@ -1,7 +1,7 @@
 {
     "gitlens.keymap": "chorded",
     "projectManager.vscode.baseFolders": [
-        "$home/Projects",
+        "$home/Projects/",
         "$home/go/src/github.com/jstotz",
         "$home/go/src/github.com/springboardretail"
     ],
@@ -11,10 +11,12 @@
         "out",
         "typings",
         "test",
-        "Carthage"
+        "Carthage",
+        "bundle",
+        "tmp"
     ],
     "projectManager.git.baseFolders": [
-        "$home/Projects",
+        "$home/Projects/",
         "$home/go/src/github.com/jstotz",
         "$home/go/src/github.com/springboardretail"
     ],
@@ -24,7 +26,9 @@
         "out",
         "typings",
         "test",
-        "Carthage"
+        "Carthage",
+        "bundle",
+        "tmp"
     ],
     "gitlens.advanced.messages": {
         "suppressCommitHasNoPreviousCommitWarning": false,
@@ -48,8 +52,7 @@
     },
     "[ruby]": {
         "editor.insertSpaces": true,
-        "editor.tabSize": 2,
-        "editor.autoIndent": false
+        "editor.tabSize": 2
     },
     "workbench.colorTheme": "Oceanic Plus",
     "files.exclude": {
@@ -61,9 +64,36 @@
         ".byebug_history": true,
         "tmp": true
     },
-    "editor.autoClosingBrackets": false,
+    "editor.autoClosingBrackets": "beforeWhitespace",
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "gitlens.historyExplorer.enabled": true,
-    "workbench.statusBar.feedback.visible": false
+    "workbench.statusBar.feedback.visible": false,
+    "eslint.packageManager": "yarn",
+    "[typescriptreact]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "[graphql]": {
+        "editor.formatOnSave": true
+    },
+    "window.zoomLevel": 0,
+    "breadcrumbs.enabled": true,
+    "ruby.intellisense": "rubyLocate",
+    "window.menuBarVisibility": "toggle",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "terminal.integrated.rendererType": "dom",
+    "vim.useSystemClipboard": true,
+    "editor.formatOnSave": true,
+    "gitlens.views.fileHistory.enabled": true,
+    "gitlens.views.lineHistory.enabled": true,
+    "window.titleBarStyle": "native"
 }
