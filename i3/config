@@ -38,6 +38,7 @@ exec --no-startup-id xinput --set-prop "SynPS/2 Synaptics TouchPad" "libinput Na
 exec --no-startup-id "xinput --set-prop \"SynPS/2 Synaptics TouchPad\" \"libinput Click Method Enabled\" 0, 1"
 
 set $mod Mod4
+set $alt Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -69,9 +70,9 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pulseaudio-ctl down
 bindsym XF86AudioMute exec --no-startup-id pulseaudio-ctl mute
 
 # media player controls
-bindsym $mod+shift+p exec --no-startup-id playerctl play-pause
-bindsym $mod+shift+bracketleft exec --no-startup-id playerctl previous
-bindsym $mod+shift+bracketright exec --no-startup-id playerctl next
+bindsym $mod+shift+p exec --no-startup-id zsh -c "spotifyctl play-pause"
+bindsym $mod+shift+bracketleft exec --no-startup-id zsh -c "spotifyctl previous"
+bindsym $mod+shift+bracketright exec --no-startup-id zsh -c "spotifyctl next"
 bindsym $mod+shift+backslash exec --no-startup-id zsh -c spotify-notify-current-track
 
 # screen brightness controls
@@ -79,7 +80,7 @@ bindsym XF86MonBrightnessUp exec light -A 10
 bindsym XF86MonBrightnessDown exec light -U 10
 
 # start rofi (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh#"clipboard:greenclip print" -show combi -display-combi ">>>" -display-drun "🚀" -display-window "🗔"
+bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun#ssh -show combi -display-combi ">>>" -display-drun "🚀" -display-window "🗔"
 bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 bindsym $mod+equal exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
 
@@ -216,5 +217,5 @@ for_window [class=".*"] border pixel 1
 assign [class="^Slack$"] number "6: slack"
 assign [class="^Inboxer$"] number "7: email"
 for_window [class="Spotify"] move to workspace "8: spotify"
-assign [class="^WorkFlowy$"] number "9: org"
+assign [class="^WorkFlowy$"] number "9: workflowy"
 
