@@ -6,6 +6,11 @@ fpath=($DOTFILES/functions $fpath)
 
 autoload -U "$DOTFILES"/functions/*(:t)
 
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
