@@ -1,7 +1,7 @@
 # this block is in alphabetic order
 hkupty/ssh-agent
 mafredri/zsh-async
-robbyrussell/oh-my-zsh folder:plugins/last-working-dir
+mdumitru/last-working-dir
 zsh-users/zsh-completions
 
 # these should be at last!
