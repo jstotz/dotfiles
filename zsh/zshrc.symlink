@@ -53,3 +53,8 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin
+
+# added by travis gem
+[ -f /home/jstotz/.travis/travis.sh ] && source /home/jstotz/.travis/travis.sh
