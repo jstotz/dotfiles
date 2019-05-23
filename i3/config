@@ -70,8 +70,12 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pulseaudio-ctl down
 bindsym XF86AudioMute exec --no-startup-id pulseaudio-ctl mute
 
 # media player controls
+bindsym XF86AudioPlay exec --no-startup-id zsh -c "spotifyctl play-pause"
 bindsym $mod+shift+p exec --no-startup-id zsh -c "spotifyctl play-pause"
+bindsym XF86AudioStop exec --no-startup-id zsh -c "spotifyctl stop"
+bindsym XF86AudioPrev exec --no-startup-id zsh -c "spotifyctl previous"
 bindsym $mod+shift+bracketleft exec --no-startup-id zsh -c "spotifyctl previous"
+bindsym XF86AudioNext exec --no-startup-id zsh -c "spotifyctl next"
 bindsym $mod+shift+bracketright exec --no-startup-id zsh -c "spotifyctl next"
 bindsym $mod+shift+backslash exec --no-startup-id zsh -c spotify-notify-current-track
 
