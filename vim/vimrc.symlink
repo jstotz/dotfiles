@@ -1,74 +1,77 @@
-" --- Vundle ---
-set nocompatible
-filetype off " required
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle (required)
-Plugin 'gmarik/Vundle.vim'
+" vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
 
 " Plugins
-Plugin 'janko-m/vim-test'
-Plugin 'benmills/vimux'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dispatch'
-Plugin 'scrooloose/nerdtree'
-Plugin 'dhruvasagar/vim-vinegar'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/syntastic'
-Plugin 'sjl/gundo.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'tComment'
-Plugin 'vim-airline/vim-airline'
-Plugin 'nelstrom/vim-visual-star-search'
-Plugin 'vim-scripts/AutoTag'
-Plugin 'majutsushi/tagbar'
-Plugin 'camelcasemotion'
-Plugin 'mattn/emmet-vim'
-Plugin 'rking/ag.vim'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'christoomey/ctrlp-generic'
-Plugin 'fatih/vim-go'
-Plugin 'kana/vim-textobj-user'
-Plugin 'mattn/webapi-vim'
-Plugin 'mattn/gist-vim'
-Plugin 'unimpaired.vim'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'tpope/vim-rbenv'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'qpkorr/vim-renamer'
+Plug 'janko-m/vim-test'
+Plug 'benmills/vimux'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
+Plug 'scrooloose/nerdtree'
+Plug 'dhruvasagar/vim-vinegar'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'scrooloose/syntastic'
+Plug 'sjl/gundo.vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'vim-scripts/tComment'
+Plug 'vim-airline/vim-airline'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'vim-scripts/AutoTag'
+Plug 'majutsushi/tagbar'
+Plug 'vim-scripts/camelcasemotion'
+Plug 'mattn/emmet-vim'
+Plug 'rking/ag.vim'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'christoomey/ctrlp-generic'
+Plug 'fatih/vim-go'
+Plug 'kana/vim-textobj-user'
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+Plug 'vim-scripts/unimpaired.vim'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'tpope/vim-rbenv'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'qpkorr/vim-renamer'
 
 " File Types
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'lukaszkorecki/CoffeeTags'
-Plugin 'AndrewRadev/vim-eco'
-Plugin 'pangloss/vim-javascript'
-Plugin 'pmsorhaindo/syntastic-local-eslint.vim'
-Plugin 'elzr/vim-json'
-Plugin 't9md/vim-ruby-xmpfilter'
-Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'mxw/vim-jsx'
-Plugin 'mtscout6/vim-cjsx'
+Plug 'kchmck/vim-coffee-script'
+Plug 'lukaszkorecki/CoffeeTags'
+Plug 'AndrewRadev/vim-eco'
+Plug 'pangloss/vim-javascript'
+Plug 'pmsorhaindo/syntastic-local-eslint.vim'
+Plug 'elzr/vim-json'
+Plug 't9md/vim-ruby-xmpfilter'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'mxw/vim-jsx'
+Plug 'mtscout6/vim-cjsx'
 " haml/sass/scss
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-markdown'
-Plugin 'kelan/gyp.vim'
-Plugin 'wting/rust.vim'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'nginx.vim'
-Plugin 'keith/swift.vim'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-markdown'
+Plug 'kelan/gyp.vim'
+Plug 'wting/rust.vim'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'vim-scripts/nginx.vim'
+Plug 'keith/swift.vim'
 
 " Color Schemes
-Plugin 'mhartington/oceanic-next'
-Plugin 'chriskempson/base16-vim'
+Plug 'mhartington/oceanic-next'
+function FixupBase16(info)
+    !sed -i '/Base16hi/\! s/a:\(attr\|guisp\)/l:\1/g' ~/.vim/plugged/base16-vim/colors/*.vim
+endfunction
+Plug 'chriskempson/base16-vim', { 'do': function('FixupBase16') }
 
-call vundle#end()
-filetype plugin indent on " required
-" --- /Vundle ---
+call plug#end()
+" --- /vim-plug ---
 
 " --- Core ---
 syntax on
