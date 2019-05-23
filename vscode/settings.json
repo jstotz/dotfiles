@@ -1,99 +1,109 @@
 {
-    "gitlens.keymap": "chorded",
-    "projectManager.vscode.baseFolders": [
-        "$home/Projects/",
-        "$home/go/src/github.com/jstotz",
-        "$home/go/src/github.com/springboardretail"
-    ],
-    "projectManager.vscode.ignoredFolders": [
-        "build",
-        "node_modules",
-        "out",
-        "typings",
-        "test",
-        "Carthage",
-        "bundle",
-        "tmp"
-    ],
-    "projectManager.git.baseFolders": [
-        "$home/Projects/",
-        "$home/go/src/github.com/jstotz",
-        "$home/go/src/github.com/springboardretail"
-    ],
-    "projectManager.git.ignoredFolders": [
-        "build",
-        "node_modules",
-        "out",
-        "typings",
-        "test",
-        "Carthage",
-        "bundle",
-        "tmp"
-    ],
-    "gitlens.advanced.messages": {
-        "suppressCommitHasNoPreviousCommitWarning": false,
-        "suppressCommitNotFoundWarning": false,
-        "suppressFileNotUnderSourceControlWarning": false,
-        "suppressGitVersionWarning": false,
-        "suppressLineUncommittedWarning": false,
-        "suppressNoRepositoryWarning": false,
-        "suppressResultsExplorerNotice": false,
-        "suppressShowKeyBindingsNotice": true
-    },
-    "workbench.startupEditor": "newUntitledFile",
-    "keyboard.dispatch": "keyCode",
-    "vim.handleKeys": {
-        "<C-d>": true,
-        "<C-c>": false,
-        "<C-f>": false,
-        "<C-n>": false,
-        "<C-a>": false,
-        "<C-w>": false
-    },
-    "[ruby]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-    },
-    "workbench.colorTheme": "Oceanic Plus",
-    "files.exclude": {
-        ".vscode": true,
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        ".byebug_history": true,
-        "tmp": true
-    },
-    "editor.autoClosingBrackets": "beforeWhitespace",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "gitlens.historyExplorer.enabled": true,
-    "workbench.statusBar.feedback.visible": false,
-    "eslint.packageManager": "yarn",
-    "[typescriptreact]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "[typescript]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "[graphql]": {
-        "editor.formatOnSave": true
-    },
-    "window.zoomLevel": 0,
-    "breadcrumbs.enabled": true,
-    "ruby.intellisense": "rubyLocate",
-    "window.menuBarVisibility": "toggle",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "terminal.integrated.rendererType": "dom",
-    "vim.useSystemClipboard": true,
+  "gitlens.keymap": "chorded",
+  "projectManager.vscode.baseFolders": [
+    "$home/Projects/",
+    "$home/go/src/github.com/jstotz",
+    "$home/go/src/github.com/springboardretail"
+  ],
+  "projectManager.vscode.ignoredFolders": [
+    "build",
+    "node_modules",
+    "out",
+    "typings",
+    "test",
+    "Carthage",
+    "bundle",
+    "tmp"
+  ],
+  "projectManager.git.baseFolders": [
+    "$home/Projects/",
+    "$home/go/src/github.com/jstotz",
+    "$home/go/src/github.com/springboardretail"
+  ],
+  "projectManager.git.ignoredFolders": [
+    "build",
+    "node_modules",
+    "out",
+    "typings",
+    "test",
+    "Carthage",
+    "bundle",
+    "tmp"
+  ],
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true
+  },
+  "workbench.startupEditor": "newUntitledFile",
+  "keyboard.dispatch": "keyCode",
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-c>": false,
+    "<C-f>": false,
+    "<C-n>": false,
+    "<C-a>": false,
+    "<C-w>": false
+  },
+  "[ruby]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "workbench.colorTheme": "Oceanic Plus",
+  "files.exclude": {
+    ".vscode": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    ".byebug_history": true,
+    "tmp": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.autoClosingBrackets": "beforeWhitespace",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "workbench.statusBar.feedback.visible": false,
+  "eslint.packageManager": "yarn",
+  "[typescriptreact]": {
     "editor.formatOnSave": true,
-    "gitlens.views.fileHistory.enabled": true,
-    "gitlens.views.lineHistory.enabled": true,
-    "window.titleBarStyle": "native"
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "[graphql]": {
+    "editor.formatOnSave": true
+  },
+  "window.zoomLevel": 0,
+  "breadcrumbs.enabled": true,
+  "window.menuBarVisibility": "toggle",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "terminal.integrated.rendererType": "dom",
+  "vim.useSystemClipboard": true,
+  "gitlens.views.fileHistory.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
+  "window.titleBarStyle": "native",
+  "vs-kubernetes": {
+    "vs-kubernetes.minikube-path": "/home/jstotz/.vs-kubernetes/tools/minikube/linux-amd64/minikube"
+  },
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "go.useLanguageServer": true
 }
