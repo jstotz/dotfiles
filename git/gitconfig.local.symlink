@@ -11,6 +11,7 @@
   br = branch
   co = checkout
   df = diff
+  dfs = diff --staged
   lg = log -p
   who = shortlog -s --
   rb = rebase
