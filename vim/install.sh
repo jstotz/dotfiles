@@ -1,7 +1,9 @@
 #!/bin/sh
 
-test -d ~/.vim/bundle/Vundle.vim || {
-  git clone http://github.com/gmarik/vundle.git ./.vim/bundle/vundle
+test -f ~/.vim/autoload/plug.vim || {
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
-vim +PluginInstall! +qall >/tmp/vim-plugins.log 2>&1 || true
+echo "Installing vim plugins..."
+vim +PlugInstall +qall >/tmp/vim-plugins.log 2>&1 || true
