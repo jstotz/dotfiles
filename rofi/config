@@ -1,2 +1,3 @@
-rofi.theme:         base16-oceanicnext
+# rofi.theme:         base16-oceanicnext
 rofi.font:          Inconsolata-dz for Powerline 18
+rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
