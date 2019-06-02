@@ -2,25 +2,6 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# color palette
-# set $darkbg0 #1b2b34
-# set $darkbg1 #343d46
-# set $darkbg2 #4f5b66
-# set $darkbg3 #65737e
-# set $brownish #ab7967
-# set $red #ec5f67
-# set $orange #f99157
-# set $yellow #fac863
-# set $teal #5fb3b3
-# set $blue #6699cc
-# set $neutral #a7adba
-# set $green #99c794
-# set $pink #c594c5
-# set $lightgray0 #c0c5ce
-# set $lightgray1 #cdd3de
-# set $lightgray2 #d8dee9
-# set $white #ffffff
-
 set_from_resource $fg i3wm.color7 #f0f0f0
 set_from_resource $bg i3wm.color0 #f0f0f0
 set_from_resource $focused i3wm.color3 #f0f0f0
@@ -45,7 +26,6 @@ exec --no-startup-id greenclip daemon
 exec --no-startup-id pasystray
 exec_always --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id compton
-exec_always --no-startup-id wal -R
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # touchpad
@@ -68,7 +48,7 @@ font pango:NotoSans Regular 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -203,27 +183,6 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-# bar {
-#   status_command i3status
-#   colors {
-#     separator $darkbg3
-#     background $darkbg0
-#     statusline $lightgray2
-#     focused_workspace $teal $teal $darkbg0
-#     active_workspace $blue $blue $darkbg0
-#     inactive_workspace $darkbg1 $darkbg1 $lightgray2
-#     urgent_workspace $red $red $darkbg0
-#   }
-# }
-
-# colorclass            border   bg       text        indicator  child_border
-#client.focused          $darkbg1 $darkbg0 $green      $yellow    $darkbg1
-#client.focused_inactive $darkbg1 $darkbg0 $neutral    $neutral   $darkbg1
-#client.unfocused        $darkbg1 $darkbg0 $darkbg3    $neutral   $darkbg1
-#client.urgent           $red     $red     $darkbg0    $red       $darkbg1
 
 for_window [class=".*"] border pixel 1
 

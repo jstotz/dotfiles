@@ -1,28 +1,11 @@
 [colors]
+transparent = #00000000
 background = ${xrdb:color0:#222}
 foreground = ${xrdb:color7:#222}
 foreground-alt = ${xrdb:color7:#222}
 primary = ${xrdb:color1:#222}
 secondary = ${xrdb:color2:#222}
 alert = ${xrdb:color3:#222}
-
-[module/i3]
-type = internal/i3
-
-[module/playerctl]
-type = custom/script
-
-exec = $HOME/.config/polybar/modules/playerctl.sh
-interval = 3
-
-click-left = exec playerctl play-pause
-
-format-prefix = " "
-format = <label>
-format-foreground = ${colors.foreground}
-format-underline = ${colors.primary}
-
-label = %output%
 
 [bar/top]
 dpi = ${xrdb:Xft.dpi:-1}
@@ -33,7 +16,7 @@ height = 34
 background = #00000000
 foreground = #ccffffff
 
-line-color = ${colors.background}
+line-color = ${colors.primary}
 line-size = 1
 
 border-top-size = 8
@@ -41,20 +24,26 @@ spacing = 2
 padding-right = 5
 module-margin = 4
 
-font-0 = NotoSans-Regular:size=8;-1
+font-0 = NotoSans-Regular:size=8;-4
 font-1 = MaterialIcons:size=10;0
-font-2 = Misc Termsynu:size=8:antialias=false;-2
-font-3 = FontAwesome:size=10;0
+font-2 = Misc Termsynu:size=8:antialias=false;-3
+font-3 = FontAwesome:size=8;-3
 
 modules-left = powermenu playerctl
 modules-right = pulseaudio backlight wireless-network battery date
 
-[bar/bottom]
-dpi = ${xrdb:Xft.dpi:-1}
-monitor = eDP-1
+[bar/bottom-common]
+font-0 = NotoSans-Regular:size=8;0
+font-1 = unifont:size=6;-3
+font-2 = FontAwesome:size=8;1
+font-3 = NotoSans-Regular:size=8;-1
+font-4 = MaterialIcons:size=10;-1
+font-5 = Misc Termsynu:size=8:antialias=false;0
+
 bottom = true
 width = 100%
 height = 27
+dpi = ${xrdb:Xft.dpi:-1}
 
 background = ${bar/top.background}
 foreground = ${bar/top.foreground}
@@ -67,18 +56,20 @@ padding-right = 4
 module-margin-left = 0
 module-margin-right = 6
 
+modules-left = i3
+
+[bar/bottom-primary]
+inherit = bar/bottom-common
+monitor = eDP-1
+
 tray-position = right
 tray-scale = 1.5
 
-font-0 = NotoSans-Regular:size=8;0
-font-1 = unifont:size=6;-3
-font-2 = FontAwesome:size=8;-2
-font-3 = NotoSans-Regular:size=8;-1
-font-4 = MaterialIcons:size=10;-1
-font-5 = Misc Termsynu:size=8:antialias=false;0
-
-modules-left = i3
 modules-right = cpu memory
+
+[bar/bottom-secondary]
+inherit = bar/bottom-common
+monitor = ${env:MONITOR:}
 
 [module/backlight]
 type = internal/xbacklight
@@ -131,6 +122,36 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
 
+[module/i3]
+type = internal/i3
+pin-workspaces = true
+
+ws-icon-default = " "
+#ws-icon-default = " "
+
+format = <label-state> <label-mode>
+
+; Available tokens:
+;   %mode%
+; Default: %mode%
+label-mode = %mode%
+label-mode-padding = 2
+label-mode-background = #e60053
+
+label-focused =   %name%
+label-focused-foreground = ${colors.foreground}
+label-focused-underline = ${colors.primary}
+label-focused-padding = 4
+
+label-unfocused-padding = 4
+
+label-visible-underline = #555555
+label-visible-padding = 4
+
+label-urgent-foreground = ${colors.background}
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 4
+
 [module/bspwm]
 type = internal/bspwm
 
@@ -165,42 +186,6 @@ label-urgent-underline = #9b0a20
 label-urgent-font = 4
 label-urgent-padding = 4
 
-label-empty = %icon%
-label-empty-foreground = #55
-label-empty-font = 4
-label-empty-padding = 4
-
-label-monocle = 
-label-monocle-underline = ${module/bspwm.label-active-underline}
-label-monocle-background = #33ffffff
-label-monocle-padding = 2
-
-label-locked = 
-label-locked-foreground = #bd2c40
-label-locked-underline = ${module/bspwm.label-monocle-underline}
-label-locked-padding = ${module/bspwm.label-monocle-padding}
-
-label-sticky = 
-label-sticky-foreground = #fba922
-label-sticky-underline = ${module/bspwm.label-monocle-underline}
-label-sticky-padding = ${module/bspwm.label-monocle-padding}
-
-label-private = 
-label-private-foreground = #bd2c40
-label-private-underline = ${module/bspwm.label-monocle-underline}
-label-private-padding = ${module/bspwm.label-monocle-padding}
-
-[module/bspwm-tmp]
-type = internal/bspwm
-format = <label-state>
-
-label-active = 
-label-active-padding = 1
-label-occupied = 
-label-occupied-padding = 1
-label-empty = 
-label-empty-padding = 1
-
 [module/cpu]
 type = internal/cpu
 interval = 0.5
@@ -217,7 +202,7 @@ ramp-coreload-2 = ▃
 ramp-coreload-2-font = 2
 ramp-coreload-2-foreground = #aaff77
 ramp-coreload-3 = ▄
-ramp-coreload-3-font = 2
+ramp-coreload-3-font= 2
 ramp-coreload-3-foreground = #aaff77
 ramp-coreload-4 = ▅
 ramp-coreload-4-font = 2
@@ -255,33 +240,6 @@ bar-used-fill-font = 6
 bar-used-empty = ─
 bar-used-empty-font = 6
 bar-used-empty-foreground = #444444
-
-[module/mpd]
-type = internal/mpd
-format-online = <icon-prev> <icon-stop> <toggle> <icon-next>  <icon-repeat> <icon-random>  <bar-progress> <label-time>  <label-song>
-
-icon-play = 
-icon-pause = 
-icon-stop = 
-icon-prev = 
-icon-next = 
-icon-random = 
-icon-repeat = 
-
-toggle-on-foreground =
-toggle-off-foreground = #55
-
-bar-progress-width = 45
-bar-progress-format = %{A4:mpdseek+2: A5:mpdseek-2:}%fill%%indicator%%empty%%{A A}
-bar-progress-indicator = |
-bar-progress-indicator-foreground = #ff
-bar-progress-indicator-font = 3
-bar-progress-fill = ─
-bar-progress-fill-foreground = #bb
-bar-progress-fill-font = 3
-bar-progress-empty = ─
-bar-progress-empty-font = 3
-bar-progress-empty-foreground = #44
 
 [module/wireless-network]
 type = internal/network
@@ -354,5 +312,19 @@ menu-2-1-exec = menu_open-0
 type = internal/date
 interval = 2
 date = %%{F#999}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
+
+[module/playerctl]
+type = custom/script
+
+exec = $HOME/.config/polybar/modules/playerctl.sh
+interval = 3
+
+click-left = exec playerctl play-pause
+
+format-prefix = " "
+format = <label>
+format-underline = ${colors.primary}
+
+label = %output%
 
 ; vim:ft=dosini

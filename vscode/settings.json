@@ -54,7 +54,6 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 2
   },
-  "workbench.colorTheme": "Oceanic Plus",
   "files.exclude": {
     ".vscode": true,
     "**/.git": true,
@@ -105,5 +104,8 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "go.useLanguageServer": true
+  "go.useLanguageServer": true,
+  "workbench.colorTheme": "City Lights",
+  "workbench.iconTheme": "city-lights-icons-vsc-light"
+  }
 }
