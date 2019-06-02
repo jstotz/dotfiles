@@ -218,8 +218,8 @@ ramp-coreload-7-foreground = #ff5555
 
 [module/date]
 type = internal/date
-date =    %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
-date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+date =    %%{F#99}%a %Y-%m-%d%%{F-}  %%{F#fff}%I:%M%p%%{F-}
+date-alt = %%{F#fff}%A, %B %d %Y  %%{F#fff}%I:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
 type = internal/memory
@@ -307,16 +307,11 @@ menu-2-1 = Cancel
 menu-2-1-foreground = #fba922
 menu-2-1-exec = menu_open-0
 
-[module/clock]
-type = internal/date
-interval = 2
-date = %%{F#999}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
-
 [module/playerctl]
 type = custom/script
 
 exec = $HOME/.config/polybar/modules/playerctl.sh
-interval = 3
+interval = 1
 
 click-left = exec playerctl play-pause
 
