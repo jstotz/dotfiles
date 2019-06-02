@@ -64,6 +64,8 @@ monitor = eDP-1
 
 tray-position = right
 tray-scale = 1.5
+tray-maxsize = 32
+tray-offset-y = -12
 
 modules-right = cpu memory
 
