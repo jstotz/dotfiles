@@ -185,6 +185,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 for_window [class=".*"] border pixel 1
+for_window [class="Pick-colour-picker"] floating enable
 
 assign [class="^Slack$"] number "6: slack"
 assign [class="^Inboxer$"] number "7: email"
