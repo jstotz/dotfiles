@@ -4,7 +4,7 @@ URxvt*font:           xft:Inconsolata\\-dz for Powerline:size=9
 
 ! special
 *.foreground:   #b7c5d3
-*.background:   #181e24
+*.background:   #001724
 *.cursorColor:  #b7c5d3
 
 ! black

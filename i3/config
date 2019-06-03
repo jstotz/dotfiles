@@ -2,15 +2,16 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color0 #f0f0f0
-set_from_resource $focused i3wm.color3 #f0f0f0
+set_from_resource $fg i3wm.foreground #f0f0f0
+set_from_resource $bg i3wm.background #f0f0f0
+set_from_resource $unfocused i3wm.color7 #f0f0f0
+set_from_resource $focused $fg #f0f0f0
 
 # class                 border  backgr. text indicator child_border
-client.focused          $bg     $bg     $fg  $bg       $bg
-client.focused_inactive $bg     $bg     $fg  $bg       $bg
-client.unfocused        $bg     $bg     $lightgray0  $bg       $bg
-client.urgent           $bg     $bg     $fg  $bg       $bg
+client.focused          $bg     $bg     $focused  $bg       $bg
+client.focused_inactive $bg     $bg     $focused  $bg       $bg
+client.unfocused        $bg     $bg     $unfocused  $bg       $bg
+client.urgent           $bg     $bg     $unfocused  $bg       $bg
 client.placeholder      $bg     $bg     $fg  $bg       $bg
 
 client.background       $bg
