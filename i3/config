@@ -193,3 +193,6 @@ assign [class="^Inboxer$"] number "7: email"
 for_window [class="Spotify"] move to workspace "8: spotify"
 assign [class="^WorkFlowy$"] number "9: workflowy"
 
+for_window [class="^((?!Slack).)*$" workspace=".*: slack$"] move to workspace "1" focus
+for_window [class="^((?!Spotify).)*$" workspace=".*: spotify$"] move to workspace "1" focus
+
