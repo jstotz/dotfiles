@@ -288,13 +288,13 @@ label-separator = " "
 menu-0-0 = Suspend
 menu-0-0-foreground = #fba922
 menu-0-0-exec = systemctl suspend
-menu-0-1 = Terminate WM
+menu-0-1 = Exit WM
 menu-0-1-foreground = #fba922
 menu-0-1-exec = i3-msg exit
 menu-0-2 = Reboot
 menu-0-2-foreground = #fba922
 menu-0-2-exec = menu-open-1
-menu-0-3 = Power off
+menu-0-3 = Shutdown
 menu-0-3-foreground = #fba922
 menu-0-3-exec = menu-open-2
 
