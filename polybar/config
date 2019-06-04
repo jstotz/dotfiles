@@ -74,7 +74,7 @@ monitor = ${env:MONITOR:}
 
 [module/backlight]
 type = internal/xbacklight
-format = <ramp> <bar>
+format = <ramp> <label>
 
 ramp-0 = 
 ramp-1 = 
