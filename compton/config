@@ -21,6 +21,7 @@ menu-opacity = 0.9;			# The opacity for menus. (default 1.0)
 #frame-opacity = 0.8;			# Opacity of window titlebars and borders. (0.1 - 1.0)
 #inactive-opacity-override = true;	# Inactive opacity set by 'inactive-opacity' overrides value of _NET_WM_OPACITY.
 opacity-rule = [
+  "85:class_g = 'Dunst'",
   "0:_NET_WM_STATE@[0]:32a *= '_NET_WM_STATE_HIDDEN'",
   "0:_NET_WM_STATE@[1]:32a *= '_NET_WM_STATE_HIDDEN'",
   "0:_NET_WM_STATE@[2]:32a *= '_NET_WM_STATE_HIDDEN'",
@@ -30,7 +31,7 @@ opacity-rule = [
   "100:!(_NET_WM_STATE@[1]:32a *= '_NET_WM_STATE_HIDDEN')",
   "100:!(_NET_WM_STATE@[2]:32a *= '_NET_WM_STATE_HIDDEN')",
   "100:!(_NET_WM_STATE@[3]:32a *= '_NET_WM_STATE_HIDDEN')",
-  "100:!(_NET_WM_STATE@[4]:32a *= '_NET_WM_STATE_HIDDEN')",
+  "100:!(_NET_WM_STATE@[4]:32a *= '_NET_WM_STATE_HIDDEN')"
 ];
 
 # Fading
