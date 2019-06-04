@@ -185,6 +185,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+focus_on_window_activation focus
+
 for_window [class=".*"] border pixel 1
 for_window [class="Pick-colour-picker"] floating enable
 
