@@ -106,6 +106,12 @@
   },
   "go.useLanguageServer": true,
   "workbench.colorTheme": "City Lights",
-  "workbench.iconTheme": "city-lights-icons-vsc-light"
+  "workbench.iconTheme": "city-lights-icons-vsc-light",
+  "files.associations": {
+    "**/i3/config": "i3"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   }
 }
