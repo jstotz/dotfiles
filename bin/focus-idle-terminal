@@ -68,5 +68,5 @@ closest_idle_terminal = find_closest_node(idle_terminals, focused_node)
 if closest_idle_terminal
   system "i3-msg '[con_id=\"#{closest_idle_terminal['id']}\"] focus' > /dev/null"
 else
-  system TERMINAL_CMD
+  system "i3-msg exec #{TERMINAL_CMD} > /dev/null"
 end
