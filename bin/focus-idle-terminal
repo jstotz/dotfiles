@@ -13,6 +13,10 @@ def find_nodes(node, found = [], &block)
   found
 end
 
+def find_node(node, &block)
+  find_nodes(node, &block).first
+end
+
 def process_tree(node, parent=nil, depth=0)
   node['depth'] = depth
   if parent
@@ -28,10 +32,6 @@ def process_tree(node, parent=nil, depth=0)
     process_tree(child, node, depth + 1)
   end
   node
-end
-
-def find_node(node, &block)
-  find_nodes(node, &block).first
 end
 
 def calculate_sibling_distance(n1, n2)
@@ -60,7 +60,7 @@ focused_node = find_node(root) { |n| n['focused'] }
 
 idle_terminals = find_nodes(focused_workspace) do |node|
   node.dig('window_properties', 'class') == TERMINAL_CLASS &&
-    node.dig('window_properties', 'title').to_s !~ /^.*:/
+    node.dig('window_properties', 'title').to_s !~ /^.*: /
 end
 
 closest_idle_terminal = find_closest_node(idle_terminals, focused_node)
