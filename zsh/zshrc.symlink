@@ -11,11 +11,16 @@ for file in ${(M)config_files:#*/path.zsh}; do
   source "$file"
 done
 
+# load the prompt files
+for file in ${(M)config_files:#*/prompt.zsh}; do
+  source "$file"
+done
+
 # load antibody plugins
 source ~/.bundles.txt
 
-# load everything but the path and completion files
-for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
+# load everything but the path, completion, and prompt files
+for file in ${${${config_files:#*/path.zsh}:#*/completion.zsh}:#*/prompt.zsh}; do
   source "$file"
 done
 
