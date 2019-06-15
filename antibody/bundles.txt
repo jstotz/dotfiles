@@ -5,6 +5,8 @@ mdumitru/last-working-dir
 zsh-users/zsh-completions
 
 # these should be at last!
-bricewge/pure branch:zstyle-colors
+jreese/zsh-titles
+romkatv/powerlevel10k
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
+zsh-users/zsh-autosuggestions

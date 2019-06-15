@@ -61,7 +61,7 @@ focused_node = find_node(root) { |n| n[:focused] }
 
 idle_terminals = find_nodes(focused_workspace) do |node|
   node.dig(:window_properties, :class) == TERMINAL_CLASS &&
-    node.dig(:window_properties, :title).to_s !~ /^.*: /
+    node.dig(:window_properties, :title).to_s.start_with?('zsh:')
 end
 
 closest_idle_terminal = find_closest_node(idle_terminals, focused_node)
