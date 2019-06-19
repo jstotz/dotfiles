@@ -57,8 +57,11 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
   zle -N zle-line-finish
 fi
 
-# Use emacs key bindings
-bindkey -e
+# Use vi key bindings
+bindkey -v
+
+# Reduce delay when switching between vi modes
+export KEYTIMEOUT=1
 
 # [Ctrl-r] - Search backward incrementally for a specified string.
 # The string may begin with ^ to anchor the search to the beginning of the line.
