@@ -17,6 +17,7 @@ client.placeholder      $bg     $bg     $fg  $bg       $bg
 client.background       $bg
 
 gaps inner 5
+smart_borders no_gaps
 
 exec_always --no-startup-id autorandr --change --default standalone && feh --bg-scale $HOME/wallpaper.jpg
 exec --no-startup-id nm-applet
@@ -187,9 +188,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 focus_on_window_activation focus
+workspace_layout tabbed
 
-for_window [class=".*"] border pixel 1
+for_window [class=".*"] border pixel 0
 for_window [class="Pick-colour-picker"] floating enable
+for_window [class="Google-chrome" title=".*Tab Cache - Workona.*"] move scratchpad
 
 assign [class="^Slack$"] number "6: slack"
 assign [class="^Inboxer$"] number "7: email"
@@ -198,4 +201,3 @@ assign [class="^WorkFlowy$"] number "9: workflowy"
 
 for_window [class="^((?!Slack).)*$" workspace=".*: slack$"] move to workspace "1" focus
 for_window [class="^((?!Spotify).)*$" workspace=".*: spotify$"] move to workspace "1" focus
-
