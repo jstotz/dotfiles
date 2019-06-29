@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+outputs = `xrandr --listmonitors | cut -d " " -f 6 | sed '/^$/d'`.lines(chomp: true)
+
+outputs.each_with_index do |output, index|
+  workspace = index + 1
+  puts "Moving workspace #{workspace} to output #{output}"
+  system "i3-msg 'workspace #{workspace}; move workspace to output #{output}'"
+end
