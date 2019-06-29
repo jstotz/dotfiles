@@ -24,6 +24,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id blueman-applet
 exec --no-startup-id dropbox
+exec --no-startup-id rescuetime
 exec --no-startup-id greenclip daemon
 exec --no-startup-id pasystray
 exec_always --no-startup-id setxkbmap -option caps:escape
