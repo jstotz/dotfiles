@@ -13,6 +13,7 @@
     "test",
     "Carthage",
     "bundle",
+    "plugged",
     "tmp"
   ],
   "projectManager.git.baseFolders": [
@@ -28,6 +29,7 @@
     "test",
     "Carthage",
     "bundle",
+    "plugged",
     "tmp"
   ],
   "gitlens.advanced.messages": {
@@ -52,7 +54,9 @@
   },
   "[ruby]": {
     "editor.insertSpaces": true,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
   "files.exclude": {
     ".vscode": true,
