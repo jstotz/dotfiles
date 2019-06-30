@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+# choose pulseaudio sink via rofi
+# changes default sink and moves all streams to that sink
+
+require 'shell'
+
+Shell.verbose = false
+Shell.def_system_command('ponymix')
+
+Shell.new.transact do
+  default_sink_line =
+    ponymix('defaults', '--short').grep(/^sink\s/).first.squeeze
+  _, current_sink_id, _, current_sink_name = default_sink_line.chomp.split("\t")
+
+  puts "Current default sink: #{current_sink_id} (#{current_sink_name})"
+
+  sinks =
+    ponymix('-t', 'sink', 'list', '--short').map do |line|
+      _, id, _, name = line.chomp.split("\t").map(&:squeeze)
+      "#{id}: #{name}#{' *' if current_sink_id == id}\n"
+    end
+
+  rofi = system('rofi', '-dmenu', '-p', 'PulseAudio Sink', '--no-custom')
+  rofi.input = sinks
+
+  new_sink_id, new_sink_name = rofi.to_s.split(': ').map(&:chomp)
+
+  abort('Canceled') if new_sink_id.nil?
+
+  puts "New default sink: #{new_sink_id} (#{new_sink_name})"
+
+  ponymix('set-default', '-d', new_sink_id)
+  ponymix('list', '-t', 'sink-input', '--short').each do |line|
+    _, input_id, input_name = line.split("\t")
+    puts "Moving input #{input_id} (#{input_name}) " \
+           "to sink #{new_sink_id} (#{new_sink_name})"
+    ponymix('-t', 'sink-input', '-d', input_id, 'move', new_sink_id)
+  end
+end
