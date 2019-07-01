@@ -15,9 +15,9 @@ echo "Current default sink ${current_sink}"
 
 new_sink=$(
   ponymix list -t sink --short |
-  format_sinks |
-  sed "/^${current_sink}$/ s/$/ ***/" |
-  rofi -dmenu -p 'PulseAudio Sink' --no-custom
+    format_sinks |
+    sed "/^${current_sink}$/ s/$/ ***/" |
+    rofi -dmenu -p 'PulseAudio Sink' --no-custom
 )
 
 new_sink_id=$(echo "$new_sink" | cut -d ':' -f 1)
