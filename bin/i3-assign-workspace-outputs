@@ -2,10 +2,21 @@
 
 require 'json'
 
-outputs = `xrandr --listmonitors | cut -d " " -f 6 | sed '/^$/d'`.lines(chomp: true)
+MAX_ATTEMPTS = 5
+
+outputs =
+  `xrandr --listmonitors | cut -d " " -f 6 | sed '/^$/d'`.lines(chomp: true)
 
 outputs.each_with_index do |output, index|
   workspace = index + 1
   puts "Moving workspace #{workspace} to output #{output}"
-  system "i3-msg 'workspace #{workspace}; move workspace to output #{output}'"
+
+  (1..MAX_ATTEMPTS + 1).each do |n|
+    abort('Failed') if n > MAX_ATTEMPTS
+    cmd = "i3-msg 'workspace #{workspace}; move workspace to output #{output}'"
+    result = system(cmd)
+    break if result
+    puts 'Retrying in 1s...'
+    sleep 1
+  end
 end
