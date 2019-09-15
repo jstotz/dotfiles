@@ -29,9 +29,10 @@ exec --no-startup-id greenclip daemon
 exec --no-startup-id pasystray
 exec --no-startup-id compton
 exec --no-startup-id xplugd
+exec --no-startup-id udiskie -asn
 
 # Init
-exec_always --no-startup-id $HOME/.config/i3/init.sh
+exec_always --no-startup-id $HOME/.config/i3/bin/init
 
 set $mod Mod4
 set $alt Mod1
@@ -192,7 +193,7 @@ workspace_layout tabbed
 
 for_window [class=".*"] border pixel 0
 for_window [class="Pick-colour-picker"] floating enable
-for_window [class="Google-chrome" title=".*Tab Cache - Workona.*"] move scratchpad
+for_window [class="Google-chrome" title=".*hidden tabs.*"] move scratchpad
 
 assign [class="^Slack$"] number "6: slack"
 assign [class="^Inboxer$"] number "7: email"

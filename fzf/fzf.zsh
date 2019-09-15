@@ -10,6 +10,11 @@ vimf() {
   FILE=$(fzf -q "$1") && vim "$FILE"
 }
 
+# codef - Open selected file in VS Code
+codef() {
+  FILE=$(fzf -q "$1") && code "$FILE"
+}
+
 # fd - cd to selected directory
 fd() {
   DIR=$(find ${1:-*} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf) && cd "$DIR"

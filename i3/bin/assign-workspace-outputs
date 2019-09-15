@@ -4,7 +4,7 @@ require 'json'
 
 MAX_ATTEMPTS = 5
 
-outputs =
+outputs=
   `xrandr --listmonitors | cut -d " " -f 6 | sed '/^$/d'`.lines(chomp: true)
 
 outputs.each_with_index do |output, index|

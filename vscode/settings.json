@@ -74,7 +74,6 @@
   "editor.autoClosingBrackets": "beforeWhitespace",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "workbench.statusBar.feedback.visible": false,
   "eslint.packageManager": "yarn",
   "[typescriptreact]": {
     "editor.formatOnSave": true,
@@ -118,5 +117,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "editor.fontFamily": "'Inconsolata-dz for Powerline', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'"
+  "editor.fontFamily": "'Inconsolata-dz for Powerline', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "docker.containers.groupBy": "None",
+  "docker.containers.label": "ContainerName",
+  "docker.containers.description": [
+    "Status"
+  ]
 }

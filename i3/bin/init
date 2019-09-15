@@ -5,7 +5,10 @@
 
 set -euo pipefail
 
-~/.config/i3/configure-inputs.sh
+export PATH="$HOME/.config/i3/bin:$PATH"
+
+configure-inputs
 autorandr --change --default standalone
+assign-workspace-outputs
 feh --bg-scale ~/wallpaper.jpg
 ~/.config/polybar/launch.sh
