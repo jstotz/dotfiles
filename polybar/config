@@ -155,7 +155,7 @@ label-urgent-padding = 4
 [module/cpu]
 type = internal/cpu
 interval = 0.5
-format = <label> <ramp-coreload>
+format = %{A1:termite -e 'htop --sort-key=PERCENT_CPU' &:}<label> <ramp-coreload>%{A}
 label = CPU
 
 ramp-coreload-0 = ▁
@@ -190,7 +190,7 @@ date-alt = %%{F#fff}%A, %B %d %Y  %%{F#fff}%I:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
 type = internal/memory
-format = <label> <bar-used>
+format = %{A1:termite -e 'htop --sort-key=PERCENT_MEM' &:}<label> <bar-used>%{A}
 label = RAM
 
 bar-used-width = 30
