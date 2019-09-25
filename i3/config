@@ -50,7 +50,7 @@ font pango:NotoSans Regular 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec ~/.dotfiles/bin/focus-idle-terminal
+bindsym $mod+Return exec $HOME/.config/i3/bin/focus-idle-terminal
 bindsym $mod+Shift+Return exec termite
 
 # kill focused window
