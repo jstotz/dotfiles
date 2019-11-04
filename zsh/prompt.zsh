@@ -68,7 +68,7 @@ fi
   )
 
   typeset -ga POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-    status command_execution_time background_jobs custom_rprompt context
+    status command_execution_time background_jobs kubecontext custom_rprompt context
   )
 
   local ins=$(_pp_s '>' '❯')
@@ -144,6 +144,18 @@ fi
   typeset -g POWERLEVEL9K_CONTEXT_{DEFAULT,ROOT,REMOTE_SUDO,REMOTE,SUDO}_BACKGROUND=none
   typeset -g POWERLEVEL9K_CONTEXT_{DEFAULT,REMOTE_SUDO,REMOTE,SUDO}_FOREGROUND=$(_pp_c 7 244)
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=$(_pp_c 3 11)
+
+  typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_DEFAULT_NAMESPACE=false
+  typeset -g POWERLEVEL9K_KUBECONTEXT_CLASSES=(
+      '*prod*'  PROD
+      '*dev*'   DEV
+      '*'       DEFAULT)
+  typeset -g POWERLEVEL9K_KUBECONTEXT_{PROD,DEV,DEFAULT}_BACKGROUND=none
+  typeset -g POWERLEVEL9K_KUBECONTEXT_PROD_FOREGROUND=$(_pp_c 9 9)
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEV_FOREGROUND=2
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=3
+  typeset -g POWERLEVEL9K_KUBERNETES_ICON=
+
 
   unfunction _pp_c _pp_s
 } "$@"
