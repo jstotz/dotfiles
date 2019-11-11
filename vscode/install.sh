@@ -1,6 +1,6 @@
 #!/bin/sh
 if test "$(which code)"; then
-	if [ "$(uname -s)" = "Darwin" ]; then
+	if [ "$DOTFILES_KERNEL" = "Darwin" ]; then
 		VSCODE_HOME="$HOME/Library/Application Support/Code"
 	else
 		VSCODE_HOME="$HOME/.config/Code"

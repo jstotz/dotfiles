@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+export DOTFILES_KERNEL=$(uname -s)
+
 if [[ -z "$ZSH_CACHE_DIR" ]]; then
   ZSH_CACHE_DIR="$HOME/.zsh/cache"
 fi
@@ -16,15 +18,8 @@ export EDITOR='vim'
 # override Termite
 export TERM=xterm-256color
 
-# load the path files
-for file in ${(M)config_files:#*/path.zsh}; do
-  source "$file"
-done
-
 # Prevent default zshrc on Ubuntu from running compinit too early
 skip_global_compinit=1
 
-# use .localenv for SUPER SECRET CRAP that you don't
-# want in your public, versioned repo.
 # shellcheck disable=SC1090
 [ -f ~/Private/localenv ] && . ~/Private/localenv

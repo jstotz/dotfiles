@@ -1,2 +1,2 @@
 #!/bin/sh
-export PATH="$PATH:$HOME/.yarn/bin:$HOME/.npm/bin"
+export PATH="$HOME/.yarn/bin:$HOME/.npm/bin:$PATH"

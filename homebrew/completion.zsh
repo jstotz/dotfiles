@@ -1,3 +1,3 @@
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
 fi

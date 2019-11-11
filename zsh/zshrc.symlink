@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+# Temporarily override the path to remove slow WSL directories
+ORIG_PATH="$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+WINDOWS_PATH=$(echo $ORIG_PATH | tr ':' '\n' | grep /mnt/c/ | tr '\n' ':' | sed "s/:$//")
+export PATH=$(echo $ORIG_PATH | tr ':' '\n' | grep -v /mnt/c/ | tr '\n' ':' | sed "s/:$//")
+
 mkdir -p $ZSH_CACHE_DIR
 
 # all of our zsh files
@@ -39,21 +45,8 @@ done
 
 unset config_files updated_at
 
-# use .localrc for SUPER SECRET CRAP that you don't
-# want in your public, versioned repo.
 # shellcheck disable=SC1090
-[ -f ~/.localrc ] && . ~/.localrc
+[ -f ~/Private/localrc ] && . ~/Private/localrc
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/jstotz/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
-# add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
-
-# added by travis gem
-[ -f /home/jstotz/.travis/travis.sh ] && source /home/jstotz/.travis/travis.sh
+# Restore WSL Windows $PATH entries
+export PATH="$PATH:$WINDOWS_PATH"

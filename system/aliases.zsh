@@ -2,9 +2,7 @@
 # grc overides for ls
 #   Made possible through contributions from generous benefactors like
 #   `brew install coreutils`
-if which gls >/dev/null 2>&1; then
-  alias ls="gls -F --color"
-elif [ "$(uname -s)" != "Darwin" ]; then
+if [ "$DOTFILES_KERNEL" != "Darwin" ]; then
   alias ls="ls -F --color"
 else
   alias ls="ls -F"
@@ -16,7 +14,7 @@ alias grep="grep --color=auto"
 alias duf="du -sh * | sort -hr"
 alias less="less -r"
 
-if [ "$(uname -s)" != "Darwin" ]; then
+if [ "$DOTFILES_KERNEL" != "Darwin" ]; then
   if [ -z "$(command -v pbcopy)" ]; then
     if [ -n "$(command -v xclip)" ]; then
       alias pbcopy="xclip -selection clipboard"

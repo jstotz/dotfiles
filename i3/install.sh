@@ -1,5 +1,5 @@
 #!/bin/sh
-[ "$(uname -s)" = "Darwin" ] && exit 0
+[ "$DOTFILES_KERNEL" = "Darwin" ] && exit 0
 
 ln -sf "$DOTFILES"/i3/xinitrc ~/.xinitrc
 ln -sf "$DOTFILES"/i3/Xresources ~/.Xresources

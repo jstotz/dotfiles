@@ -1,5 +1,5 @@
 #!/bin/zsh
 
-if which fasd > /dev/null 2>&1; then
+if type fasd &> /dev/null; then
   eval "$(fasd --init auto)"
 fi
