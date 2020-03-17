@@ -149,6 +149,7 @@ fi
   typeset -g POWERLEVEL9K_KUBECONTEXT_CLASSES=(
       '*prod*'  PROD
       '*dev*'   DEV
+      'microk8s'   DEV
       '*'       DEFAULT)
   typeset -g POWERLEVEL9K_KUBECONTEXT_{PROD,DEV,DEFAULT}_BACKGROUND=none
   typeset -g POWERLEVEL9K_KUBECONTEXT_PROD_FOREGROUND=$(_pp_c 9 9)

@@ -15,9 +15,6 @@ export PROJECTS="$HOME/Projects"
 # your default editor
 export EDITOR='vim'
 
-# override Termite
-export TERM=xterm-256color
-
 # Prevent default zshrc on Ubuntu from running compinit too early
 skip_global_compinit=1
 

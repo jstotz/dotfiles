@@ -50,3 +50,7 @@ unset config_files updated_at
 
 # Restore WSL Windows $PATH entries
 export PATH="$PATH:$WINDOWS_PATH"
+
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+  source /etc/profile.d/vte.sh
+fi

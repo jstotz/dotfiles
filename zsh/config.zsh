@@ -1,6 +1,7 @@
 #!/bin/zsh
 export LSCOLORS='exfxcxdxbxegedabagacad'
 export CLICOLOR=true
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=238'
 
 fpath=($DOTFILES/functions $fpath)
 
