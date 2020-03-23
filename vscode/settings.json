@@ -1,47 +1,4 @@
 {
-  "gitlens.keymap": "chorded",
-  "projectManager.vscode.baseFolders": [
-    "$home/Projects/",
-    "$home/go/src/github.com/jstotz",
-    "$home/go/src/github.com/springboardretail"
-  ],
-  "projectManager.vscode.ignoredFolders": [
-    "build",
-    "node_modules",
-    "out",
-    "typings",
-    "test",
-    "Carthage",
-    "bundle",
-    "plugged",
-    "tmp"
-  ],
-  "projectManager.git.baseFolders": [
-    "$home/Projects/",
-    "$home/go/src/github.com/jstotz",
-    "$home/go/src/github.com/springboardretail"
-  ],
-  "projectManager.git.ignoredFolders": [
-    "build",
-    "node_modules",
-    "out",
-    "typings",
-    "test",
-    "Carthage",
-    "bundle",
-    "plugged",
-    "tmp"
-  ],
-  "gitlens.advanced.messages": {
-    "suppressCommitHasNoPreviousCommitWarning": false,
-    "suppressCommitNotFoundWarning": false,
-    "suppressFileNotUnderSourceControlWarning": false,
-    "suppressGitVersionWarning": false,
-    "suppressLineUncommittedWarning": false,
-    "suppressNoRepositoryWarning": false,
-    "suppressResultsExplorerNotice": false,
-    "suppressShowKeyBindingsNotice": true
-  },
   "workbench.startupEditor": "newUntitledFile",
   "keyboard.dispatch": "keyCode",
   "vim.handleKeys": {
@@ -52,6 +9,7 @@
     "<C-a>": false,
     "<C-w>": false
   },
+  "vim.useSystemClipboard": true,
   "[ruby]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
@@ -76,29 +34,26 @@
   "files.trimTrailingWhitespace": true,
   "eslint.packageManager": "yarn",
   "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
   },
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
   },
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "[graphql]": {
     "editor.formatOnSave": true
   },
-  "window.zoomLevel": 0,
-  "breadcrumbs.enabled": true,
-  "window.menuBarVisibility": "toggle",
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "terminal.integrated.rendererType": "dom",
-  "vim.useSystemClipboard": true,
   "gitlens.views.fileHistory.enabled": true,
   "gitlens.views.lineHistory.enabled": true,
-  "window.titleBarStyle": "native",
   "vs-kubernetes": {
     "vs-kubernetes.minikube-path": "/home/jstotz/.vs-kubernetes/tools/minikube/linux-amd64/minikube"
   },
@@ -108,8 +63,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.useLanguageServer": true,
-  "workbench.colorTheme": "City Lights",
-  "workbench.iconTheme": "city-lights-icons-vsc-light",
   "files.associations": {
     "**/i3/config": "i3"
   },
@@ -117,7 +70,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "editor.fontFamily": "'Inconsolata-dz for Powerline', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": "'ss01', 'ss02', 'ss03'",
+  "workbench.colorTheme": "Tomorrow Night",
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.containers.groupBy": "None",
   "docker.containers.label": "ContainerName",

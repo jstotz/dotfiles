@@ -12,43 +12,16 @@ if test "$(which code)"; then
 
 	# from `code --list-extensions`
 	modules="
-EFanZh.graphviz-preview
-PeterJausovec.vscode-docker
-Shan.code-settings-sync
-Stephanvs.dot
-Tyriar.lorem-ipsum
-abusaidm.html-snippets
-alefragnani.project-manager
-alexdima.copy-relative-path
-alexkrechik.cucumberautocomplete
-angryobject.react-pure-to-class-vscode
-bierner.markdown-preview-github-styles
-christian-kohler.path-intellisense
-coolbear.systemd-unit-file
-dbaeumer.vscode-eslint
-deerawan.vscode-dash
-dlech.chmod
-donjayamanne.githistory
-doublefint.pgsql
-eamodio.gitlens
-eg2.tslint
-freebroccolo.reasonml
-hnw.vscode-auto-open-markdown-preview
-marcoms.oceanic-plus
+esbenp.prettier-vscode
 mauve.terraform
-mindginative.terraform-snippets
-mrmlnc.vscode-duplicate
-ms-vscode.azure-account
-ms-vscode.cpptools
+ms-azuretools.vscode-docker
 ms-vscode.Go
-ms-vscode.PowerShell
-msjsdiag.debugger-for-chrome
-patrys.vscode-code-outline
-rebornix.Ruby
-sporto.rails-go-to-spec
+ms-vscode.Theme-TomorrowKit
+ms-vsliveshare.vsliveshare
+Orta.vscode-jest
+rebornix.ruby
+sleistner.vscode-fileutils
 vscodevim.vim
-xabikos.JavaScriptSnippets
-yzhang.markdown-all-in-one
 "
 	for module in $modules; do
 		code --install-extension "$module" || true
