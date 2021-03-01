@@ -18,5 +18,8 @@ export EDITOR='vim'
 # Prevent default zshrc on Ubuntu from running compinit too early
 skip_global_compinit=1
 
+# Mount encrypted filesystem
+(df | awk '{print $9}' | grep "$HOME/Private" > /dev/null) || /usr/local/bin/gocryptfs -passfile ~/.gocryptfspw ~/Dropbox/Encrypted/gocryptfs ~/Private
+
 # shellcheck disable=SC1090
 [ -f ~/Private/localenv ] && . ~/Private/localenv
