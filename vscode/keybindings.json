@@ -3,5 +3,9 @@
   {
     "key": "alt+t",
     "command": "workbench.action.tasks.test"
+  },
+  {
+    "key": "cmd+n",
+    "command": "extension.advancedNewFile"
   }
 ]

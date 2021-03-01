@@ -1,16 +1,13 @@
 {
   "workbench.startupEditor": "newUntitledFile",
   "keyboard.dispatch": "keyCode",
-  "vim.handleKeys": {
-    "<C-d>": true,
-    "<C-c>": false,
-    "<C-f>": false,
-    "<C-n>": false,
-    "<C-a>": false,
-    "<C-w>": false
-  },
-  "vim.useSystemClipboard": true,
   "[ruby]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[Gemfile]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -33,27 +30,29 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "eslint.packageManager": "yarn",
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument"
+    ]
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument"
+    ]
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[graphql]": {
     "editor.formatOnSave": true
   },
   "terminal.integrated.rendererType": "dom",
-  "gitlens.views.fileHistory.enabled": true,
-  "gitlens.views.lineHistory.enabled": true,
   "vs-kubernetes": {
     "vs-kubernetes.minikube-path": "/home/jstotz/.vs-kubernetes/tools/minikube/linux-amd64/minikube"
   },
@@ -64,7 +63,8 @@
   },
   "go.useLanguageServer": true,
   "files.associations": {
-    "**/i3/config": "i3"
+    "**/i3/config": "i3",
+    "*.mal": "lisp"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -76,7 +76,28 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.containers.groupBy": "None",
   "docker.containers.label": "ContainerName",
-  "docker.containers.description": [
-    "Status"
-  ]
+  "docker.containers.description": ["Status"],
+  "gitlens.hovers.currentLine.over": "line",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
+  "[makefile]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false
+  },
+  "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home",
+  "java.help.firstView": "gettingStarted",
+  "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
+  "errorLens.addAnnotationTextPrefixes": true,
+  "errorLens.addNumberOfDiagnostics": true,
+  "errorLens.onSave": true,
+  "markdown.preview.doubleClickToSwitchToEditor": false,
+  "editor.minimap.enabled": false,
+  "tsimporter.noStatusBar": true,
+  "editor.matchBrackets": false,
+  "window.zoomLevel": 2
 }
