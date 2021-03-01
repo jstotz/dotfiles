@@ -1,10 +1,5 @@
 #!/bin/zsh
 
-# Temporarily override the path to remove slow WSL directories
-ORIG_PATH="$PATH"
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-WINDOWS_PATH=$(echo $ORIG_PATH | tr ':' '\n' | grep /mnt/c/ | tr '\n' ':' | sed "s/:$//")
-export PATH=$(echo $ORIG_PATH | tr ':' '\n' | grep -v /mnt/c/ | tr '\n' ':' | sed "s/:$//")
 
 mkdir -p $ZSH_CACHE_DIR
 
@@ -30,14 +25,16 @@ for file in ${${${config_files:#*/path.zsh}:#*/completion.zsh}:#*/prompt.zsh}; d
   source "$file"
 done
 
+autoload -Uz compinit
+compinit -D
+
 # load every completion before autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
   source "$file"
 done
 
-autoload -Uz compinit
 typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
-if [ $(date +'%j') != $updated_at ]; then
+if [ $(date +'%j' | sed 's/^0*//') != $updated_at ]; then
   compinit
 else
   compinit -C
@@ -47,9 +44,6 @@ unset config_files updated_at
 
 # shellcheck disable=SC1090
 [ -f ~/Private/localrc ] && . ~/Private/localrc
-
-# Restore WSL Windows $PATH entries
-export PATH="$PATH:$WINDOWS_PATH"
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   source /etc/profile.d/vte.sh
