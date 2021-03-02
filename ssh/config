@@ -1,6 +1,4 @@
 Host *
   ServerAliveInterval 60
 
-IdentityFile ~/Private/keys/id_rsa
-
-Include ~/Private/ssh/config
+IdentityFile ~/.ssh/id_rsa
