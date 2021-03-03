@@ -1,7 +1,16 @@
 #!/bin/zsh
+# uncomment this and the last line for zprof info
+# zmodload zsh/zprof
 
+# shortcut to this dotfiles path is $DOTFILES
+export DOTFILES="$HOME/.dotfiles"
 
-mkdir -p $ZSH_CACHE_DIR
+# your project folder that we can `c [tab]` to
+export PROJECTS="$HOME/Projects"
+
+# your default editor
+export EDITOR='code -w'
+export VEDITOR='code'
 
 # all of our zsh files
 typeset -U config_files
@@ -12,39 +21,31 @@ for file in ${(M)config_files:#*/path.zsh}; do
   source "$file"
 done
 
-# load the prompt files
-for file in ${(M)config_files:#*/prompt.zsh}; do
-  source "$file"
-done
-
 # load antibody plugins
-source ~/.bundles.txt
+source ~/.zsh_plugins.sh
 
-# load everything but the path, completion, and prompt files
-for file in ${${${config_files:#*/path.zsh}:#*/completion.zsh}:#*/prompt.zsh}; do
+# load everything but the path and completion files
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
   source "$file"
 done
 
 autoload -Uz compinit
-compinit -D
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
-# load every completion before autocomplete loads
+
+# load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
   source "$file"
 done
 
-typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
-if [ $(date +'%j' | sed 's/^0*//') != $updated_at ]; then
-  compinit
-else
-  compinit -C
-fi
-
 unset config_files updated_at
 
+# use .localrc for SUPER SECRET CRAP that you don't
+# want in your public, versioned repo.
 # shellcheck disable=SC1090
-[ -f ~/Private/localrc ] && . ~/Private/localrc
+[ -f ~/.localrc ] && . ~/.localrc
 
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-  source /etc/profile.d/vte.sh
-fi
+# zprof
