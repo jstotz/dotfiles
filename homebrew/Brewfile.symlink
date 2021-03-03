@@ -1,0 +1,53 @@
+tap "getantibody/tap"
+tap "github/gh"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "melonamin/formulae" # swiftbar
+
+brew "antibody"
+brew "asdf"
+brew "awscli"
+brew "ffmpeg"
+brew "fzf"
+brew "gh"
+brew "git"
+brew "htop"
+brew "hub"
+brew "mas"
+brew "jq"
+brew "kubectx"
+brew "luajit", args: ["HEAD"]
+brew "neovim", args: ["HEAD"]
+brew "postgresql"
+brew "shellcheck"
+brew "shpotify"
+brew "the_silver_searcher"
+brew "vim"
+brew "wget"
+
+cask "1password-cli"
+cask "1password"
+cask "alfred"
+cask "beardedspice"
+cask "docker"
+cask "firefox"
+cask "font-fira-code"
+cask "gimp"
+cask "google-chrome"
+cask "hey"
+cask "hiddenbar"
+cask "iterm2"
+cask "meetingbar"
+cask "scroll-reverser"
+cask "swiftbar"
+cask "virtualbox"
+cask "visual-studio-code"
+
+mas "Amphetamine", id: 937984704
+mas "DaisyDisk", id: 411643860
+mas "GarageBand", id: 682658836
+mas "Hidden Bar", id: 1452453066
+mas "Magnet", id: 441258766
+mas "MenuBar Stats", id: 714196447
+mas "Xcode", id: 497799835
