@@ -18,10 +18,6 @@ test -d /home/linuxbrew/.linuxbrew && \
 # shellcheck disable=SC1090
 [ -f ~/.localrc ] && . ~/.localrc
 
-# Update submodules
-echo "› submodules update"
-git submodule update --init --recursive --remote --merge --quiet
-
 # Run all installs
 echo "› $DOTFILES/script/install"
 "$DOTFILES/script/install"
