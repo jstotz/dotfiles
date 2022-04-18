@@ -5,6 +5,8 @@ Plug 'asvetliakov/vim-easymotion'
 
 call plug#end()
 
+set clipboard=unnamedplus
+
 function! s:split(...) abort
   let direction = a:1
   let file = a:2
