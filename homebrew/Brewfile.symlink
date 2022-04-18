@@ -17,8 +17,7 @@ brew "hub"
 brew "mas"
 brew "jq"
 brew "kubectx"
-brew "luajit", args: ["HEAD"]
-brew "neovim", args: ["HEAD"]
+brew "neovim"
 brew "postgresql"
 brew "shellcheck"
 brew "shpotify"
