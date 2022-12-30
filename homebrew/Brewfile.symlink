@@ -8,6 +8,7 @@ tap "melonamin/formulae" # swiftbar
 brew "antibody"
 brew "asdf"
 brew "awscli"
+brew "direnv"
 brew "ffmpeg"
 brew "fzf"
 brew "gh"
