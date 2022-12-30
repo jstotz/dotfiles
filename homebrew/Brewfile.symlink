@@ -3,7 +3,6 @@ tap "github/gh"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask"
 tap "homebrew/core"
-tap "melonamin/formulae" # swiftbar
 
 brew "antibody"
 brew "asdf"
@@ -20,6 +19,7 @@ brew "mas"
 brew "jq"
 brew "kubectx"
 brew "neovim"
+brew "neovim-remote"
 brew "postgresql"
 brew "shellcheck"
 brew "shpotify"
@@ -37,19 +37,14 @@ cask "firefox"
 cask "font-fira-code"
 cask "gimp"
 cask "google-chrome"
-cask "hey"
-cask "hiddenbar"
 cask "iterm2"
 cask "meetingbar"
 cask "scroll-reverser"
-cask "swiftbar"
-cask "virtualbox"
+cask "stats"
 cask "visual-studio-code"
 
 mas "Amphetamine", id: 937984704
 mas "DaisyDisk", id: 411643860
 mas "GarageBand", id: 682658836
-mas "Hidden Bar", id: 1452453066
 mas "Magnet", id: 441258766
-mas "MenuBar Stats", id: 714196447
-mas "Xcode", id: 497799835
+mas "Xcode", id: 497799835 if ENV["INSTALL_XCODE"]
