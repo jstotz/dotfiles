@@ -1,11 +1,20 @@
 {
   "workbench.startupEditor": "newUntitledFile",
   "keyboard.dispatch": "keyCode",
+  "ruby.lint": {
+    "rubocop": true
+  },
   "[ruby]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
+  },
+  "[go]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "[plaintext]": {
+    "files.trimTrailingWhitespace": false
   },
   "[Gemfile]": {
     "editor.insertSpaces": true,
@@ -14,19 +23,20 @@
     "editor.formatOnSave": true
   },
   "files.exclude": {
-    ".vscode": true,
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/.DS_Store": true,
     ".byebug_history": true,
-    "tmp": true,
+    ".vscode": true,
     "**/.classpath": true,
+    "**/.DS_Store": true,
+    "**/.factorypath": true,
+    "**/.git": true,
+    "**/.hg": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true
+    "**/.stfolder": true,
+    "**/.svn": true,
+    "tmp": true
   },
-  "editor.autoClosingBrackets": "beforeWhitespace",
+  "editor.autoClosingBrackets": "never",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "eslint.packageManager": "yarn",
@@ -35,6 +45,7 @@
     "editor.formatOnSave": true
   },
   "[typescriptreact]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": [
       "source.organizeImports",
@@ -42,6 +53,7 @@
     ]
   },
   "[typescript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": [
       "source.organizeImports",
@@ -98,6 +110,34 @@
   "markdown.preview.doubleClickToSwitchToEditor": false,
   "editor.minimap.enabled": false,
   "tsimporter.noStatusBar": true,
-  "editor.matchBrackets": false,
+  "editor.matchBrackets": "never",
+  "git.autofetch": true,
+  "go.toolsManagement.autoUpdate": true,
+  "vscode-neovim.mouseSelectionStartVisualMode": true,
+  "git.confirmSync": false,
+  "json.schemas": [
+    {
+      "fileMatch": ["/.goreleaser.yaml"],
+      "url": "https://goreleaser.com/static/schema.json"
+    }
+  ],
+  "projectManager.git.baseFolders": ["~/Projects"],
+  "editor.inlineSuggest.enabled": true,
+  "advancedNewFile.exclude": {
+    "node_modules": true,
+    "node_modules_electron": true,
+    "dev": true,
+    "dist": true
+  },
+  "advancedNewFile.showInformationMessages": true,
+  "scm.defaultViewMode": "tree",
+  "githubPullRequests.createOnPublishBranch": "never",
+  "terminal.integrated.scrollback": 100000,
+  "window.commandCenter": true,
+  "terminal.integrated.shellIntegration.enabled": true,
+  "git.showCommitInput": false,
+  "githubPullRequests.pullBranch": "never",
+  "workbench.editor.untitled.hint": "hidden",
+  "projectManager.sortList": "Recent",
   "window.zoomLevel": 2
 }

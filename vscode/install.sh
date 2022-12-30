@@ -21,7 +21,7 @@ ms-vsliveshare.vsliveshare
 Orta.vscode-jest
 rebornix.ruby
 sleistner.vscode-fileutils
-vscodevim.vim
+asvetliakov.vscode-neovim
 "
 	for module in $modules; do
 		code --install-extension "$module" || true
