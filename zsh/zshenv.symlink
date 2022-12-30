@@ -13,7 +13,7 @@ export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Projects"
 
 # your default editor
-export EDITOR='code -w'
+export EDITOR='nvim'
 
 # Prevent default zshrc on Ubuntu from running compinit too early
 skip_global_compinit=1

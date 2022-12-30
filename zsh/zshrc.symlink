@@ -9,8 +9,8 @@ export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Projects"
 
 # your default editor
-export EDITOR='code -w'
-export VEDITOR='code'
+export EDITOR='nvim'
+export VEDITOR='nvim'
 
 # all of our zsh files
 typeset -U config_files
