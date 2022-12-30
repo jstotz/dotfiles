@@ -25,6 +25,7 @@ brew "shpotify"
 brew "the_silver_searcher"
 brew "vim"
 brew "wget"
+brew "zoxide"
 
 cask "1password-cli"
 cask "1password"
