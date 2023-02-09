@@ -7,7 +7,7 @@ test -f ~/.fzf.zsh && . $_
 
 # vimf - Open selected file in Vim
 vimf() {
-  FILE=$(fzf -q "$1") && vim "$FILE"
+  FILE=$(fzf -q "$1") && nvim "$FILE"
 }
 
 # codef - Open selected file in VS Code
