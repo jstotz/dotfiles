@@ -1,4 +1,5 @@
 #!/bin/sh
+
 if test "$(which code)"; then
 	if [ "$DOTFILES_KERNEL" = "Darwin" ]; then
 		VSCODE_HOME="$HOME/Library/Application Support/Code"
@@ -27,3 +28,6 @@ asvetliakov.vscode-neovim
 		code --install-extension "$module" || true
 	done
 fi
+
+echo "Installing vim plugins for VS Code Neovim extension..."
+nvim -es -u "$DOTFILES/vscode/neovim/vscode_init.vim" -i NONE -c "PlugInstall" -c "qa"

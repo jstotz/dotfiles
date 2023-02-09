@@ -139,5 +139,6 @@
   "githubPullRequests.pullBranch": "never",
   "workbench.editor.untitled.hint": "hidden",
   "projectManager.sortList": "Recent",
-  "window.zoomLevel": 2
+  "window.zoomLevel": 2,
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.dotfiles/vscode/neovim/vscode_init.vim"
 }
