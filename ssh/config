@@ -1,3 +1,5 @@
+Include ~/.colima/ssh_config
+
 Host *
   ServerAliveInterval 60
 
