@@ -20,4 +20,5 @@ dump.rdb
 .terraform
 .solargraph.yml
 .envrc
+.envrc.*
 */spec/examples.txt
