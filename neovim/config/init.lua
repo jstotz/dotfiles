@@ -115,6 +115,8 @@ local config = {
         null_ls.builtins.formatting.prettierd.with {
           filetypes = { "ruby" },
         },
+        null_ls.builtins.formatting.fixjson,
+        null_ls.builtins.diagnostics.jsonlint
       }
       return config
     end,
