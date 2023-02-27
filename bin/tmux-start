@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+sessions=$( (tmux list-sessions 2> /dev/null || true) | awk '{print "session: " $0}')
+projects=$(tmuxinator list -n | tail -n +2 | awk '{print "project: " $0}')
+directories=$(zoxide query -l | sed "s|^$HOME|~|" | awk '{print "directory: " $0}')
+
+options="new-session
+$projects
+$sessions
+$directories"
+
+selected=$(echo "$options" | fzf --reverse)
+type=$(echo "$selected" | cut -d : -f 1  | xargs)
+id=$(echo "$selected" | cut -d : -f 2  | xargs)
+
+if [[ $type == "project" ]]; then
+  exec tmuxinator start "$id"
+elif [[ $type == "session" ]]; then
+  exec tmux attach-session -t "$id"
+elif [[ $type == "directory" ]]; then
+  exec tmux new-session -c "${id/#\~/$HOME}" -s "$(basename "$id")"
+else
+  exec tmux new-session
+fi
