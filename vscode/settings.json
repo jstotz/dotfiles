@@ -84,7 +84,7 @@
   },
   "editor.fontFamily": "Fira Code",
   "editor.fontLigatures": "'ss01', 'ss02', 'ss03'",
-  "workbench.colorTheme": "Tomorrow Night",
+  "workbench.colorTheme": "Catppuccin Mocha",
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.containers.groupBy": "None",
   "docker.containers.label": "ContainerName",
