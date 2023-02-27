@@ -51,6 +51,7 @@ local config = {
       ["fatih/vim-go"] = {},
       ["ellisonleao/glow.nvim"] = {},
       ["towolf/vim-helm"] = {},
+      ["christoomey/vim-tmux-navigator"] = {},
       {
         "catppuccin/nvim",
         as = "catppuccin",
