@@ -19,6 +19,7 @@ local config = {
     "    :---            =++++-    ",
     "      :-             -+-      ",
   },
+  colorscheme = "catppuccin",
   -- -- Configure general options
   options = {
     g = {
@@ -35,7 +36,6 @@ local config = {
       timeout_ms = 30000,
     },
   },
-
   luasnip = {
     vscode = {
       paths = {
@@ -43,7 +43,6 @@ local config = {
       },
     },
   },
-
   -- -- Configure plugins
   plugins = {
     init = {
@@ -52,6 +51,15 @@ local config = {
       ["fatih/vim-go"] = {},
       ["ellisonleao/glow.nvim"] = {},
       ["towolf/vim-helm"] = {},
+      {
+        "catppuccin/nvim",
+        as = "catppuccin",
+        config = function()
+          require("catppuccin").setup({
+            flavour = "mocha"
+          })
+        end,
+      },
     },
 
     -- All other entries override the require("<key>").setup({...}) call for default plugins
