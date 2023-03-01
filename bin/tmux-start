@@ -11,7 +11,7 @@ $projects
 $sessions
 $directories"
 
-selected=$(echo "$options" | fzf --reverse)
+selected=$(echo "$options" | sed "/^$/d" | fzf --reverse)
 type=$(echo "$selected" | cut -d : -f 1  | xargs)
 id=$(echo "$selected" | cut -d : -f 2  | xargs)
 
