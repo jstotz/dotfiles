@@ -140,5 +140,8 @@
   "workbench.editor.untitled.hint": "hidden",
   "projectManager.sortList": "Recent",
   "window.zoomLevel": 2,
-  "vscode-neovim.neovimInitVimPaths.darwin": "~/.dotfiles/vscode/neovim/vscode_init.vim"
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.dotfiles/vscode/neovim/vscode_init.vim",
+  "[python]": {
+    "editor.formatOnType": true
+  }
 }
