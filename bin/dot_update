@@ -22,9 +22,9 @@ test -d /home/linuxbrew/.linuxbrew && \
 echo "› $DOTFILES/script/install"
 "$DOTFILES/script/install"
 
-if which antibody >/dev/null 2>&1; then
-  echo "› antibody update"
-  antibody update
+if which antidote >/dev/null 2>&1; then
+  echo "› antidote update"
+  antidote update
 fi
 
 echo "› registering last update"

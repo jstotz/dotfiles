@@ -16,10 +16,10 @@ git config --global user.email "dotfiles@demo.com"
 # bootstrap the mighty
 ./script/bootstrap
 
-# load zshrc and check if antibody is working
+# load zshrc and check if antidote is working
 source ~/.zshrc
 
-test $(antibody list | wc -l) -gt 4 || {
+test $(antidote list | wc -l) -gt 4 || {
   echo "expecting 4+ bundles loaded" >&2
   exit 1
 }

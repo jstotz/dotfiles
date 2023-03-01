@@ -1,10 +1,9 @@
-tap "getantibody/tap"
 tap "github/gh"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask"
 tap "homebrew/core"
 
-brew "antibody"
+brew "antidote"
 brew "asdf"
 brew "awscli"
 brew "direnv"

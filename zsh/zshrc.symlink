@@ -21,8 +21,9 @@ for file in ${(M)config_files:#*/path.zsh}; do
   source "$file"
 done
 
-# load antibody plugins
-source ~/.zsh_plugins.sh
+# load antidote plugins
+. "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
+antidote load
 
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
