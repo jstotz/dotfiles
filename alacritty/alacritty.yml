@@ -457,7 +457,7 @@ shell:
   args:
     - -l
     - -c
-    - "~/.dotfiles/bin/tmux-start"
+    - "~/.dotfiles/bin/t"
 
 # Startup directory
 #

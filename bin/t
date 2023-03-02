@@ -11,6 +11,23 @@ $projects
 $sessions
 $directories"
 
+function tmux-switch() {
+  if [[ -z "${TMUX-}" ]]; then
+    exec tmux attach-session -t "$1"
+  else
+    exec tmux switch-client -t "$1"
+  fi
+}
+
+function tmux-create-and-switch() {
+  new_session_name="$1"
+  new_session_command="tmux new-session -P -d"
+  if [[ -n "$new_session_name" ]]; then
+    new_session_command="$new_session_command -t $new_session_name"
+  fi
+  tmux-switch "$($new_session_command)"
+}
+
 selected=$(echo "$options" | sed "/^$/d" | fzf --reverse)
 type=$(echo "$selected" | cut -d : -f 1  | xargs)
 id=$(echo "$selected" | cut -d : -f 2  | xargs)
@@ -18,9 +35,9 @@ id=$(echo "$selected" | cut -d : -f 2  | xargs)
 if [[ $type == "project" ]]; then
   exec tmuxinator start "$id"
 elif [[ $type == "session" ]]; then
-  exec tmux attach-session -t "$id"
+  tmux-switch "$id"
 elif [[ $type == "directory" ]]; then
-  exec tmux new-session -c "${id/#\~/$HOME}" -s "$(basename "$id")"
-else
-  exec tmux new-session
+  tmux-create-and-switch "$(basename "$id")" -c "${id/#\~/$HOME}"
+elif [[ $type == "new-session" ]]; then
+  tmux-create-and-switch "" -c "${id/#\~/$HOME}"
 fi
