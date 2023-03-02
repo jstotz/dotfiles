@@ -21,11 +21,13 @@ function tmux-switch() {
 
 function tmux-create-and-switch() {
   new_session_name="$1"
-  new_session_command="tmux new-session -P -d"
+  shift
+  new_session_command=("tmux" "new-session" "-P" "-d")
+  new_session_command+=("$@")
   if [[ -n "$new_session_name" ]]; then
-    new_session_command="$new_session_command -t $new_session_name"
+    new_session_command+=("-t" "$new_session_name")
   fi
-  tmux-switch "$($new_session_command)"
+  tmux-switch "$("${new_session_command[@]}")"
 }
 
 selected=$(echo "$options" | sed "/^$/d" | fzf --reverse)
@@ -39,5 +41,5 @@ elif [[ $type == "session" ]]; then
 elif [[ $type == "directory" ]]; then
   tmux-create-and-switch "$(basename "$id")" -c "${id/#\~/$HOME}"
 elif [[ $type == "new-session" ]]; then
-  tmux-create-and-switch "" -c "${id/#\~/$HOME}"
+  tmux-create-and-switch ""
 fi
