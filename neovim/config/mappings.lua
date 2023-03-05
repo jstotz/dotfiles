@@ -7,5 +7,6 @@ return {
       toggle_term_cmd("lazygit log --filter " ..
       ("%q"):format(utils.git_root_relative_path_current_file()))
     end), desc = "File history" },
+    ["<leader>gl"] = { "<cmd>Git blame<cr>", desc = "View Git blame" }
   },
 }
