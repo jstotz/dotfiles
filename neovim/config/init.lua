@@ -44,26 +44,6 @@ local config = {
   },
   -- -- Configure plugins
   plugins = {
-    init = {
-      ["tpope/vim-rails"] = {},
-      ["tpope/vim-surround"] = {},
-      ["tpope/vim-repeat"] = {},
-      ["vim-test/vim-test"] = {},
-      ["fatih/vim-go"] = {},
-      ["ellisonleao/glow.nvim"] = {},
-      ["towolf/vim-helm"] = {},
-      ["christoomey/vim-tmux-navigator"] = {},
-      {
-        "catppuccin/nvim",
-        as = "catppuccin",
-        config = function()
-          require("catppuccin").setup({
-            flavour = "mocha"
-          })
-        end,
-      },
-    },
-
     -- All other entries override the require("<key>").setup({...}) call for default plugins
     treesitter = {
       ensure_installed = {
