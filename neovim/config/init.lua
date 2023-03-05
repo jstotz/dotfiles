@@ -26,7 +26,6 @@ local config = {
       heirline_bufferline = true,
     },
   },
-
   -- -- Configure LSP
   lsp = {
     formatting = {
@@ -47,6 +46,8 @@ local config = {
   plugins = {
     init = {
       ["tpope/vim-rails"] = {},
+      ["tpope/vim-surround"] = {},
+      ["tpope/vim-repeat"] = {},
       ["vim-test/vim-test"] = {},
       ["fatih/vim-go"] = {},
       ["ellisonleao/glow.nvim"] = {},
