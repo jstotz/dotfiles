@@ -3,7 +3,7 @@
 set -euo pipefail
 
 sessions=$( (tmux list-sessions 2> /dev/null || true) | awk '{print "session: " $0}')
-projects=$(tmuxinator list -n | tail -n +2 | awk '{print "project: " $0}')
+projects=$(yq eval-all -r '["project: " + .name] | .[]' ~/.config/tmuxinator/*.yml)
 directories=$(zoxide query -l | sed "s|^$HOME|~|" | awk '{print "directory: " $0}')
 
 options="new-session

@@ -1,0 +1,4 @@
+tell application "System Events"
+  key code 49 using {control down}
+  key code 44 using {shift down}
+end tell
