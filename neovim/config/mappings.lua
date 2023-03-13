@@ -8,7 +8,5 @@ return {
       ("%q"):format(utils.git_root_relative_path_current_file()))
     end), desc = "File history" },
     ["<leader>gl"] = { "<cmd>Git blame<cr>", desc = "View Git blame" },
-    L = { function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" },
-    H = { function() require("astronvim.utils.buffer").nav( -(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Previous buffer" },
   },
 }
