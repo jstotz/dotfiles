@@ -1,3 +1,4 @@
 return {
-  "ellisonleao/glow.nvim"
+  "ellisonleao/glow.nvim",
+  ft = { "markdown" }
 }

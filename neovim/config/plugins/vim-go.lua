@@ -1,3 +1,4 @@
 return {
-  "fatih/vim-go"
+  "fatih/vim-go",
+  ft = { "go" },
 }
