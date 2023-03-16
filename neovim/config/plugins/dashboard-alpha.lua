@@ -24,4 +24,8 @@ return {
   opts = function(_, opts) -- override the options using lazy.nvim
     opts.section.header.val = header
   end,
+  config = function(_, opts)
+    -- Skip AstroNvim default footer
+    require("alpha").setup(opts.config)
+  end,
 }
