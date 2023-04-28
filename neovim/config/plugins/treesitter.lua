@@ -1,7 +1,14 @@
+local utils = require("astronvim.utils")
+
 return {
   "nvim-treesitter/nvim-treesitter",
-  opts = {
-    ensure_installed = {
+  opts = function(_, opts)
+    opts.auto_install = true
+
+    if not opts.ensure_installed then
+      opts.ensure_installed = {}
+    end
+    utils.list_insert_unique(opts.ensure_installed, {
       "bash",
       "c",
       "css",
@@ -26,7 +33,6 @@ return {
       "typescript",
       "vim",
       "yaml",
-    },
-    auto_install = true,
-  }
+    })
+  end,
 }
