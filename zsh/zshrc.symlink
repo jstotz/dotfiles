@@ -12,6 +12,9 @@ export PROJECTS="$HOME/Projects"
 export EDITOR='nvim'
 export VEDITOR='nvim'
 
+# default C compiler
+export CC="clang"
+
 # all of our zsh files
 typeset -U config_files
 config_files=($DOTFILES/*/*.zsh)
