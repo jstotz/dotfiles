@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+FZF_CANCELED_EXIT_CODE=130
+
+cd ~
+
+~/.dotfiles/bin/t || {
+  if [ ! $? -eq $FZF_CANCELED_EXIT_CODE ]; then
+    echo "Failed to start shell. Press ENTER to continue."
+    read -r
+  fi
+}
