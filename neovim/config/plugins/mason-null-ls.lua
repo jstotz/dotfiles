@@ -5,16 +5,13 @@ local cmd_resolver = require("null-ls.helpers.command_resolver")
 return {
   "jay-babu/mason-null-ls.nvim",
   opts = function(_, opts)
-    -- Ensure that opts.ensure_installed exists and is a table
-    if not opts.ensure_installed then
-      opts.ensure_installed = {}
-    end
-    utils.list_insert_unique(opts.ensure_installed, "prettier")
+    opts.automatic_setup = true
+
+    utils.list_insert_unique(opts.ensure_installed, "prettierd")
 
     opts.handlers = {
       prettier = function()
-        null_ls.setup({ debug = true })
-        null_ls.register(null_ls.builtins.formatting.prettier.with({
+        null_ls.register(null_ls.builtins.formatting.prettierd.with({
           extra_filetypes = { "ruby" },
           dynamic_command = cmd_resolver.from_yarn_pnp(),
         }))
