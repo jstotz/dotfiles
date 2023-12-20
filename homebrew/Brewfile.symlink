@@ -1,7 +1,5 @@
 tap "github/gh"
 tap "homebrew/cask-fonts"
-tap "homebrew/cask"
-tap "homebrew/core"
 
 brew "antidote"
 brew "asdf"
