@@ -1,14 +1,25 @@
 local wezterm = require("wezterm")
-local mux = wezterm.mux
-local act = wezterm.action
 local config = wezterm.config_builder()
 local helpers = require("helpers")
+require("helpers.balance")
 
 -- General
 config.color_scheme = "catppuccin-mocha"
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 100000
+config.window_padding = {
+  left = 2,
+  right = 2,
+  top = 0,
+  bottom = 0,
+}
+
+-- Tab bar font
+config.window_frame = {
+  font = wezterm.font({ family = "SF Pro", weight = "Bold" }),
+  font_size = 14.0,
+}
 
 -- Font
 config.font = wezterm.font("Fira Code")
@@ -16,11 +27,6 @@ config.font_size = 18
 
 -- Workspace / Domains
 config.default_workspace = "home"
-config.unix_domains = {
-  { name = "unix" },
-}
-
-config.default_gui_startup_args = { "connect", "unix" }
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {
@@ -28,6 +34,7 @@ config.inactive_pane_hsb = {
   brightness = 0.6,
 }
 
+-- Status
 wezterm.on("update-right-status", function(window, _pane)
   window:set_right_status(window:active_workspace() .. "   ")
 end)
@@ -39,12 +46,6 @@ end)
 
 config.leader = { key = "Space", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
-  -- Send C-a when pressing C-a twice
-  {
-    key = "a",
-    mods = "LEADER",
-    action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }),
-  },
   {
     key = "c",
     mods = "LEADER",
@@ -156,89 +157,8 @@ config.key_tables = {
       action = wezterm.action.AdjustPaneSize({ "Right", resize_increment }),
     },
     { key = "Escape", action = "PopKeyTable" },
-    { key = "Enter", action = "PopKeyTable" },
+    { key = "Enter",  action = "PopKeyTable" },
   },
 }
-wezterm.on("window-focus-changed", function(window, pane)
-  wezterm.log_info(
-    "the focus state of ",
-    window:window_id(),
-    " in workspace ",
-    window:active_workspace(),
 
-    " changed to ",
-    window:is_focused()
-  )
-end)
-
-wezterm.on("user-var-changed", function(window, pane, name, value)
-  wezterm.log_info(
-    "user-var-changed",
-    name,
-    "=",
-    value,
-    window:window_id(),
-    " in workspace ",
-    window:active_workspace(),
-
-    " changed to ",
-    window:is_focused()
-  )
-end)
-
-wezterm.on("gui-startup", function(cmd)
-  wezterm.log_info("gui-startup: ", cmd)
-end)
-
-wezterm.on("mux-startup", function()
-  wezterm.log_info("mux-startup")
-end)
-
--- wezterm.on("update-status", function(window, pane)
---   wezterm.log_info(
---     "update-status",
---     window:window_id(),
---     " in workspace ",
---     window:active_workspace(),
---
---     " changed to ",
---     window:is_focused()
---   )
--- end)
---
--- wezterm.on("gui-startup", function(cmd)
---   -- allow `wezterm start -- something` to affect what we spawn
---   -- in our initial window
---   local args = {}
---   if cmd then
---     args = cmd.args
---   end
---
---   -- Set a workspace for coding on a current project
---   -- Top pane is for the editor, bottom pane is for the build tool
---   local project_dir = wezterm.home_dir .. "/wezterm"
---   local _, build_pane, _ = mux.spawn_window({
---     workspace = "coding",
---     cwd = project_dir,
---     args = args,
---   })
---   local editor_pane = build_pane:split({
---     direction = "Top",
---     size = 0.6,
---     cwd = project_dir,
---   })
---   -- may as well kick off a build in that pane
---   build_pane:send_text("cargo build\n")
---
---   -- A workspace for interacting with a local machine that
---   -- runs some docker containners for home automation
---   local tab, pane, window = mux.spawn_window({
---     workspace = "automation",
---     args = { "ssh", "vault" },
---   })
---
---   -- We want to startup in the coding workspace
---   mux.set_active_workspace("coding")
--- end)
---
 return config
