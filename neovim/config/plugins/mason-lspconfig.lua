@@ -10,10 +10,8 @@ return {
       "eslint",
       "golangci_lint_ls",
       "gopls",
-      "lua_ls",
       "solargraph",
       "terraformls",
-      "tsserver",
     })
   end,
 }

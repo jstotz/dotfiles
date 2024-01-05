@@ -29,6 +29,9 @@ return {
             hint = {
               enable = true,
             },
+            diagnostics = {
+              unusedLocalExclude = { "_*" },
+            },
           },
         },
       },

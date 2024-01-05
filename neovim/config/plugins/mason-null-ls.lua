@@ -16,6 +16,14 @@ return {
           dynamic_command = cmd_resolver.from_yarn_pnp(),
         }))
       end,
+      luacheck = function()
+        null_ls.register(null_ls.builtins.diagnostics.luacheck.with({
+          extra_args = {
+            "--config",
+            vim.fn.stdpath("config") .. "/.luacheckrc",
+          },
+        }))
+      end,
     }
   end,
 }

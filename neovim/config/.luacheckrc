@@ -13,5 +13,6 @@ self = false
 
 ignore = {
   "631", -- max_line_length
+  "211/_.*", -- unused variable, for vars with "_" prefix
   "212/_.*", -- unused argument, for vars with "_" prefix
 }
