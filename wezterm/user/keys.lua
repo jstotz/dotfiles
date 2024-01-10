@@ -1,5 +1,5 @@
 local wezterm = require("wezterm")
-local actions = require("helpers.actions")
+local actions = require("user.actions")
 
 local module = {}
 

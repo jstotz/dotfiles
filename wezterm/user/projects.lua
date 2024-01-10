@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local tablex = require("pl.tablex")
 local class = require("pl.class")
-local paths = require("helpers.paths")
+local paths = require("user.paths")
 
 local module = {}
 

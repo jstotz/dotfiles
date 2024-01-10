@@ -1,8 +1,8 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
-local shell = require("helpers.shell")
-local projects = require("helpers.projects")
+local shell = require("user.shell")
+local projects = require("user.projects")
 
 local module = {}
 

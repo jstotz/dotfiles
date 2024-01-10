@@ -1,6 +1,6 @@
 local wezterm = require("wezterm")
-local launcher = require("helpers.launcher")
-local panes = require("helpers.panes")
+local launcher = require("user.launcher")
+local panes = require("user.panes")
 
 local module = {}
 

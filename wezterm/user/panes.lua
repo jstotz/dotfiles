@@ -1,5 +1,5 @@
 local wezterm = require("wezterm")
-local vim = require("helpers.vim")
+local vim = require("user.vim")
 local act = wezterm.action
 local module = {}
 

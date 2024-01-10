@@ -1,8 +1,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
-local keys = require("helpers.keys")
-
-local balance = require("helpers.balance")
+local keys = require("user.keys")
+local balance = require("user.balance")
 
 -- General
 config.color_scheme = "catppuccin-mocha"
