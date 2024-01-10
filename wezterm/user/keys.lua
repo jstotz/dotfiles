@@ -84,6 +84,11 @@ module.keys = {
     mods = "LEADER",
     action = actions.ShowCustomLauncher(),
   },
+  {
+    key = "Space",
+    mods = "LEADER|CTRL",
+    action = actions.ShowCustomLauncher(),
+  },
 
   -- vim tabs
   {
@@ -117,7 +122,7 @@ module.key_tables = {
       action = wezterm.action.AdjustPaneSize({ "Right", resize_increment }),
     },
     { key = "Escape", action = "PopKeyTable" },
-    { key = "Enter",  action = "PopKeyTable" },
+    { key = "Enter", action = "PopKeyTable" },
   },
 }
 return module
