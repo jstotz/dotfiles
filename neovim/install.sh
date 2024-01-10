@@ -8,10 +8,10 @@ test -e "$nvim_config_path" && {
 }
 
 echo "Cloning AstroNvim..."
-git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+git clone https://github.com/AstroNvim/AstroNvim "$nvim_config_path"
 
-echo "Creating neovim user config symlink..."
-ln -s "$DOTFILES/neovim/config" "$nvim_config_path/lua/user"
+echo "Cloning user AstroNvim config..."
+git clone https://github.com/jstotz/nvim "$nvim_config_path/lua/user"
 
-echo "Installing plugins..."
-nvim  --headless -c 'autocmd User PackerComplete quitall'
+echo "Installing AstroNvim..."
+nvim --headless +q
