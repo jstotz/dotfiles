@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 local tablex = require("pl.tablex")
 local class = require("pl.class")
+local paths = require("helpers.paths")
 
 local module = {}
 
@@ -10,10 +11,9 @@ module.Project = Project
 
 function Project:_init(opts)
   local dir = opts.dir or wezterm.home_dir
-  dir = dir:gsub("~", wezterm.home_dir)
   self.name = opts.name
   self.init = opts.init or function() end
-  self.dir = dir
+  self.dir = paths.expand_path(dir, wezterm.home_dir)
 end
 
 function Project:spawn_tab(window, params)
@@ -25,7 +25,7 @@ function Project:spawn_tab(window, params)
   params.cmd = nil
 
   -- Make cwd relative to project dir
-  params.cwd = self.dir .. "/" .. (params.cwd or "")
+  params.cwd = paths.expand_path((params.cwd or ""), self.dir)
 
   wezterm.log_info("spawning tab: ", params)
 

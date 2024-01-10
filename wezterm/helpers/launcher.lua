@@ -8,7 +8,7 @@ local module = {}
 
 local function get_recent_directories()
   local success, stdout, stderr =
-    wezterm.run_child_process(shell.shell_command({ "zoxide", "query", "-l" }))
+      wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
   if not success then
     error("failed to retrieve recent directories with zoxide: " .. stderr)
   end
