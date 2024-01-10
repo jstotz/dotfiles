@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local fun = require("fun")
 local act = wezterm.action
 local mux = wezterm.mux
 local shell = require("user.shell")
@@ -8,11 +9,15 @@ local module = {}
 
 local function get_recent_directories()
   local success, stdout, stderr =
-      wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
+    wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
   if not success then
     error("failed to retrieve recent directories with zoxide: " .. stderr)
   end
-  return wezterm.split_by_newlines(stdout)
+  return fun
+    .map(function(dir)
+      return dir:gsub("^" .. wezterm.home_dir, "~")
+    end, wezterm.split_by_newlines(stdout))
+    :totable()
 end
 
 function module.start_workspace_init_listener(self)

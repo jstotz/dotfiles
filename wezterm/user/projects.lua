@@ -1,19 +1,22 @@
 local wezterm = require("wezterm")
-local tablex = require("pl.tablex")
-local class = require("pl.class")
+local fun = require("fun")
 local paths = require("user.paths")
 
 local module = {}
 
-local Project = class()
+local Project = {}
 
-module.Project = Project
+function Project:new(opts)
+  local proj = {}
+  setmetatable(proj, self)
+  self.__index = self
 
-function Project:_init(opts)
   local dir = opts.dir or wezterm.home_dir
-  self.name = opts.name
-  self.init = opts.init or function() end
-  self.dir = paths.expand_path(dir, wezterm.home_dir)
+  proj.name = opts.name
+  proj.init = opts.init or function() end
+  proj.dir = paths.expand_path(dir, wezterm.home_dir)
+
+  return proj
 end
 
 function Project:spawn_tab(window, params)
@@ -47,16 +50,12 @@ function module.get_projects_dir()
 end
 
 function module.get_project_files()
-  local files = {}
-  local root_projects = wezterm.glob("*.lua", module.get_projects_dir())
-  local nested_projects = wezterm.glob("**/*.lua", module.get_projects_dir())
-  for _, file in ipairs(root_projects) do
-    table.insert(files, file)
-  end
-  for _, file in ipairs(nested_projects) do
-    table.insert(files, file)
-  end
-  return files
+  return fun
+    .chain(
+      wezterm.glob("*.lua", module.get_projects_dir()),
+      wezterm.glob("**/*.lua", module.get_projects_dir())
+    )
+    :totable()
 end
 
 local function load_project(file)
@@ -64,13 +63,13 @@ local function load_project(file)
   local opts = dofile(module.get_projects_dir() .. "/" .. file)
   opts.name = opts.name or file:gsub(".lua$", "")
   opts.dir = opts.dir or wezterm.home_dir
-  return Project(opts)
+  return Project:new(opts)
 end
 
 function module.get_projects()
   local proj_files = module.get_project_files()
-  wezterm.log_info(proj_files)
-  return tablex.imap(load_project, proj_files)
+  wezterm.log_info("project_files: ", proj_files)
+  return fun.map(load_project, proj_files):totable()
 end
 
 function module.get_project(name)
