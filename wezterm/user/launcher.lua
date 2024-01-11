@@ -9,15 +9,15 @@ local module = {}
 
 local function get_recent_directories()
   local success, stdout, stderr =
-    wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
+      wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
   if not success then
     error("failed to retrieve recent directories with zoxide: " .. stderr)
   end
   return fun
-    .map(function(dir)
-      return dir:gsub("^" .. wezterm.home_dir, "~")
-    end, wezterm.split_by_newlines(stdout))
-    :totable()
+      .map(function(dir)
+        return dir:gsub("^" .. wezterm.home_dir, "~")
+      end, wezterm.split_by_newlines(stdout))
+      :totable()
 end
 
 function module.start_workspace_init_listener(self)
@@ -41,7 +41,7 @@ function module.start_workspace_init_listener(self)
       return
     end
     wezterm.log_info("initializing project: ", proj)
-    proj:init(window, pane)
+    proj:launch(window, pane)
     wezterm.run_child_process({ "kill", pid })
   end)
   self.workspace_init_listener_started = true

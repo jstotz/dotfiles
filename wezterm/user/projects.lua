@@ -13,13 +13,23 @@ function Project:new(opts)
 
   local dir = opts.dir or wezterm.home_dir
   proj.name = opts.name
-  proj.init = opts.init or function() end
+  proj._init = opts.init or function() end
   proj.dir = paths.expand_path(dir, wezterm.home_dir)
 
   return proj
 end
 
-function Project:spawn_tab(window, params)
+function Project:launch(window, pane)
+  local tabs = window:mux_window():tabs()
+  self.window = window
+  self.pane = pane
+  self:_init()
+  if #tabs > 0 then
+    tabs[1]:activate()
+  end
+end
+
+function Project:spawn_tab(params)
   local send_text = params.send_text
   local title = params.title
   local cmd = params.cmd
@@ -32,7 +42,7 @@ function Project:spawn_tab(window, params)
 
   wezterm.log_info("spawning tab: ", params)
 
-  local tab, pane, new_window = window:mux_window():spawn_tab(params)
+  local tab, pane, new_window = self.window:mux_window():spawn_tab(params)
   if title then
     tab:set_title(title)
   end
@@ -51,11 +61,11 @@ end
 
 function module.get_project_files()
   return fun
-    .chain(
-      wezterm.glob("*.lua", module.get_projects_dir()),
-      wezterm.glob("**/*.lua", module.get_projects_dir())
-    )
-    :totable()
+      .chain(
+        wezterm.glob("*.lua", module.get_projects_dir()),
+        wezterm.glob("**/*.lua", module.get_projects_dir())
+      )
+      :totable()
 end
 
 local function load_project(file)
