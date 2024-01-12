@@ -96,15 +96,15 @@ function module.balance_panes(axis)
       )
     )
 
-    walk_siblings(axis, tab, window, pane, function(pane)
-      local pane_size = pane:get_dimensions()[pane_size_key]
+    walk_siblings(axis, tab, window, pane, function(sibling_pane)
+      local pane_size = sibling_pane:get_dimensions()[pane_size_key]
       local adj_amount = pane_size - balanced_size
       local adj_dir = adj_amount < 0 and next_dir or prev_dir
       adj_amount = math.abs(adj_amount)
       wezterm.log_info(
         string.format(
           "adjusting pane [%s] from %s by %s cells %s",
-          pane,
+          sibling_pane,
           tostring(pane_size),
           tostring(adj_amount),
           adj_dir
@@ -112,13 +112,13 @@ function module.balance_panes(axis)
       )
       window:perform_action(
         wezterm.action.AdjustPaneSize({ adj_dir, adj_amount }),
-        pane
+        sibling_pane
       )
     end)
   end
 end
 
-function module.setup()
+function module.setup(_config)
   wezterm.on("augment-command-palette", function()
     return {
       {
