@@ -64,11 +64,6 @@ bindkey -v
 # Reduce delay when switching between vi modes
 export KEYTIMEOUT=1
 
-# [Ctrl-r] - Search backward incrementally for a specified string.
-# The string may begin with ^ to anchor the search to the beginning of the line.
-zle     -N   fzf-history-widget
-bindkey '^R' fzf-history-widget
-
 # [PageUp] - Up a line of history
 if [[ ! -z "$terminfo[kpp]" ]]; then
   bindkey "$terminfo[kpp]" up-line-or-history

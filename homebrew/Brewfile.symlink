@@ -3,6 +3,7 @@ tap "homebrew/cask-fonts"
 
 brew "antidote"
 brew "asdf"
+brew "atuin"
 brew "awscli"
 brew "direnv"
 brew "ffmpeg"
