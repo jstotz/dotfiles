@@ -118,19 +118,4 @@ function module.balance_panes(axis)
   end
 end
 
-function module.setup(_config)
-  wezterm.on("augment-command-palette", function()
-    return {
-      {
-        brief = "Balance panes horizontally",
-        action = wezterm.action_callback(module.balance_panes("x")),
-      },
-      {
-        brief = "Balance panes vertically",
-        action = wezterm.action_callback(module.balance_panes("y")),
-      },
-    }
-  end)
-end
-
 return module

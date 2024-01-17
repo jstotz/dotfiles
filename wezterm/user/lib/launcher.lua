@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local fun = require("fun")
 local act = wezterm.action
 local mux = wezterm.mux
-local shell = require("user.shell")
-local projects = require("user.projects")
+local shell = require("user.lib.shell")
+local projects = require("user.lib.projects")
 
 local module = {}
 

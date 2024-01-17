@@ -1,6 +1,6 @@
 local wezterm = require("wezterm")
 local fun = require("fun")
-local paths = require("user.paths")
+local paths = require("user.lib.paths")
 
 local module = {}
 
