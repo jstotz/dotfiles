@@ -1,5 +1,4 @@
 local wezterm = require("wezterm")
-local fun = require("fun")
 local act = wezterm.action
 local mux = wezterm.mux
 local shell = require("user.lib.shell")
@@ -8,16 +7,11 @@ local projects = require("user.lib.projects")
 local module = {}
 
 local function get_recent_directories()
-  local success, stdout, stderr =
-      wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
+  local success, stdout, stderr = wezterm.run_child_process({ "/usr/local/bin/zoxide", "query", "-l" })
   if not success then
     error("failed to retrieve recent directories with zoxide: " .. stderr)
   end
-  return fun
-      .map(function(dir)
-        return dir:gsub("^" .. wezterm.home_dir, "~")
-      end, wezterm.split_by_newlines(stdout))
-      :totable()
+  return wezterm.split_by_newlines(stdout)
 end
 
 function module.start_workspace_init_listener(self)
@@ -89,12 +83,9 @@ function module.get_launcher_options()
 
   for _, dir in ipairs(get_recent_directories()) do
     table.insert(options, {
-      label = "directory: " .. dir,
+      label = "directory: " .. dir:gsub("^" .. wezterm.home_dir, "~"),
       run = function(_self, window, pane)
-        window:perform_action(
-          act.SwitchToWorkspace({ name = dir, spawn = { cwd = dir } }),
-          pane
-        )
+        window:perform_action(act.SwitchToWorkspace({ name = dir, spawn = { cwd = dir } }), pane)
       end,
     })
   end
@@ -111,18 +102,16 @@ function module.show_custom_launcher(window, pane)
 
   window:perform_action(
     act.InputSelector({
-      action = wezterm.action_callback(
-        function(inner_window, inner_pane, id, label)
-          local option = options[tonumber(id)]
-          if not id and not label then
-            wezterm.log_info("cancelled")
-          else
-            wezterm.log_info("id = " .. id)
-            wezterm.log_info("label = " .. label)
-            option:run(inner_window, inner_pane)
-          end
+      action = wezterm.action_callback(function(inner_window, inner_pane, id, label)
+        local option = options[tonumber(id)]
+        if not id and not label then
+          wezterm.log_info("cancelled")
+        else
+          wezterm.log_info("id = " .. id)
+          wezterm.log_info("label = " .. label)
+          option:run(inner_window, inner_pane)
         end
-      ),
+      end),
       title = "Launcher",
       choices = choices,
       fuzzy = true,
