@@ -7,11 +7,8 @@ test -e "$nvim_config_path" && {
   exit
 }
 
-echo "Cloning AstroNvim..."
-git clone https://github.com/AstroNvim/AstroNvim "$nvim_config_path"
+echo "Cloning neovim config..."
+git clone https://github.com/jstotz/nvim "$nvim_config_path"
 
-echo "Cloning user AstroNvim config..."
-git clone https://github.com/jstotz/nvim "$nvim_config_path/lua/user"
-
-echo "Installing AstroNvim..."
+echo "Installing plugins..."
 nvim --headless +q
