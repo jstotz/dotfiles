@@ -82,10 +82,12 @@ function module.get_launcher_options()
   end
 
   for _, dir in ipairs(get_recent_directories()) do
+    local workspace_name = dir:gsub("^" .. wezterm.home_dir, "~")
+    local label = "directory: " .. workspace_name
     table.insert(options, {
-      label = "directory: " .. dir:gsub("^" .. wezterm.home_dir, "~"),
+      label = label,
       run = function(_self, window, pane)
-        window:perform_action(act.SwitchToWorkspace({ name = dir, spawn = { cwd = dir } }), pane)
+        window:perform_action(act.SwitchToWorkspace({ name = workspace_name, spawn = { cwd = dir } }), pane)
       end,
     })
   end
