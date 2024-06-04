@@ -4,7 +4,7 @@ local module = {}
 
 function module.setup(config)
   -- General
-  config.color_scheme = "catppuccin-mocha"
+  config.color_scheme = "Catppuccin Mocha"
   config.window_decorations = "RESIZE"
   config.window_close_confirmation = "AlwaysPrompt"
   config.scrollback_lines = 100000
