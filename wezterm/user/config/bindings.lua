@@ -120,6 +120,9 @@ function module.setup(config)
       mods = "CTRL",
       action = wezterm.action.EmitEvent("trigger-vim-with-scrollback"),
     },
+    -- Override macOS window switching to switch workspaces
+    { key = "`", mods = "CMD",       action = wezterm.action.SwitchWorkspaceRelative(1) },
+    { key = "`", mods = "CMD|SHIFT", action = wezterm.action.SwitchWorkspaceRelative(-1) },
   }
 
   config.key_tables = {
