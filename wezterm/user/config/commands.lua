@@ -15,6 +15,17 @@ function module.setup(_config)
         action = wezterm.action_callback(balance.balance_panes("y")),
       },
       {
+        brief = "Rename current tab",
+        action = wezterm.action.PromptInputLine({
+          description = "Enter new name for tab",
+          action = wezterm.action_callback(function(window, _pane, line)
+            if line then
+              window:active_tab():set_title(line)
+            end
+          end),
+        }),
+      },
+      {
         brief = "Edit scrollback buffer in vim",
         action = wezterm.action.EmitEvent("trigger-vim-with-scrollback"),
       },
