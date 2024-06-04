@@ -115,6 +115,11 @@ function module.setup(config)
       mods = "SHIFT",
       action = wezterm.action.ScrollToPrompt(1),
     },
+    {
+      key = "E",
+      mods = "CTRL",
+      action = wezterm.action.EmitEvent("trigger-vim-with-scrollback"),
+    },
   }
 
   config.key_tables = {

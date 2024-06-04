@@ -14,6 +14,10 @@ function module.setup(_config)
         brief = "Balance panes vertically",
         action = wezterm.action_callback(balance.balance_panes("y")),
       },
+      {
+        brief = "Edit scrollback buffer in vim",
+        action = wezterm.action.EmitEvent("trigger-vim-with-scrollback"),
+      },
     }
   end)
 end
