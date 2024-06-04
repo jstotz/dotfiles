@@ -13,6 +13,13 @@ function module.setup(config)
 
   config.keys = {
     {
+      key = "k",
+      mods = "SUPER",
+      action = wezterm.action.Multiple({
+        wezterm.action.SendKey({ key = "L", mods = "CTRL" }),
+      }),
+    },
+    {
       key = "c",
       mods = "LEADER",
       action = wezterm.action.ActivateCopyMode,
