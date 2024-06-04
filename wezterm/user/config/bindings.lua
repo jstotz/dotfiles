@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local actions = require("user.actions")
+local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
 
 local module = {}
 
@@ -41,26 +42,6 @@ function module.setup(config)
       key = "|",
       mods = "LEADER|SHIFT",
       action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-    },
-    {
-      key = "h",
-      mods = "CTRL",
-      action = actions.ActivatePane("Left"),
-    },
-    {
-      key = "j",
-      mods = "CTRL",
-      action = actions.ActivatePane("Down"),
-    },
-    {
-      key = "k",
-      mods = "CTRL",
-      action = actions.ActivatePane("Up"),
-    },
-    {
-      key = "l",
-      mods = "CTRL",
-      action = actions.ActivatePane("Right"),
     },
     {
       key = "x",
@@ -128,9 +109,11 @@ function module.setup(config)
       action = wezterm.action.EmitEvent("trigger-vim-with-scrollback"),
     },
     -- Override macOS window switching to switch workspaces
-    { key = "`", mods = "CMD",       action = wezterm.action.SwitchWorkspaceRelative(1) },
+    { key = "`", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(1) },
     { key = "`", mods = "CMD|SHIFT", action = wezterm.action.SwitchWorkspaceRelative(-1) },
   }
+
+  smart_splits.apply_to_config(config)
 
   config.key_tables = {
     resize_pane = {
@@ -151,7 +134,7 @@ function module.setup(config)
         action = wezterm.action.AdjustPaneSize({ "Right", resize_increment }),
       },
       { key = "Escape", action = "PopKeyTable" },
-      { key = "Enter",  action = "PopKeyTable" },
+      { key = "Enter", action = "PopKeyTable" },
     },
   }
 
