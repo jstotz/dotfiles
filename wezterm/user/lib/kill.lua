@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local shell = require("user.lib.shell")
 local module = {}
 
 function module.kill_workspace(workspace)
@@ -28,7 +29,7 @@ end
 
 function module.kill_pane(pane)
   local success, stdout, stderr =
-    wezterm.run_child_process({ "wezterm", "cli", "kill-pane", "--pane-id=" .. pane:pane_id() })
+    shell.run_child_process({ "wezterm", "cli", "kill-pane", "--pane-id=" .. pane:pane_id() })
   if not success then
     error("killing pane failed: \n" .. stdout .. "\n" .. stderr)
   end
