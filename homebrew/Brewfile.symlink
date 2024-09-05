@@ -1,55 +1,75 @@
-tap "github/gh"
-tap "homebrew/cask-fonts"
+tap 'github/gh'
+tap 'homebrew/cask-fonts'
 
-brew "antidote"
-brew "asdf"
-brew "atuin"
-brew "awscli"
-brew "direnv"
-brew "ffmpeg"
-brew "fzf"
-brew "gh"
-brew "git"
-brew "git-delta"
-brew "git-extras"
-brew "htop"
-brew "hub"
-brew "mas"
-brew "jq"
-brew "killport"
-brew "kubectx"
-brew "neovim"
-brew "neovim-remote"
-brew "postgresql"
-brew "renameutils"
-brew "shellcheck"
-brew "shpotify"
-brew "the_silver_searcher"
-brew "terminal-notifier"
-brew "tmux"
-brew "vim"
-brew "wget"
-brew "zoxide"
+brew 'ansible'
+brew 'antidote'
+brew 'asdf'
+brew 'atuin'
+brew 'aws-sso-util'
+brew 'awscli'
+brew 'bash'
+brew 'difftastic'
+brew 'direnv'
+brew 'entr'
+brew 'ffmpeg'
+brew 'fzf'
+brew 'gh'
+brew 'git'
+brew 'git-delta'
+brew 'git-extras'
+brew 'git-lfs'
+brew 'goreleaser'
+brew 'graphviz'
+brew 'htop'
+brew 'hub'
+brew 'jq'
+brew 'k3d'
+brew 'k9s'
+brew 'killport'
+brew 'kind'
+brew 'kubectx'
+brew 'kustomize'
+brew 'lazygit'
+brew 'luarocks'
+brew 'mas'
+brew 'ncdu'
+brew 'neovim'
+brew 'neovim-remote'
+brew 'pipx'
+brew 'postgresql'
+brew 'renameutils'
+brew 'ripgrep'
+brew 'shellcheck'
+brew 'shpotify'
+brew 'terminal-notifier'
+brew 'the_silver_searcher'
+brew 'tmux'
+brew 'vim'
+brew 'wget'
+brew 'zoxide'
 
-cask "1password-cli"
-cask "1password"
-cask "alacritty"
-cask "alfred"
-cask "beardedspice"
-cask "docker"
-cask "firefox"
-cask "font-fira-code"
-cask "font-fira-code-nerd-font"
-cask "gimp"
-cask "google-chrome"
-cask "iterm2"
-cask "meetingbar"
-cask "scroll-reverser"
-cask "stats"
-cask "visual-studio-code"
+cask '1password-cli'
+cask '1password'
+cask 'discord'
+cask 'firefox'
+cask 'font-fira-code'
+cask 'font-fira-code-nerd-font'
+cask 'google-chrome'
+cask 'itsycal'
+cask 'jordanbaird-ice'
+cask 'meetingbar'
+cask 'orbstack'
+cask 'raycast'
+cask 'shottr'
+cask 'slack'
+cask 'scroll-reverser'
+cask 'spotify'
+cask 'stats'
+cask 'visual-studio-code'
+cask 'wezterm@nightly'
 
-mas "Amphetamine", id: 937984704
-mas "DaisyDisk", id: 411643860
-mas "GarageBand", id: 682658836
-mas "Magnet", id: 441258766
-mas "Xcode", id: 497799835 if ENV["INSTALL_XCODE"]
+mas 'Amphetamine', id: 937_984_704
+mas 'DaisyDisk', id: 411_643_860
+mas 'Xcode', id: 497_799_835 if ENV['INSTALL_XCODE']
+mas 'Spotica Menu', id: 570_549_457
+mas 'Color Picker', id: 1_545_870_783
