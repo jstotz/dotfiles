@@ -5,7 +5,7 @@ local module = {}
 function module.setup(_config)
   -- Status
   wezterm.on("update-right-status", function(window, _pane)
-    window:set_right_status(window:active_workspace() .. "   ")
+    window:set_right_status("   " .. window:active_workspace() .. "   ")
   end)
 end
 
