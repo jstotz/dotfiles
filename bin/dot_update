@@ -4,6 +4,9 @@
 #
 # `dot_update` handles installation, updates, things like that. Run it
 # periodically to make sure you're on the latest and greatest.
+
+set -euo pipefail
+
 export DOTFILES="$HOME/.dotfiles"
 cd "$DOTFILES" || exit 1
 

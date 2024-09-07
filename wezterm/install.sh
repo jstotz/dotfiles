@@ -6,4 +6,5 @@ config_dir="$HOME/.config/wezterm"
 
 ln -sf "$DOTFILES/wezterm/" "$config_dir"
 
-luarocks install https://raw.githubusercontent.com/luafun/luafun/master/fun-scm-1.rockspec
+echo "Installing wezterm luarocks dependencies..."
+sudo luarocks install --force https://raw.githubusercontent.com/luafun/luafun/master/fun-scm-1.rockspec

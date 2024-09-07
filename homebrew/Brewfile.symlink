@@ -1,6 +1,3 @@
-tap 'github/gh'
-tap 'homebrew/cask-fonts'
-
 brew 'ansible'
 brew 'antidote'
 brew 'asdf'

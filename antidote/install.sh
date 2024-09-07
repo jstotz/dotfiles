@@ -7,4 +7,3 @@ fi
 . $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 
 antidote bundle <"$DOTFILES/antidote/zsh_plugins.txt" >~/.zsh_plugins.zsh
-antidote update

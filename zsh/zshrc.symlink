@@ -26,7 +26,7 @@ done
 
 # load antidote plugins
 . "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
-antidote load
+source ~/.zsh_plugins.zsh
 
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
