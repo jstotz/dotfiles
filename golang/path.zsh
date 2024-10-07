@@ -1,3 +1,3 @@
 #!/bin/sh
-export GOPATH=~/go
-export PATH="$GOPATH/bin:$PATH"
+
+test -f ~/.asdf/plugins/golang/set-env.zsh && . $_
