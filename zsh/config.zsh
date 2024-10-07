@@ -67,10 +67,3 @@ export KEYTIMEOUT=1
 # ALT-C - cd into the selected directory
 bindkey '\ec' fzf-cd-widget
 
-# load atuin (shell history)
-eval "$(atuin init zsh --disable-up-arrow)"
-bindkey -M vicmd 'k' atuin-history-up
-bindkey -M vicmd 'j' atuin-history-down
-bindkey "${key[Up]}" atuin-history-up
-bindkey "${key[Down]}" atuin-history-down
-

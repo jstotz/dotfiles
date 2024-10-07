@@ -1,6 +1,9 @@
 #!/bin/zsh
-# uncomment this and the last line for zprof info
-# zmodload zsh/zprof
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
+fi
+
+zstyle ':plugin:ez-compinit' 'use-cache' 'yes'
 
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES="$HOME/.dotfiles"
@@ -25,20 +28,15 @@ for file in ${(M)config_files:#*/path.zsh}; do
 done
 
 # load antidote plugins
-. "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
+zsh_plugins="$HOME/Library/Caches/antidote"
+fpath=($HOMEBREW_PREFIX/opt/antidote/share/antidote/functions $fpath)
+autoload -Uz antidote
 source ~/.zsh_plugins.zsh
 
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
   source "$file"
 done
-
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
-
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
@@ -52,4 +50,15 @@ unset config_files updated_at
 # shellcheck disable=SC1090
 [ -f ~/.localrc ] && . ~/.localrc
 
-# zprof
+# load atuin (shell history)
+function zvm_after_init() {
+  eval "$(atuin init zsh --disable-up-arrow)"
+  bindkey -M vicmd 'k' atuin-history-up
+  bindkey -M vicmd 'j' atuin-history-down
+  bindkey "${key[Up]}" atuin-history-up
+  bindkey "${key[Down]}" atuin-history-down
+}
+
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi
