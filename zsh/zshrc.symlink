@@ -18,6 +18,22 @@ export VEDITOR='nvim'
 # default C compiler
 export CC="clang"
 
+
+# zsh vim mode hooks
+function zvm_config() {
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
+
+function zvm_after_init() {
+  # load atuin (shell history)
+  eval "$(atuin init zsh --disable-up-arrow)"
+  bindkey -M vicmd 'k' atuin-history-up
+  bindkey -M vicmd 'j' atuin-history-down
+  bindkey "${key[Up]}" atuin-history-up
+  bindkey "${key[Down]}" atuin-history-down
+  zvm_bindkey vicmd '^R' atuin-search
+}
+
 # all of our zsh files
 typeset -U config_files
 config_files=($DOTFILES/*/*.zsh)
@@ -49,15 +65,6 @@ unset config_files updated_at
 # want in your public, versioned repo.
 # shellcheck disable=SC1090
 [ -f ~/.localrc ] && . ~/.localrc
-
-# load atuin (shell history)
-function zvm_after_init() {
-  eval "$(atuin init zsh --disable-up-arrow)"
-  bindkey -M vicmd 'k' atuin-history-up
-  bindkey -M vicmd 'j' atuin-history-down
-  bindkey "${key[Up]}" atuin-history-up
-  bindkey "${key[Down]}" atuin-history-down
-}
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
