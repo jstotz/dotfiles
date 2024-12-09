@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 local fun = require("fun")
 local paths = require("user.lib.paths")
+local balance = require("user.lib.balance")
 
 local module = {}
 
@@ -30,13 +31,9 @@ function Project:launch(window, pane)
 end
 
 function Project:spawn_tab(params)
-  local send_text = params.send_text
   local title = params.title
-  local cmd = params.cmd
-  params.send_text = nil
+  local splits = params.splits or {}
   params.title = nil
-  params.cmd = nil
-
   -- Make cwd relative to project dir
   params.cwd = paths.expand_path((params.cwd or ""), self.dir)
 
@@ -46,13 +43,42 @@ function Project:spawn_tab(params)
   if title then
     tab:set_title(title)
   end
-  if send_text then
-    pane:send_text(send_text)
+
+  self:run_in_pane(pane, params)
+
+  for idx, split in ipairs(splits) do
+    split = fun.chain(params, split):tomap()
+    if idx == 1 then
+      self:run_in_pane(pane, split)
+    else
+      pane = self:split_pane(pane, split)
+    end
   end
-  if cmd then
-    pane:send_text(cmd .. "\n")
-  end
+
+  balance.balance_panes("y")
+
   return tab, pane, new_window
+end
+
+function Project:split_pane(pane, params)
+  local default_params = { direction = "Bottom" }
+  params = fun.chain(default_params, params, { cwd = paths.expand_path((params.cwd or ""), self.dir) }):tomap()
+  wezterm.log_info("splitting pane: ", params)
+  local new_pane = pane:split(params)
+  self:run_in_pane(new_pane, params)
+  return new_pane
+end
+
+function Project:run_in_pane(pane, params)
+  wezterm.log_info("running in pane: ", params)
+  if params.send_text then
+    pane:send_text(params.send_text)
+  end
+  if params.cmd then
+    pane:send_text(params.cmd .. "\n")
+  end
+
+  return pane
 end
 
 function module.get_projects_dir()
@@ -61,11 +87,8 @@ end
 
 function module.get_project_files()
   return fun
-      .chain(
-        wezterm.glob("*.lua", module.get_projects_dir()),
-        wezterm.glob("**/*.lua", module.get_projects_dir())
-      )
-      :totable()
+    .chain(wezterm.glob("*.lua", module.get_projects_dir()), wezterm.glob("**/*.lua", module.get_projects_dir()))
+    :totable()
 end
 
 local function load_project(file)
