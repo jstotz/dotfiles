@@ -86,9 +86,7 @@ function module.get_projects_dir()
 end
 
 function module.get_project_files()
-  return fun
-    .chain(wezterm.glob("*.lua", module.get_projects_dir()), wezterm.glob("**/*.lua", module.get_projects_dir()))
-    :totable()
+  return wezterm.glob("**/*.lua", module.get_projects_dir())
 end
 
 local function load_project(file)
