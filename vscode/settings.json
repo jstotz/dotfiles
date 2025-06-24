@@ -1,14 +1,9 @@
 {
   "workbench.startupEditor": "newUntitledFile",
   "keyboard.dispatch": "keyCode",
-  "ruby.lint": {
-    "rubocop": true
-  },
   "[ruby]": {
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
   },
   "[go]": {
     "files.trimTrailingWhitespace": false
@@ -39,7 +34,6 @@
   "editor.autoClosingBrackets": "never",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "eslint.packageManager": "yarn",
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
@@ -64,12 +58,7 @@
   "[graphql]": {
     "editor.formatOnSave": true
   },
-  "terminal.integrated.rendererType": "dom",
-  "vs-kubernetes": {
-    "vs-kubernetes.minikube-path": "/home/jstotz/.vs-kubernetes/tools/minikube/linux-amd64/minikube"
-  },
   "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -82,14 +71,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "editor.fontFamily": "Fira Code",
+  "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": "'ss01', 'ss02', 'ss03'",
   "workbench.colorTheme": "Catppuccin Mocha",
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.containers.groupBy": "None",
   "docker.containers.label": "ContainerName",
   "docker.containers.description": ["Status"],
-  "gitlens.hovers.currentLine.over": "line",
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -101,19 +89,11 @@
     "editor.insertSpaces": false,
     "editor.detectIndentation": false
   },
-  "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home",
-  "java.help.firstView": "gettingStarted",
   "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
-  "errorLens.addAnnotationTextPrefixes": true,
-  "errorLens.addNumberOfDiagnostics": true,
-  "errorLens.onSave": true,
   "markdown.preview.doubleClickToSwitchToEditor": false,
   "editor.minimap.enabled": false,
-  "tsimporter.noStatusBar": true,
   "editor.matchBrackets": "never",
   "git.autofetch": true,
-  "go.toolsManagement.autoUpdate": true,
-  "vscode-neovim.mouseSelectionStartVisualMode": true,
   "git.confirmSync": false,
   "json.schemas": [
     {
@@ -121,27 +101,34 @@
       "url": "https://goreleaser.com/static/schema.json"
     }
   ],
-  "projectManager.git.baseFolders": ["~/Projects"],
   "editor.inlineSuggest.enabled": true,
-  "advancedNewFile.exclude": {
-    "node_modules": true,
-    "node_modules_electron": true,
-    "dev": true,
-    "dist": true
-  },
-  "advancedNewFile.showInformationMessages": true,
   "scm.defaultViewMode": "tree",
-  "githubPullRequests.createOnPublishBranch": "never",
   "terminal.integrated.scrollback": 100000,
   "window.commandCenter": true,
   "terminal.integrated.shellIntegration.enabled": true,
   "git.showCommitInput": false,
-  "githubPullRequests.pullBranch": "never",
-  "workbench.editor.untitled.hint": "hidden",
-  "projectManager.sortList": "Recent",
   "window.zoomLevel": 2,
-  "vscode-neovim.neovimInitVimPaths.darwin": "~/.dotfiles/vscode/neovim/vscode_init.vim",
   "[python]": {
     "editor.formatOnType": true
-  }
+  },
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "args": [
+        "-l",
+        "-i"
+      ]
+    }
+  },
+  "workbench.activityBar.location": "top",
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.agent.thinkingTool": true,
+  "rubyLsp.formatter": "syntax_tree",
+  "github.copilot.chat.languageContext.fix.typescript.enabled": true,
+  "github.copilot.chat.languageContext.inline.typescript.enabled": true,
+  "github.copilot.chat.languageContext.typescript.enabled": true
 }

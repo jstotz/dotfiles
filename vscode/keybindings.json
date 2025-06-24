@@ -5,8 +5,4 @@
     "command": "workbench.action.terminal.sendSequence",
     "args": { "text": "\u0003cd '${fileDirname}'\u000D" }
   },
-  {
-    "key": "alt+cmd+p",
-    "command": "projectManager.listProjectsNewWindow"
-  }
 ]
