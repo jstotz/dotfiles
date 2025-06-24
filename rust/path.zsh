@@ -1,1 +1,1 @@
-test -f "$HOME/.cargo/env" && . $_
+export PATH="/usr/local/opt/rustup/bin:$PATH"
