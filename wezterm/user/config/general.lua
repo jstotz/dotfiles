@@ -15,6 +15,8 @@ function module.setup(config)
     bottom = 0,
   }
 
+  config.front_end = "WebGpu"
+
   -- Tab bar font
   config.window_frame = {
     font = wezterm.font({ family = "SF Pro", weight = "Bold" }),
