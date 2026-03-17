@@ -12,8 +12,8 @@ export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Projects"
 
 # your default editor
-export EDITOR='nvim'
-export VEDITOR='nvim'
+export EDITOR='zed --wait'
+export VEDITOR='zed'
 
 # default C compiler
 export CC="clang"
