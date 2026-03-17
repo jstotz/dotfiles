@@ -10,12 +10,12 @@ test -d /home/linuxbrew/.linuxbrew && {
   export INFOPATH="/home/linuxbrew/.linuxbrew/share/info${INFOPATH+:$INFOPATH}"
 }
 
-test -d /usr/local/Homebrew && {
+test -d /opt/homebrew && {
   # Generated with `brew shellenv`:
-  export HOMEBREW_PREFIX="/usr/local";
-  export HOMEBREW_CELLAR="/usr/local/Cellar";
-  export HOMEBREW_REPOSITORY="/usr/local/Homebrew";
-  export PATH="/usr/local/bin:/usr/local/sbin${PATH+:$PATH}";
-  export MANPATH="/usr/local/share/man${MANPATH+:$MANPATH}:";
-  export INFOPATH="/usr/local/share/info${INFOPATH+:$INFOPATH}";
+  export HOMEBREW_PREFIX="/opt/homebrew";
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar";
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX";
+  export PATH="$HOMEBREW_PREFIX/bin:$PATH";
+  export MANPATH="$HOMEBREW_PREFIX/share/man:$MANPATH";
+  export INFOPATH="$HOMEBREW_PREFIX/share/info:$INFOPATH";
 }
