@@ -1,9 +1,11 @@
 # this block is in alphabetic order
 hkupty/ssh-agent
 jeffreytse/zsh-vi-mode
+kylesnowschwartz/zsh-ai-cmd
 mafredri/zsh-async
 mattmc3/ez-compinit
 mdumitru/last-working-dir
+g-plane/pnpm-shell-completion
 zsh-users/zsh-completions kind:fpath path:src
 
 # these should be at last!
