@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export DOTFILES_KERNEL=$(uname -s)
+export DOTFILES_KERNEL=$(/usr/bin/uname -s)
 
 if [[ -z "$ZSH_CACHE_DIR" ]]; then
   ZSH_CACHE_DIR="$HOME/.zsh/cache"
