@@ -14,11 +14,13 @@
 .settings
 .svn
 .tags_swap
-.vscode
-.vscode/
 dump.rdb
 .terraform
 .solargraph.yml
 .envrc
 .envrc.*
 */spec/examples.txt
+.prompts
+.claude/*.local.*
+ngrok.local.yml
+.localstorage*
