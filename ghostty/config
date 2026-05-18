@@ -25,6 +25,8 @@ command = /bin/zsh -l -c "exec tmux new-session -A -s main"
 # Workmux quick-access
 # Cmd+E → dashboard popup (prefix C-s)
 keybind = cmd+e=text:\x00\x13
+# Cmd+Shift+E → dashboard, Worktrees tab directly (prefix C-w)
+keybind = cmd+shift+e=text:\x00\x17
 # Cmd+B → toggle sidebar (prefix b — moved off C-t now that sesh owns it)
 keybind = cmd+b=text:\x00b
 # Cmd+G → lazygit popup for current pane's directory (prefix g).
