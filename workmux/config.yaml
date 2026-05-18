@@ -1,1 +1,10 @@
 nerdfont: true
+
+# Default pane layout for new worktrees. The `<agent>` placeholder is required
+# so `wm add -A`/`--prompt` has somewhere to spawn the agent (claude by default).
+panes:
+  - command: <agent>
+    focus: true
+  - command: clear
+    split: vertical
+    size: 5
