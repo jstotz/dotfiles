@@ -1,0 +1,6 @@
+# Sesh configuration — https://github.com/joshmedeski/sesh
+# Sessions are auto-discovered from zoxide + running tmux sessions.
+# Add explicit [[session]] blocks for projects with custom startup.
+
+[default_session]
+startup_command = "nvim ."

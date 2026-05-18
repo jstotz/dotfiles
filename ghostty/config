@@ -1,0 +1,75 @@
+# https://ghostty.org/docs/config
+
+# Theme & font
+theme = "Catppuccin Mocha"
+font-family = "FiraCode Nerd Font"
+font-size = 12
+
+# Window
+window-padding-x = 8
+window-padding-y = 8
+window-save-state = always
+macos-titlebar-style = transparent
+
+# Shell integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# Auto-launch tmux — attach to shared "main" session, create on first launch.
+# Pairs with workmux window mode: worktrees become windows in "main".
+command = /bin/zsh -l -c "exec tmux new-session -A -s main"
+
+# Cmd → tmux passthroughs. C-Space prefix = 0x00; bytes match the bindings
+# defined in tmux/tmux.conf.
+
+# Workmux quick-access
+# Cmd+E → dashboard popup (prefix C-s)
+keybind = cmd+e=text:\x00\x13
+# Cmd+B → toggle sidebar (prefix b — moved off C-t now that sesh owns it)
+keybind = cmd+b=text:\x00b
+# Cmd+G → lazygit popup for current pane's directory (prefix g).
+# Also blocks the accidental M-g scratchpad trigger when Cmd+G passes through unbound.
+keybind = cmd+g=text:\x00g
+
+# Window management
+# Cmd+T → new window in current session (prefix c)
+keybind = cmd+t=text:\x00c
+# Cmd+W → kill current pane, no confirmation (prefix x)
+keybind = cmd+w=text:\x00x
+# Cmd+P → sesh picker (prefix C-t)
+keybind = cmd+p=text:\x00\x14
+# Cmd+R → rename current window (prefix ,)
+keybind = cmd+r=text:\x00,
+# Cmd+H / Cmd+L → previous / next window (prefix p / n)
+keybind = cmd+h=text:\x00p
+keybind = cmd+l=text:\x00n
+# Cmd+Z → toggle pane zoom (prefix z)
+keybind = cmd+z=text:\x00z
+# Cmd+1..9 → jump to window N (prefix N)
+keybind = cmd+digit_1=text:\x001
+keybind = cmd+digit_2=text:\x002
+keybind = cmd+digit_3=text:\x003
+keybind = cmd+digit_4=text:\x004
+keybind = cmd+digit_5=text:\x005
+keybind = cmd+digit_6=text:\x006
+keybind = cmd+digit_7=text:\x007
+keybind = cmd+digit_8=text:\x008
+keybind = cmd+digit_9=text:\x009
+
+# Splits
+# Cmd+- → split below (prefix -)
+keybind = cmd+minus=text:\x00-
+# Cmd+Shift+\ → split right, full width (prefix |)
+keybind = cmd+shift+backslash=text:\x00|
+
+# Move current window left (no-prefix M-i). Cmd+O was Move-Right; now repurposed
+# below to open the current dir in Zed. Option+O still fires the M-o tmux binding.
+keybind = cmd+i=text:\x1bi
+# Cmd+O → open current pane's directory in Zed (prefix Shift+O → tmux run-shell)
+keybind = cmd+o=text:\x00O
+
+# UX
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+clipboard-trim-trailing-spaces = true
+confirm-close-surface = false
