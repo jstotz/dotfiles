@@ -8,3 +8,5 @@ set -e
 npx --yes skills add https://github.com/openai/skills --skill gh-address-comments -g -a claude-code -a codex
 npx --yes skills add https://github.com/openai/skills --skill gh-fix-ci -g -a claude-code -a codex
 npx --yes skills add https://github.com/mattpocock/skills --skill grill-me -g -a claude-code -a codex
+npx --yes skills add https://github.com/yoshiko-pg/difit --skill difit -g -a claude-code -a codex
+npx --yes skills add https://github.com/yoshiko-pg/difit --skill difit-review -g -a claude-code -a codex
