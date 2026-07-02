@@ -16,19 +16,11 @@ shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
 # Auto-launch tmux — attach to shared "main" session, create on first launch.
-# Pairs with workmux window mode: worktrees become windows in "main".
 command = /bin/zsh -l -c "exec tmux new-session -A -s main"
 
 # Cmd → tmux passthroughs. C-Space prefix = 0x00; bytes match the bindings
 # defined in tmux/tmux.conf.
 
-# Workmux quick-access
-# Cmd+E → dashboard popup (prefix C-s)
-keybind = cmd+e=text:\x00\x13
-# Cmd+Shift+E → dashboard, Worktrees tab directly (prefix C-w)
-keybind = cmd+shift+e=text:\x00\x17
-# Cmd+B → toggle sidebar (prefix b — moved off C-t now that sesh owns it)
-keybind = cmd+b=text:\x00b
 # Cmd+G → lazygit popup for current pane's directory (prefix g).
 # Also blocks the accidental M-g scratchpad trigger when Cmd+G passes through unbound.
 keybind = cmd+g=text:\x00g
