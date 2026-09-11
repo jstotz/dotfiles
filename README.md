@@ -64,9 +64,24 @@ Intel and Apple Silicon Macs use the same files and the system `/bin/zsh`.
    disabled. Its built-in help (`Ctrl-Space`, then `?`) shows the
    default bindings. Zsh does not start Herdr, so new panes cannot recurse.
 
-Ghostty retains Catppuccin Mocha and FiraCode Nerd Font. It uses native terminal
-key handling and Herdr's defaults, without tmux translations or WezTerm workspace
-automation. If Herdr is not installed, Ghostty opens Zsh.
+Ghostty retains Catppuccin Mocha and FiraCode Nerd Font. Its tab shortcuts send
+Herdr's Ctrl-Space prefix followed by the corresponding default action:
+
+| Shortcut | Herdr action |
+| --- | --- |
+| Cmd-T | New tab |
+| Cmd-W or Cmd-Option-W | Close the current tab, including its panes |
+| Ctrl-Tab or Cmd-Shift-] | Next tab |
+| Ctrl-Shift-Tab or Cmd-Shift-[ | Previous tab |
+| Cmd-1 through Cmd-9 | Select tab 1 through 9 |
+
+Cmd-9 selects the ninth Herdr tab, rather than Ghostty's last-tab behavior.
+Window, split, and undo shortcuts remain Ghostty-native; reopening a closed
+Herdr tab with Cmd-Shift-T is not supported by these mappings. If you change the
+Herdr prefix or tab action bindings, update the Ghostty sequences too.
+
+If Herdr is not installed, Ghostty opens Zsh, but these shortcuts still send their
+Herdr sequences; they do not fall back to native tab management.
 
 ## 1Password and local settings
 
