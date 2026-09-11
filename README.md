@@ -60,8 +60,8 @@ Intel and Apple Silicon Macs use the same files and the system `/bin/zsh`.
 
    Launch `nvim` to finish its plugin setup. Existing Neovim configuration is never
    replaced. Git LFS repositories can run `git lfs install --local`.
-7. Complete the 1Password setup below, then launch Ghostty. Herdr runs its own
-   onboarding on a fresh machine. Its built-in help (`Ctrl-B`, then `?`) shows the
+7. Complete the 1Password setup below, then launch Ghostty. Herdr's onboarding is
+   disabled. Its built-in help (`Ctrl-Space`, then `?`) shows the
    default bindings. Zsh does not start Herdr, so new panes cannot recurse.
 
 Ghostty retains Catppuccin Mocha and FiraCode Nerd Font. It uses native terminal
