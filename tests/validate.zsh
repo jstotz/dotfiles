@@ -69,7 +69,7 @@ for validation_path in /opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:
     XDG_CACHE_HOME="$validation_home/.cache" \
     MISE_TRUSTED_CONFIG_PATHS="$validation_home" \
     PATH="$validation_path" TERM=xterm-256color /bin/zsh -ic '
-      [[ "$EDITOR" == "zed --wait" ]] || exit 1
+      [[ "$EDITOR" == "nvim" && "$VISUAL" == "nvim" ]] || exit 1
       (( $+functions[compdef] )) || exit 1
       [[ $(bindkey -M viins "^[[A") == *up-line-or-history* ]] || exit 1
       [[ $(bindkey -M vicmd "^[[B") == *down-line-or-history* ]] || exit 1
@@ -85,7 +85,7 @@ done
 
 env -i HOME="$validation_home" ZDOTDIR="$validation_home" \
   PATH=/usr/bin:/bin TERM=xterm-256color /bin/zsh -lc '
-    [[ "$EDITOR" == "zed --wait" ]] || exit 1
+    [[ "$EDITOR" == "nvim" && "$VISUAL" == "nvim" ]] || exit 1
     [[ "$path[1]" == "$HOME/.local/bin" ]] || exit 1
     (( ! $+functions[compdef] )) || exit 1
   '

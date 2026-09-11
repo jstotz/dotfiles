@@ -7,5 +7,5 @@ fi
 
 typeset -U path PATH
 path=("$HOME/.local/bin" "$HOME/.local/share/mise/shims" $path)
-export EDITOR='zed --wait'
+export EDITOR='nvim'
 export VISUAL="$EDITOR"

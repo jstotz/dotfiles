@@ -1,7 +1,7 @@
 # Interactive configuration only; no package installation or network requests.
 [[ -o interactive ]] || return
 
-export EDITOR='zed --wait'
+export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
