@@ -1,0 +1,91 @@
+# Interactive configuration only; no package installation or network requests.
+[[ -o interactive ]] || return
+
+export EDITOR='zed --wait'
+export VISUAL="$EDITOR"
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacad
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS HIST_VERIFY INTERACTIVE_COMMENTS
+
+bindkey -v
+KEYTIMEOUT=1
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+bindkey '^Xe' edit-command-line
+
+# Also discover completions/plugins in non-login shells.
+if [[ -z ${HOMEBREW_PREFIX:-} ]]; then
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    export HOMEBREW_PREFIX=/opt/homebrew
+  elif [[ -x /usr/local/bin/brew ]]; then
+    export HOMEBREW_PREFIX=/usr/local
+  fi
+fi
+typeset -U fpath
+if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions"
+         "$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+fi
+[[ -d "$HOME/.docker/completions" ]] && fpath=("$HOME/.docker/completions" $fpath)
+autoload -Uz compinit
+# Ignore insecure completion directories instead of prompting during startup.
+compinit -i
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select
+
+alias ls='ls -F'
+alias l='ls -lAh'
+alias ll='ls -l'
+alias la='ls -A'
+alias gl='git pull --prune'
+alias glg='git log --graph --decorate --oneline --abbrev-commit'
+alias glga='glg --all'
+alias gp='git push origin HEAD'
+alias gpa='git push origin --all'
+alias gd='git diff'
+alias gc='git commit'
+alias gca='git commit -a'
+alias gco='git checkout'
+alias gb='git branch'
+alias ga='git add'
+alias gaa='git add -A'
+alias gcm='git commit -m'
+alias gcam='git commit -a -m'
+alias gs='git status -sb'
+alias gcl='git clone'
+alias vim='nvim'
+alias vi='nvim'
+alias vimdiff='nvim -d'
+
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+# Atuin owns Ctrl-R; fzf owns Ctrl-T and Alt-C.
+(( $+commands[fzf] )) && eval "$(FZF_CTRL_R_COMMAND= fzf --zsh)"
+(( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+
+# Plain Zsh history in both vi keymaps, including application cursor mode.
+for keymap in viins vicmd; do
+  bindkey -M "$keymap" '^[[A' up-line-or-history
+  bindkey -M "$keymap" '^[[B' down-line-or-history
+  bindkey -M "$keymap" '^[OA' up-line-or-history
+  bindkey -M "$keymap" '^[OB' down-line-or-history
+done
+unset keymap
+
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
+  [[ -r "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] &&
+    source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  # Highlighting must follow other widget definitions.
+  [[ -r "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] &&
+    source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi

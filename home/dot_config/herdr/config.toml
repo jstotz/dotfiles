@@ -1,0 +1,5 @@
+[ui]
+status_indicators = "dots"
+
+[ui.toast]
+delivery = "system"

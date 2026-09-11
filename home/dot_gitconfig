@@ -1,0 +1,28 @@
+[core]
+  editor = zed --wait
+  excludesfile = ~/.config/git/ignore
+  pager = delta
+  quotepath = false
+  autocrlf = input
+[credential]
+  helper = osxkeychain
+[color]
+  ui = auto
+[push]
+  default = simple
+[submodule]
+  fetchJobs = 4
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  dfs = diff --staged
+  lg = log -p
+  who = shortlog -s --
+  rb = rebase
+  cp = cherry-pick
+  du = diff @{upstream}
+[include]
+  path = ~/.gitconfig.local

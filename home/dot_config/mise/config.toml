@@ -1,0 +1,3 @@
+# Global fallback only; each project declares its own runtime requirements.
+[tools]
+node = "lts"

@@ -1,0 +1,71 @@
+tap 'ngrok/ngrok'
+
+# Terminal and shell
+brew 'chezmoi'
+brew 'herdr'
+brew 'starship'
+brew 'atuin'
+brew 'zoxide'
+brew 'fzf'
+brew 'direnv'
+brew 'mise'
+brew 'zsh-autosuggestions'
+brew 'zsh-syntax-highlighting'
+brew 'zsh-completions'
+
+# Everyday development
+brew 'git'
+brew 'git-lfs'
+brew 'gh'
+brew 'git-delta'
+brew 'difftastic'
+brew 'lazygit'
+brew 'ripgrep'
+brew 'fd'
+brew 'jq'
+brew 'yq'
+brew 'shellcheck'
+brew 'watchexec'
+brew 'neovim'
+
+# Cloud and containers
+brew 'awscli'
+brew 'aws-sso-util'
+brew 'k9s'
+brew 'kubectx'
+brew 'kustomize'
+brew 'kind'
+brew 'mas'
+
+# Applications and fonts
+cask '1password'
+cask '1password-cli'
+cask 'claude-code'
+cask 'codex'
+cask 'discord'
+cask 'doll'
+cask 'firefox'
+cask 'font-fira-code'
+cask 'font-fira-code-nerd-font'
+cask 'font-sf-pro'
+cask 'ghostty'
+cask 'google-chrome'
+cask 'google-cloud-sdk'
+cask 'itsycal'
+cask 'thaw@beta'
+cask 'meetingbar'
+cask 'ngrok'
+cask 'orbstack'
+cask 'raycast'
+cask 'shottr'
+cask 'slack'
+cask 'scroll-reverser'
+cask 'spotify'
+cask 'stats'
+cask 'zed'
+
+mas 'Amphetamine', id: 937_984_704
+mas 'DaisyDisk', id: 411_643_860
+mas 'Xcode', id: 497_799_835 if ENV['INSTALL_XCODE'] == '1'
+mas 'Spotica Menu', id: 570_549_457
+mas 'Color Picker', id: 1_545_870_783

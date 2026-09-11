@@ -1,0 +1,11 @@
+# Homebrew supports both Apple Silicon and Intel Macs.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/.local/share/mise/shims" $path)
+export EDITOR='zed --wait'
+export VISUAL="$EDITOR"

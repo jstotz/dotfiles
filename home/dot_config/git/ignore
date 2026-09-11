@@ -1,0 +1,6 @@
+.DS_Store
+*.orig
+*.swp
+*~
+.idea/
+.claude/*.local.*

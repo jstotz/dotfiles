@@ -1,8 +1,0 @@
-// Place your key bindings in this file to overwrite the defaults
-[
-  {
-    "key": "alt+t",
-    "command": "workbench.action.terminal.sendSequence",
-    "args": { "text": "\u0003cd '${fileDirname}'\u000D" }
-  },
-]
