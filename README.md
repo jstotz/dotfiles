@@ -1,169 +1,80 @@
 # Jay's dotfiles
 
-A small macOS workstation setup: chezmoi manages files, Homebrew Bundle installs
-applications and CLI tools, and mise manages language runtimes. Ghostty opens
-Herdr; pane shells use Zsh with Starship, Atuin, fzf, and zoxide.
+A small macOS setup using chezmoi, Homebrew, and mise, with Ghostty, Herdr,
+Zsh, Starship, and Neovim. Configuration and install scripts live in [home/](home/).
 
-There are no installation hooks, plugin downloads, or automatic package upgrades.
-Intel and Apple Silicon Macs use the same files and the system `/bin/zsh`.
+## Initial setup
 
-## Install
+Migrating from the old dotfiles? Start with [the migration guide](docs/migration.md).
 
-**Already using the old dotfiles? Follow [migration](docs/migration.md) first.**
-
-1. Install Apple's Command Line Tools (`xcode-select --install`) and
-   [Homebrew](https://brew.sh). Follow Homebrew's printed shell setup instructions.
-2. Install chezmoi and initialize the repository without applying yet:
-
-   ```sh
-   brew install chezmoi
-   chezmoi init https://github.com/jstotz/dotfiles.git
-   chezmoi diff
-   chezmoi apply
-   ```
-
-   For another branch, add `--branch BRANCH` to `chezmoi init`. For an existing
-   checkout, use `chezmoi --source /absolute/path/to/checkout` for each command,
-   or set `sourceDir` to that path in `chezmoi edit-config`. `.chezmoiroot` selects
-   the `home/` subdirectory automatically.
-3. Install the declared packages. Sign into the Mac App Store first for `mas`
-   applications; a failed install can be rerun after signing in.
-
-   ```sh
-   brew bundle --file="$HOME/.Brewfile" --no-upgrade
-   ```
-
-   Set `INSTALL_XCODE=1` on that command to include Xcode. Its default is off.
-4. Install the global Node LTS runtime:
-
-   ```sh
-   mise install --cd "$HOME"
-   ```
-
-   Projects declare other runtime versions in their own mise configuration.
-   `mise use node@VERSION` sets a project version; `mise use --global` changes your
-   global settings, which you can capture with `chezmoi re-add`.
-5. Set your local Git identity (this file stays outside the repository):
-
-   ```sh
-   git config --file "$HOME/.gitconfig.local" user.name 'Your Name'
-   git config --file "$HOME/.gitconfig.local" user.email 'you@example.com'
-   ```
-
-6. Zed is the default editor. Neovim uses its independent repository:
-
-   ```sh
-   if [ ! -e "$HOME/.config/nvim" ] && [ ! -L "$HOME/.config/nvim" ]; then
-     git clone https://github.com/jstotz/nvim "$HOME/.config/nvim"
-   fi
-   ```
-
-   Launch `nvim` to finish its plugin setup. Existing Neovim configuration is never
-   replaced. Git LFS repositories can run `git lfs install --local`.
-7. Complete the 1Password setup below, then launch Ghostty. Herdr's onboarding is
-   disabled. Its built-in help (`Ctrl-Space`, then `?`) shows the
-   default bindings. Zsh does not start Herdr, so new panes cannot recurse.
-
-Ghostty retains Catppuccin Mocha and FiraCode Nerd Font. Its tab shortcuts send
-Herdr's Ctrl-Space prefix followed by the corresponding default action:
-
-| Shortcut | Herdr action |
-| --- | --- |
-| Cmd-T | New tab |
-| Cmd-W or Cmd-Option-W | Close the current tab, including its panes |
-| Ctrl-Tab or Cmd-Shift-] | Next tab |
-| Ctrl-Shift-Tab or Cmd-Shift-[ | Previous tab |
-| Cmd-1 through Cmd-9 | Select tab 1 through 9 |
-
-Cmd-9 selects the ninth Herdr tab, rather than Ghostty's last-tab behavior.
-Window, split, and undo shortcuts remain Ghostty-native; reopening a closed
-Herdr tab with Cmd-Shift-T is not supported by these mappings. If you change the
-Herdr prefix or tab action bindings, update the Ghostty sequences too.
-
-If Herdr is not installed, Ghostty opens Zsh, but these shortcuts still send their
-Herdr sequences; they do not fall back to native tab management.
-
-## 1Password and local settings
-
-In 1Password **Settings → Developer**, enable the SSH agent and CLI desktop
-integration. Add/import your SSH keys into 1Password and register their public keys
-with your Git/SSH hosts. Private keys are not stored in this repository. See
-[SSH setup](https://developer.1password.com/docs/ssh/get-started/) and
-[CLI setup](https://developer.1password.com/docs/cli/get-started/).
-
-`op whoami` verifies CLI integration. `ssh -G github.com` shows effective SSH
-configuration without connecting. Once keys are ready, `ssh -T git@github.com`
-checks authentication (GitHub's successful greeting normally exits with code 1).
-HTTPS Git authentication continues to use the macOS Keychain.
-
-These files are deliberately unmanaged:
-
-| File | Purpose |
-| --- | --- |
-| `~/.gitconfig.local` | Git identity, signing, and machine-specific overrides |
-| `~/.ssh/config.local` | Host-specific SSH settings; loaded before global defaults |
-| `~/.zshrc.local` | Optional shell settings, loaded before highlighting |
-
-For a host needing a particular 1Password key, set `IdentityFile` to its **public**
-key file and `IdentitiesOnly yes` in the local SSH config. OrbStack's generated SSH
-config is included ahead of global defaults. No secret templates, startup-time
-vault lookups, or Git signing changes are included. Agent tools and their skills
-are managed independently.
-
-## Daily use
+Install Apple's Command Line Tools (`xcode-select --install`) and
+[Homebrew](https://brew.sh), following its shell setup instructions. Sign into
+the Mac App Store before installing App Store apps.
 
 ```sh
-chezmoi edit ~/.zshrc          # edit the source copy
-chezmoi diff                 # preview changes
-chezmoi apply                # deploy configuration files
-chezmoi cd                   # enter the source repository to commit changes
+brew install chezmoi
+chezmoi init https://github.com/jstotz/dotfiles.git
+chezmoi diff
+chezmoi apply
 ```
 
-Files are ordinary deployed copies, not symlinks. After editing a deployed file
-directly (including settings changed by an application's UI), use
-`chezmoi re-add /path/to/file` and review the source diff before committing.
-Use `chezmoi update` to pull and apply committed configuration changes.
+Applying also installs declared dependencies. Use `--exclude=scripts` for a
+files-only apply. To include optional Xcode, set `INSTALL_XCODE=1` on the first apply.
 
-Package operations remain explicit:
+For an existing checkout, use `chezmoi --source /absolute/path/to/checkout`,
+or set `sourceDir` in `chezmoi edit-config`.
+
+Set your Git identity locally:
 
 ```sh
-brew bundle --file="$HOME/.Brewfile" --no-upgrade  # install missing packages
-brew bundle --file="$HOME/.Brewfile"               # install and upgrade
-mise install --cd "$HOME"                         # install declared runtimes
-mise upgrade --cd "$HOME"                         # explicitly upgrade runtimes
+git config --file "$HOME/.gitconfig.local" user.name 'Your Name'
+git config --file "$HOME/.gitconfig.local" user.email 'you@example.com'
 ```
 
-Removing a package from the Brewfile does not uninstall it. Avoid blanket
-`brew bundle cleanup`: this list intentionally doesn't own every installed tool.
+Finish the machine-specific setup:
 
-Zsh uses built-in vi mode, normal arrow-key history, Atuin on Ctrl-R, fzf on Ctrl-T
-and Alt-C, and zoxide's `z`/`zi`. Only basic listing, direct Git shorthand, and
-Neovim aliases remain. Cloud authentication and project environment configuration
-belong to those tools/projects.
+- Enable 1Password's SSH agent and CLI integration, and register your public keys
+  with your Git hosts. See [SSH setup](https://developer.1password.com/docs/ssh/get-started/)
+  and [CLI setup](https://developer.1password.com/docs/cli/get-started/).
+- If you don't already have a Neovim config, clone
+  [jstotz/nvim](https://github.com/jstotz/nvim) into `~/.config/nvim`, then launch `nvim`.
+- Install and sign into your coding-agent CLIs separately, then launch Ghostty.
 
-## Layout and validation
-
-`home/` is chezmoi's source root. `dot_` maps to a leading dot, and `private_` sets
-restrictive permissions. The Brewfile deploys as `~/.Brewfile`; app configuration
-lives under `~/.config`, except lazygit, which uses its native macOS
-`~/Library/Application Support/lazygit` directory. Documentation and tests are not deployed. Global Git
-ignores contain editor/OS artifacts; project-specific ignores (including environment
-files) belong in each project's `.gitignore`.
-
-Run `zsh -f tests/validate.zsh` with chezmoi installed. It applies twice to an isolated
-temporary home, checks idempotence and permissions, exercises Zsh with and without
-optional tools, parses Git/SSH settings, and validates the Brewfile and Ghostty
-configuration when available. It never applies to your home, installs packages,
-starts Herdr, or authenticates to external services.
-
-To run those checks and then try the new shell interactively:
+## Making changes
 
 ```sh
-zsh -f tests/validate.zsh --preview
+chezmoi edit ~/.zshrc         # edit the source copy
+chezmoi diff                 # review pending changes
+chezmoi apply                # apply files and changed install scripts
+chezmoi cd                   # enter the repository to commit
+chezmoi update               # pull and apply committed changes
 ```
 
-The preview starts in the temporary home with a clean environment and isolated
-configuration, history, and cache paths. Type `exit` to return to your original
-shell; the temporary files remain available for inspection. It uses tools already
-installed and does not launch Ghostty or Herdr. This is configuration isolation,
-not a filesystem sandbox: commands you run can still access your Mac and services.
+You can also edit this checkout directly. After editing a deployed file, use
+`chezmoi re-add /path/to/file` to capture it, then review the diff.
+
+Where to change dependencies:
+
+- Applications and CLI tools: [Brewfile](home/dot_Brewfile).
+- Language runtimes: [mise config](home/dot_config/mise/config.toml).
+- Herdr plugins and integrations: [install script](home/run_onchange_after_install-herdr-plugins.sh).
+
+Removing a declaration does not uninstall it. Upgrades remain explicit:
+
+```sh
+brew bundle --file="$HOME/.Brewfile"
+mise upgrade --cd "$HOME"
+```
+
+Keep machine-specific settings in `~/.gitconfig.local`, `~/.ssh/config.local`,
+and `~/.zshrc.local`; these stay outside the repository.
+
+## Validation and preview
+
+```sh
+zsh -f tests/validate.zsh             # validate in a temporary home
+zsh -f tests/validate.zsh --preview   # also try the shell interactively
+```
+
+Neither command applies to your real home or installs dependencies. Type `exit`
+to leave the preview. It isolates configuration, not filesystem or network access.

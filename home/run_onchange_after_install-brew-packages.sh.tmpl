@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+# Brewfile checksum: {{ include "dot_Brewfile" | sha256sum }}
+# Alphabetical ordering runs this before install-herdr-plugins, after file deployment.
+if ! command -v brew >/dev/null 2>&1; then
+    printf 'Install Homebrew and follow its shell setup instructions, then rerun chezmoi apply.\n' >&2
+    exit 1
+fi
+
+HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --file={{ joinPath .chezmoi.destDir ".Brewfile" | shellQuote }} --no-upgrade

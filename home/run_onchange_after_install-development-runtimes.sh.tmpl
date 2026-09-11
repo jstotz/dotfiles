@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+# Runtime config checksum: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# Alphabetical ordering: Homebrew, development runtimes, then Herdr plugins.
+mise install --cd {{ .chezmoi.destDir | shellQuote }}

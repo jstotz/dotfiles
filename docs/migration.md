@@ -74,11 +74,11 @@ initialize an older remote branch by accident.
 brew install chezmoi
 chezmoi --source "$PWD" diff
 chezmoi --source "$PWD" apply
-brew bundle --file="$HOME/.Brewfile" --no-upgrade
-mise install --cd "$HOME"
 ```
 
-Review the mise baseline before installation if the backup contains other global
+Apply installs Homebrew packages, then mise runtimes, then Herdr plugins. Use
+`--exclude=scripts` for a files-only deployment.
+Review the mise baseline before applying if the backup contains other global
 runtimes. Move project requirements into project configurations. Installed runtimes
 are not removed; mise activation selects project runtimes in new shells.
 
@@ -86,7 +86,7 @@ Set `sourceDir` in `chezmoi edit-config` to this absolute checkout path for subs
 plain commands. The checkout need not be named `~/.dotfiles`. Do not remove an
 Orca-managed checkout through ordinary filesystem commands.
 
-Complete [1Password setup](../README.md#1password-and-local-settings). Verify Git
+Complete [machine-specific setup](../README.md#initial-setup). Verify Git
 identity, a fresh Zsh shell, Ghostty startup, and Herdr pane creation before closing
 your original terminal. Existing sessions can keep running throughout.
 
