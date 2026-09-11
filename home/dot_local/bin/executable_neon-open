@@ -1,0 +1,51 @@
+#!/bin/sh
+set -eu
+
+# neon-open - open a Neon branch database in the local SQL GUI
+# Defaults to the preview branch for the current git branch.
+fail() {
+  printf 'neon-open: %s\n' "$1" >&2
+  exit 1
+}
+
+[ "$#" -le 1 ] || fail 'usage: neon-open [branch]'
+[ -n "${NEON_PROJECT_ID:-}" ] || fail 'NEON_PROJECT_ID must be set'
+[ -n "${NEON_DB_NAME:-}" ] || fail 'NEON_DB_NAME must be set'
+for dependency in neon open pgrep sleep; do
+  command -v "$dependency" >/dev/null 2>&1 || fail "required command not found: $dependency"
+done
+
+if [ "$#" -eq 1 ]; then
+  branch=$1
+  [ -n "$branch" ] || fail 'branch must not be empty'
+else
+  command -v git >/dev/null 2>&1 || fail 'required command not found: git'
+  git_branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) ||
+    fail 'specify a branch when outside a Git checkout or on detached HEAD'
+  branch="preview/$git_branch"
+fi
+
+url=$(neon connection-string "$branch" \
+  --project-id "$NEON_PROJECT_ID" \
+  --database-name "$NEON_DB_NAME" \
+  --role-name neondb_owner) || fail 'could not get the Neon connection string'
+[ -n "$url" ] || fail 'Neon returned an empty connection string'
+
+# Beekeeper's handler is registered on `postgres:`.
+case "$url" in
+  postgresql://*) url="postgres://${url#postgresql://}" ;;
+esac
+
+# Allow a cold launch to finish, but never wait indefinitely.
+if ! pgrep -f '[/]Beekeeper Studio\.app/Contents/MacOS/' >/dev/null; then
+  open -a 'Beekeeper Studio' || fail 'could not launch Beekeeper Studio'
+  attempts=0
+  until pgrep -f '[/]Beekeeper Studio\.app/Contents/MacOS/' >/dev/null; do
+    [ "$attempts" -lt 30 ] || fail 'timed out waiting for Beekeeper Studio to start'
+    sleep 0.3
+    attempts=$((attempts + 1))
+  done
+  sleep 2
+fi
+
+open -a 'Beekeeper Studio' "$url"
