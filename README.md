@@ -5,8 +5,6 @@ Zsh, Starship, and Neovim. Configuration and install scripts live in [home/](hom
 
 ## Initial setup
 
-Migrating from the old dotfiles? Start with [the migration guide](docs/migration.md).
-
 Install Apple's Command Line Tools (`xcode-select --install`) and
 [Homebrew](https://brew.sh), following its shell setup instructions. Sign into
 the Mac App Store before installing App Store apps.
