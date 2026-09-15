@@ -5,6 +5,7 @@ kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
+edit_scrollback = "prefix+shift+e"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 resize_pane_left = "alt+h"
@@ -42,6 +43,18 @@ key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "toggle code changes and PR view"
+
+[[keys.command]]
+key = "prefix+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "toggle Neovim sidebar"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "open file in Neovim sidebar"
 
 [ui]
 status_indicators = "dots"
