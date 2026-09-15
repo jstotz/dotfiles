@@ -3,6 +3,7 @@ tap 'ngrok/ngrok'
 # Terminal and shell
 brew 'chezmoi'
 brew 'herdr'
+brew 'bun' # Shared code-review launcher.
 brew 'starship'
 brew 'atuin'
 brew 'zoxide'

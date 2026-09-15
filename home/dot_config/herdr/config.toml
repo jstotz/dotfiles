@@ -8,6 +8,8 @@ prefix = "ctrl+space"
 edit_scrollback = "prefix+shift+e"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
+# Reserve prefix+r for code review; resize directly with Alt+h/j/k/l.
+resize_mode = ""
 resize_pane_left = "alt+h"
 resize_pane_down = "alt+j"
 resize_pane_up = "alt+k"
@@ -39,10 +41,10 @@ command = "smart-splits.nvim.right"
 description = "navigate right (Neovim/Herdr)"
 
 [[keys.command]]
-key = "cmd+r"
-type = "plugin_action"
-command = "persiyanov.reviewr.toggle"
-description = "toggle code changes and PR view"
+key = "prefix+r"
+type = "shell"
+command = "$HOME/.local/bin/herdr-review"
+description = "review changes in difit"
 
 [[keys.command]]
 key = "prefix+e"

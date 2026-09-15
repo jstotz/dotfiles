@@ -1,0 +1,13 @@
+id = "dotfiles.review"
+name = "Code review"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Open difit in a dedicated Terminal Browser pane."
+platforms = ["macos", "linux"]
+
+[[panes]]
+id = "browser"
+title = "Code review"
+placement = "zoomed"
+# Hide browser chrome while keeping its quit shortcuts enabled.
+command = ["sh", "-c", 'exec "$HOME/.local/bin/terminal-browser" open "$HERDR_REVIEW_URL" --no-toolbar --no-frame --no-merge']

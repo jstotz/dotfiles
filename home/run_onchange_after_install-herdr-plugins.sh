@@ -20,4 +20,5 @@ herdr plugin install mrjones2014/smart-splits.nvim --ref ec76708f1617ef9e2ac3533
 # Neovim sidebar and agent annotations; companion is managed alongside this script.
 herdr plugin install ChmaraX/herdr-nvim --ref 0450dc7b4c40c986052541c00dba5cdcd1be7ac6 --yes
 herdr integration install codex
+herdr plugin link "$HOME/.config/herdr/plugins/local/review"
 herdr integration install claude
