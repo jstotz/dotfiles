@@ -7,7 +7,7 @@ kitty_graphics = true
 prefix = "ctrl+space"
 
 [[keys.command]]
-key = "prefix+i"
+key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "toggle code changes and PR view"
