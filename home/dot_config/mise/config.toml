@@ -2,3 +2,4 @@
 [tools]
 node = "lts"
 rust = "stable"
+zig = "latest"
