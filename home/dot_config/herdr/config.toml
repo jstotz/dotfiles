@@ -5,6 +5,8 @@ kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
 resize_pane_left = "alt+h"
 resize_pane_down = "alt+j"
 resize_pane_up = "alt+k"
