@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync, renameSync, rmSync } from 'node
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { captureSession } from './session';
+import { moveWorkspaceFirst } from './workspace';
 
 const herdr = process.env.HERDR_BIN_PATH || 'herdr';
 const config = join(homedir(), '.config/herdr/micro');
@@ -73,6 +74,8 @@ async function main() {
     save(statePath, { pane: agent.pane_id, session: agent.agent_session?.value || resumedSession });
     query('tab', 'rename', agent.tab_id, '🤖 micro');
     query('pane', 'rename', agent.pane_id, 'micro');
+    // Restore the first position on every launch; Herdr persists workspace order.
+    await moveWorkspaceFirst(process.env.HERDR_SOCKET_PATH || join(homedir(), '.config/herdr/herdr.sock'), agent.workspace_id);
     query('agent', 'focus', 'micro');
     // A resume ID explicitly passed above is known even before the first hook
     // report. Never use a previous ID for an independently started agent.
