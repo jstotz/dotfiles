@@ -27,6 +27,7 @@ brew 'yq'
 brew 'shellcheck'
 brew 'watchexec'
 brew 'neovim'
+brew 'tree-sitter-cli' # Compile Neovim syntax parsers.
 
 # Cloud and containers
 brew 'awscli'

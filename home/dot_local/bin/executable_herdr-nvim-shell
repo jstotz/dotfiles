@@ -1,0 +1,4 @@
+#!/bin/zsh -l
+# The sidebar prepends Homebrew to PATH. Restore the normal login environment
+# through .zprofile before launching Neovim and its language servers.
+exec nvim "$@"

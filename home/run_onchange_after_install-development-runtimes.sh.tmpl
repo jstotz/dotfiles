@@ -4,3 +4,6 @@ set -eu
 # Runtime config checksum: {{ include "dot_config/mise/config.toml" | sha256sum }}
 # Alphabetical ordering: Homebrew, development runtimes, then Herdr plugins.
 mise install --cd {{ .chezmoi.destDir | shellQuote }}
+
+# Also provision existing Node installations: postinstall only runs on install.
+mise exec --cd {{ .chezmoi.destDir | shellQuote }} -- sh -c {{ (index (fromToml (include "dot_config/mise/config.toml")) "tools" "node" "postinstall") | shellQuote }}

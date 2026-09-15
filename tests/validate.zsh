@@ -36,6 +36,11 @@ cm apply --exclude=scripts
 [[ -f "$validation_home/.zshrc" && ! -L "$validation_home/.zshrc" ]]
 [[ ! -e "$validation_home/README.md" && ! -e "$validation_home/tests" ]]
 [[ ! -e "$validation_home/.zshenv" ]]
+[[ -f "$validation_home/.config/nvim/init.lua" ]]
+[[ -f "$validation_home/.config/nvim/nvim-pack-lock.json" ]]
+[[ ! -e "$validation_home/.config/nvim/.git" ]]
+[[ -x "$validation_home/.local/bin/herdr-nvim-shell" ]]
+zsh -n "$validation_home/.local/bin/herdr-nvim-shell"
 [[ $(stat -f '%Lp' "$validation_home/.ssh") == 700 ]]
 [[ $(stat -f '%Lp' "$validation_home/.ssh/config") == 600 ]]
 
@@ -105,7 +110,7 @@ fi
 if (( $+commands[mise] )); then
   [[ $(env -i HOME="$validation_home" PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin \
     MISE_TRUSTED_CONFIG_PATHS="$validation_home" \
-    "${commands[mise]}" config get --file "$validation_home/.config/mise/config.toml" tools.node) == lts ]]
+    "${commands[mise]}" config get --file "$validation_home/.config/mise/config.toml" tools.node.version) == lts ]]
 fi
 if [[ -x /Applications/Ghostty.app/Contents/MacOS/ghostty ]]; then
   ghostty_output=$(env -i HOME="$validation_home" PATH=/usr/bin:/bin \

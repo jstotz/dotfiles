@@ -1,5 +1,9 @@
 # Global fallback only; each project declares its own runtime requirements.
 [tools]
-node = "lts"
+# Keep the language server and its fallback compiler in the same npm prefix.
+node = { version = "lts", postinstall = "npm install -g typescript@5.9.3 typescript-language-server@6.0.0" }
 rust = "stable"
 zig = "latest"
+
+# Standalone formatter; project-local tools take precedence.
+"npm:prettier" = "3.9.6"

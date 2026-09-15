@@ -34,8 +34,6 @@ Finish the machine-specific setup:
 - Enable 1Password's SSH agent and CLI integration, and register your public keys
   with your Git hosts. See [SSH setup](https://developer.1password.com/docs/ssh/get-started/)
   and [CLI setup](https://developer.1password.com/docs/cli/get-started/).
-- If you don't already have a Neovim config, clone
-  [jstotz/nvim](https://github.com/jstotz/nvim) into `~/.config/nvim`, then launch `nvim`.
 - Install and sign into your coding-agent CLIs separately, then launch Ghostty.
 
 ## Making changes

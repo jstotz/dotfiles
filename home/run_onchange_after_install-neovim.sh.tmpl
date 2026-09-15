@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+# Plugin revisions: {{ include "dot_config/nvim/nvim-pack-lock.json" | sha256sum }}
+# Language setup: {{ include "dot_config/nvim/lua/config/languages.lua" | sha256sum }}
+# Runs after Homebrew and mise. Neovim installs the locked plugins on first use.
+# Compilation stays in this install step, outside normal editor startup.
+mise exec --cd {{ .chezmoi.destDir | shellQuote }} -- nvim --headless \
+  '+lua local ok, err = pcall(function() require("nvim-treesitter").install(require("config.languages").parsers):wait(300000) end); if not ok then print(err); vim.cmd("cquit 1") end' \
+  +qa
+
+# A fresh process sees newly created parser directories in the runtime index.
+mise exec --cd {{ .chezmoi.destDir | shellQuote }} -- nvim --headless \
+  '+lua local ok, err = pcall(function() for _, lang in ipairs(require("config.languages").parsers) do assert(vim.treesitter.language.add(lang), "Missing parser: " .. lang) end end); if not ok then print(err); vim.cmd("cquit 1") end' \
+  +qa
