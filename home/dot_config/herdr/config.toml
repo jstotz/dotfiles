@@ -5,6 +5,7 @@ kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
+last_pane = "prefix+o"
 edit_scrollback = "prefix+shift+e"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
@@ -58,8 +59,27 @@ type = "plugin_action"
 command = "chmarax.herdr-nvim.pick-file"
 description = "open file in Neovim sidebar"
 
+[[keys.command]]
+key = "prefix+m"
+type = "shell"
+command = "$HOME/.local/bin/micro"
+description = "open micro"
+
 [ui]
 status_indicators = "dots"
 
 [ui.toast]
 delivery = "system"
+
+# Distinguish micro while preserving the normal colors of other workspaces.
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "machine", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }, "tab"],
+  ["agent"],
+]
+
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }],
+  ["branch", "git_status"],
+]

@@ -1,0 +1,2 @@
+#!/bin/zsh -l
+exec bun "$HOME/.local/lib/micro/main.ts" "$@"
