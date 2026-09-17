@@ -68,6 +68,9 @@ end
 vim.cmd = function(command) assert(command == 'qa'); quit = quit + 1 end
 local close_text = 'close test'
 package.loaded.review = {close = function() if close_text then export.send(close_text) end end}
+vim.env.HERDR_REVIEW_NVIM = nil
+export.setup()
+assert(vim.fn.maparg('q', 'n') == '', 'Ordinary Neovim must retain its q behavior')
 vim.env.HERDR_REVIEW_NVIM = '1'
 export.setup()
 available = {a}
@@ -93,3 +96,19 @@ available = {}
 package.loaded.review.close(); flush()
 assert(quit == 4, 'Clipboard-only review can close')
 print('PASS: close focuses recipient and exits; export stays open; failed delivery stays open')
+local fallback = vim.fn.maparg('q', 'n', false, true)
+assert(fallback.buffer == 1 and type(fallback.callback) == 'function')
+local sent_before = #sent
+fallback.callback()
+assert(quit == 5 and #sent == sent_before, 'Empty review must exit without exporting')
+print('PASS: dedicated startup buffer closes with q even without a review session')
+vim.notify('No changes to show', vim.log.levels.INFO)
+flush()
+local screen = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), '\n')
+assert(screen:find('No changes to review', 1, true))
+assert(screen:find('Press q to close this window.', 1, true))
+assert(vim.bo.buftype == 'nofile' and not vim.bo.modifiable and not vim.bo.modified)
+local notice_count = #notices
+vim.notify('An unrelated message')
+assert(#notices == notice_count + 1)
+print('PASS: empty review displays a read-only result screen; unrelated notifications pass through')

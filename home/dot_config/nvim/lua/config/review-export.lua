@@ -17,6 +17,38 @@ end
 
 function M.setup()
   if vim.env.HERDR_REVIEW_NVIM ~= "1" then return end
+  local startup = vim.api.nvim_get_current_buf()
+  -- CodeDiff reports an empty diff through notify, without opening a session
+  -- or emitting CodeDiffOpen. Render that result in our dedicated start buffer.
+  local notify = vim.notify
+  vim.notify = function(message, level, opts)
+    if message ~= "No changes to show" then return notify(message, level, opts) end
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(startup) or vim.api.nvim_get_current_buf() ~= startup then return end
+      if vim.bo[startup].modified or vim.api.nvim_buf_get_name(startup) ~= "" then return end
+      vim.bo[startup].buftype = "nofile"
+      vim.bo[startup].bufhidden = "wipe"
+      vim.bo[startup].swapfile = false
+      vim.api.nvim_buf_set_lines(startup, 0, -1, false, {
+        "", "", "    No changes to review", "",
+        "    There are no changes in the current review.", "",
+        "    Press q to close this window.", "",
+      })
+      vim.bo[startup].modifiable = false
+      vim.bo[startup].modified = false
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = "no"
+      vim.wo.cursorline = false
+      vim.wo.statusline = " Code Review"
+      local ns = vim.api.nvim_create_namespace("review_empty")
+      vim.api.nvim_buf_set_extmark(startup, ns, 2, 4, { end_col = 24, hl_group = "Title" })
+      vim.api.nvim_buf_set_extmark(startup, ns, 6, 4, { end_col = 33, hl_group = "Comment" })
+    end)
+  end
+  -- :Review leaves the startup buffer visible when there is no diff. Give
+  -- that buffer an exit key too; review.nvim owns q in actual review buffers.
+  vim.keymap.set("n", "q", function() finish() end, { buffer = 0, desc = "Close review window" })
   local review = require("review")
   local close = review.close
   review.close = function()
