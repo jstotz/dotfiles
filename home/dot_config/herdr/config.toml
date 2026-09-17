@@ -1,10 +1,15 @@
 onboarding = false
 
+# Declare the theme explicitly so plugins can inherit it.
+[theme]
+name = "catppuccin"
+
 [experimental]
 kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
+goto = ""
 last_pane = "prefix+o"
 edit_scrollback = "prefix+shift+e"
 new_worktree = ""
@@ -17,13 +22,19 @@ resize_pane_down = "alt+j"
 resize_pane_up = "alt+k"
 resize_pane_right = "alt+l"
 
-# Let Neovim handle its own splits before crossing a Herdr pane boundary.
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "search workspaces, agents, and projects"
+
 [[keys.command]]
 key = "prefix+shift+g"
 type = "plugin_action"
 command = "worktrunk.open"
 description = "switch or create worktree"
 
+# Let Neovim handle its own splits before crossing a Herdr pane boundary.
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
