@@ -22,5 +22,7 @@ herdr plugin install devashish2203/herdr-worktrunk --ref 4be9bbbaab1dfbecc81b298
 # Navigator v0.3.3 builds with the same mise-managed Cargo as renamer.
 mise exec --cd "$HOME" -- herdr plugin install thanhdat77/herdr-navigator --ref 03b803a00341d58382b6cda70a7cd618af5b8806 --yes
 herdr integration install codex
+# Workspace PR checks, review state, and board.
+herdr plugin install jmarbutt/herdr-spaces-pr-status --ref 23d26455f9d77863771fee75f287a75e52409e92 --yes
 herdr plugin link "$HOME/.config/herdr/plugins/local/review"
 herdr integration install claude

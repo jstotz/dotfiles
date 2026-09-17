@@ -60,6 +60,26 @@ command = "smart-splits.nvim.right"
 description = "navigate right (Neovim/Herdr)"
 
 [[keys.command]]
+key = "prefix+shift+i"
+type = "popup"
+command = "gh dash"
+description = "browse GitHub pull requests"
+width = "95%"
+height = "90%"
+
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "jmarbutt.spaces-pr-status.board"
+description = "workspace PR board"
+
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "jmarbutt.spaces-pr-status.open"
+description = "open current branch PR in GitHub"
+
+[[keys.command]]
 key = "prefix+r"
 type = "shell"
 command = "$HOME/.local/bin/herdr-review"
@@ -85,6 +105,7 @@ description = "open micro"
 
 [ui]
 status_indicators = "dots"
+sidebar_max_width = 40
 
 [ui.toast]
 delivery = "system"
@@ -100,4 +121,6 @@ rows = [
 rows = [
   ["state_icon", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }],
   ["branch", "git_status"],
+  [{ token = "$pr", fg = "#89b4fa", bold = true }, "$pr_checks", "$pr_review"],
+  [{ token = "$pr_threads", fg = "#9399b2" }],
 ]
