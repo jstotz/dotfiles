@@ -16,6 +16,7 @@ brew 'zsh-completions'
 
 # Everyday development
 brew 'git'
+brew 'worktrunk'
 brew 'git-lfs'
 brew 'gh'
 brew 'git-delta'

@@ -1,2 +1,4 @@
 # Removed browser review backend; Neovim exports comments directly.
 .local/lib/herdr-review/difit.ts
+# Project setup now belongs in each repository's .config/wt.toml.
+.config/herdr/micro/repositories.toml

@@ -89,6 +89,9 @@ for validation_path in /opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:
       if (( $+commands[fzf] )); then
         [[ $(bindkey -M viins "^T") == *fzf-file-widget* ]] || exit 1
       fi
+      if (( $+commands[wt] )); then
+        (( $+functions[wt] )) || exit 1
+      fi
     '
 done
 

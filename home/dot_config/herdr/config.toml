@@ -7,6 +7,7 @@ kitty_graphics = true
 prefix = "ctrl+space"
 last_pane = "prefix+o"
 edit_scrollback = "prefix+shift+e"
+new_worktree = ""
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 # Reserve prefix+r for code review; resize directly with Alt+h/j/k/l.
@@ -17,6 +18,12 @@ resize_pane_up = "alt+k"
 resize_pane_right = "alt+l"
 
 # Let Neovim handle its own splits before crossing a Herdr pane boundary.
+[[keys.command]]
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "worktrunk.open"
+description = "switch or create worktree"
+
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"

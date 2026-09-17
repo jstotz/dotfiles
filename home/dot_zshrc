@@ -66,6 +66,7 @@ alias vimdiff='nvim -d'
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+(( $+commands[wt] )) && eval "$(wt config shell init zsh)"
 # Atuin owns Ctrl-R; fzf owns Ctrl-T and Alt-C.
 (( $+commands[fzf] )) && eval "$(FZF_CTRL_R_COMMAND= fzf --zsh)"
 (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"

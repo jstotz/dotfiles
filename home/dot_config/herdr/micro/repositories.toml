@@ -1,4 +1,0 @@
-# Add per-repository setup only as requested. Paths identify primary checkouts.
-# [repositories.example]
-# path = "/absolute/path/to/repository"
-# symlink = [".envrc"]

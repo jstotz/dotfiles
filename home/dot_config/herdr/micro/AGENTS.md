@@ -34,12 +34,24 @@ verify its pane and working directory still exist. It is context, not a request
 to act. If it is missing or ambiguous, ask which project the user means.
 
 For a requested new worktree:
-- Fetch origin successfully before creating from origin/main. Resolve the remote
-  default branch when main does not exist (this dotfiles repo uses master).
-- Choose a short branch name from the task. With no task yet, allow Herdr to
-  generate a name. Never reset an existing branch to satisfy a naming collision.
-- Consult repositories.toml for explicitly configured files to symlink from the
-  primary checkout. Preserve existing destinations; do not infer secret files.
+- Load the official Worktrunk skill once per session for command, hook, and
+  configuration guidance. Reuse it; consult installed CLI help for details.
+- Use Worktrunk (`wt`) to create the checkout, then `herdr worktree open` to
+  register it as a native linked workspace. Do not use `herdr worktree create`,
+  which bypasses Worktrunk's repository hooks.
+- Read the repository's `.config/wt.toml` before creating. Base synchronization,
+  symlinks, and setup commands belong there, never in the public dotfiles.
+  Keep Worktrunk's default base unless the user explicitly requests another.
+- Choose a short branch name from the task; use a neutral unique name if there
+  is no task yet. Never reset an existing branch to resolve a naming collision.
+- Follow the upstream skill to create the worktree and obtain its path from
+  structured output. Run the reviewed repository hooks and wait for blocking setup.
+  If setup fails, report the error and retain the checkout; do not start an
+  agent or blindly retry creation. Fix the cause and rerun the failed hook.
+- Open the returned path with `herdr worktree open --cwd <repo> --path <path>`.
+  Use the returned workspace and pane IDs to start the requested agent, pass
+  the task, and focus it. Use the user's preferred agent; ask if unspecified
+  and it cannot be inferred from the caller context.
 - Keep worktree paths stable after launching processes. A later meaningful name
   should change the Git branch and workspace label, not move the checkout.
 - Start workers only when requested or implied by the task, and give each one
@@ -53,5 +65,6 @@ Use herdr-review to open or focus the workspace's Neovim Code Review tab.
 Launch it with a pane context from the intended workspace. Review exports
 select a receiving agent in that workspace and paste without submitting.
 
-Durable configuration belongs in the dotfiles repository. Runtime context and
+Generic durable configuration belongs in dotfiles; project-specific setup stays
+in each project repository. Runtime context and
 session IDs belong under ~/.local/state/micro; do not commit conversation state.
