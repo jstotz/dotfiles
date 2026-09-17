@@ -12,6 +12,11 @@
       "rev": "7a498ea65f658993237fb0469001bdf71f68cf94",
       "src": "https://github.com/alker0/chezmoi.vim"
     },
+    "codediff.nvim": {
+      "rev": "09d9ebef2cc5a5c04db7a349cd6c61bdf84ecc8e",
+      "src": "https://github.com/esmuellert/codediff.nvim",
+      "version": "'v4.0.6'"
+    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -34,6 +39,10 @@
       "rev": "5adc81b26232954cd7a90f158aa7844c18fc3165",
       "src": "https://github.com/NeogitOrg/neogit"
     },
+    "nui.nvim": {
+      "rev": "10fc361835c856ba4233ef5ea135b919bf3dce97",
+      "src": "https://github.com/MunifTanjim/nui.nvim"
+    },
     "nvim-lspconfig": {
       "rev": "ac9d2f7c4757db6320cab6697fe73e5e8adb2457",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -46,6 +55,11 @@
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "review.nvim": {
+      "rev": "d0b2c3821f6beed0b32608b425364296f4008524",
+      "src": "https://github.com/georgeguimaraes/review.nvim",
+      "version": "'v1.10.1'"
     },
     "smart-splits.nvim": {
       "rev": "ec76708f1617ef9e2ac353357fe52d2c997a0f06",

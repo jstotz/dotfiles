@@ -25,6 +25,9 @@ vim.pack.add({
   "https://github.com/xvzc/chezmoi.nvim",
   "https://github.com/sindrets/diffview.nvim",
   "https://github.com/NeogitOrg/neogit",
+  { src = "https://github.com/esmuellert/codediff.nvim", version = "v4.0.6" },
+  "https://github.com/MunifTanjim/nui.nvim",
+  { src = "https://github.com/georgeguimaraes/review.nvim", version = "v1.10.1" },
   -- Keep these aligned with run_onchange_after_install-herdr-plugins.sh.
   { src = "https://github.com/mrjones2014/smart-splits.nvim", version = "ec76708f1617ef9e2ac353357fe52d2c997a0f06" },
   { src = "https://github.com/ChmaraX/herdr-nvim", version = "0450dc7b4c40c986052541c00dba5cdcd1be7ac6" },

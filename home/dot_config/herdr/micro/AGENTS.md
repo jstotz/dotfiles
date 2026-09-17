@@ -49,9 +49,9 @@ Inspect work before proposing cleanup. Do not delete worktrees, discard changes,
 close unrelated agents, commit, push, or send external messages without user
 authorization. Normal setup and navigation should not require repeated approval.
 
-Use the existing herdr-review launcher for requested difit reviews. Launch it
-with the intended receiving agent's pane context, not micro's, unless the user
-wants feedback delivered here.
+Use herdr-review to open or focus the workspace's Neovim Code Review tab.
+Launch it with a pane context from the intended workspace. Review exports
+select a receiving agent in that workspace and paste without submitting.
 
 Durable configuration belongs in the dotfiles repository. Runtime context and
 session IDs belong under ~/.local/state/micro; do not commit conversation state.

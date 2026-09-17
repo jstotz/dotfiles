@@ -7,4 +7,3 @@ zig = "latest"
 
 # Standalone formatter; project-local tools take precedence.
 "npm:prettier" = "3.9.6"
-"npm:difit" = "5.0.12"

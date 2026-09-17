@@ -45,7 +45,7 @@ description = "navigate right (Neovim/Herdr)"
 key = "prefix+r"
 type = "shell"
 command = "$HOME/.local/bin/herdr-review"
-description = "review changes in difit"
+description = "review changes in Neovim"
 
 [[keys.command]]
 key = "prefix+e"

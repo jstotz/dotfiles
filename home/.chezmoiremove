@@ -1,0 +1,2 @@
+# Removed browser review backend; Neovim exports comments directly.
+.local/lib/herdr-review/difit.ts
