@@ -23,6 +23,12 @@ resize_pane_up = "alt+k"
 resize_pane_right = "alt+l"
 
 [[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "vjeantet.palette.open"
+description = "search commands"
+
+[[keys.command]]
 key = "prefix+g"
 type = "plugin_action"
 command = "herdr-navigator.open"

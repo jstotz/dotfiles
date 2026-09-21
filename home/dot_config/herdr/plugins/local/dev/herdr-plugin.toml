@@ -1,0 +1,19 @@
+id = "dotfiles.dev"
+name = "Development server"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Start the current repository's Worktrunk development services."
+platforms = ["macos", "linux"]
+
+# Actions are searchable in the palette without a dedicated keybinding.
+[[actions]]
+id = "start"
+title = "Start development server (wt dev)"
+contexts = ["workspace", "tab", "pane"]
+command = ["sh", "-c", 'exec "$HOME/.local/bin/herdr-dev" --open']
+
+[[panes]]
+id = "server"
+title = "Dev server"
+placement = "tab"
+command = ["sh", "-c", 'exec "$HOME/.local/bin/herdr-dev"']

@@ -1,0 +1,24 @@
+#!/bin/zsh -l
+# Each repository owns its wt dev alias and service configuration.
+# The login environment makes Worktrunk and mise available in plugin panes.
+if [[ ${1:-} == --open ]]; then
+    # Direct plugin actions run in the plugin directory. Recover the caller's
+    # directory from Herdr's context; palette dispatch also supplies its cwd.
+    project_dir=${HERDR_ACTIVE_PANE_CWD:-}
+    if [[ -z $project_dir && -n ${HERDR_PLUGIN_CONTEXT_JSON:-} ]]; then
+        project_dir=$(printf '%s' "$HERDR_PLUGIN_CONTEXT_JSON" | jq -er '.focused_pane_cwd // .workspace_cwd // empty') || exit $?
+    fi
+    opened=$(herdr plugin pane open --plugin dotfiles.dev --entrypoint server --cwd "${project_dir:-$PWD}" --focus) || exit $?
+    tab=$(printf '%s' "$opened" | jq -er '.result.plugin_pane.pane.tab_id') || exit $?
+    herdr tab rename "$tab" 'Dev server' || exit $?
+    herdr tab focus "$tab"
+    exit $?
+fi
+
+wt dev
+dev_status=$?
+if (( dev_status != 0 && dev_status != 130 )); then
+    print -u2 -- "Development server exited ($dev_status). See the output above."
+    read -r '?Press Enter to close…'
+fi
+exit "$dev_status"
