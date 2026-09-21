@@ -1,8 +1,10 @@
 tap 'ngrok/ngrok'
+tap 'vjeantet/tap'
 
 # Terminal and shell
 brew 'chezmoi'
 brew 'herdr'
+brew 'vjeantet/tap/alerter' # Clickable Herdr agent notifications.
 brew 'bun' # Herdr workflow launchers.
 brew 'starship'
 brew 'atuin'

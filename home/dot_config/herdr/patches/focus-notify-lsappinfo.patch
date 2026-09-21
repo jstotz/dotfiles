@@ -1,0 +1,28 @@
+diff --git a/src/focus.rs b/src/focus.rs
+index 4442a70..61e81a5 100644
+--- a/src/focus.rs
++++ b/src/focus.rs
+@@ -253,7 +253,10 @@ fn bundle_id_from_lsappinfo(output: &str) -> Option<String> {
+     output
+         .lines()
+         .map(str::trim)
+-        .find_map(|line| line.strip_prefix("bundleID="))
++        .find_map(|line| {
++            line.strip_prefix("bundleID=")
++                .or_else(|| line.strip_prefix("\"CFBundleIdentifier\"="))
++        })
+         .map(|value| value.trim_matches('"').trim().to_string())
+         .filter(|value| !value.is_empty() && !value.starts_with('['))
+ }
+@@ -489,6 +492,11 @@ mod tests {
+             bundle_id_from_lsappinfo(info).as_deref(),
+             Some("net.kovidgoyal.kitty")
+         );
++        assert_eq!(
++            bundle_id_from_lsappinfo("\"CFBundleIdentifier\"=\"com.mitchellh.ghostty\"\n").as_deref(),
++            Some("com.mitchellh.ghostty")
++        );
++        assert_eq!(bundle_id_from_lsappinfo("\"CFBundleIdentifier\"=[ NULL ]"), None);
+         // `bundle path` and `executable path` are separate fields, and an app
+         // without a bundle identifier must not become a binding.
+         assert_eq!(bundle_id_from_lsappinfo("    bundleID=[ NULL ] \n"), None);

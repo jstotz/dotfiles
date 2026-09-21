@@ -108,7 +108,8 @@ status_indicators = "dots"
 sidebar_max_width = 40
 
 [ui.toast]
-delivery = "system"
+# herdr-focus-notify owns desktop notifications and their click-to-focus action.
+delivery = "off"
 
 # Distinguish micro while preserving the normal colors of other workspaces.
 [ui.sidebar.agents]
