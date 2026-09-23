@@ -4,7 +4,12 @@ require("mini.basics").setup({
 })
 require("mini.surround").setup()
 require("mini.ai").setup()
-require("mini.diff").setup()
+-- Show changes against the Git index in the gutter beside line numbers.
+require("mini.diff").setup({
+  view = {
+    style = "sign",
+  },
+})
 vim.keymap.set("n", "<leader>go", function()
   MiniDiff.toggle_overlay()
 end, { desc = "Toggle diff overlay" })
