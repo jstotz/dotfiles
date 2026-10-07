@@ -1,12 +1,14 @@
 require("diffview").setup({})
-require("codediff").setup({})
+require("codediff").setup({
+  explorer = { view_mode = "tree" },
+})
 -- Code review: closing exports comments to the clipboard and archives them.
 require("review").setup({
   keymaps = { send_sidekick = false },
   export = { clipboard = true, on_export = require("config.review-export").send },
 })
 require("config.review-export").setup()
-vim.keymap.set("n", "<leader>gr", "<cmd>Review<cr>", { desc = "Review with comments" })
+require("config.review-scope").setup()
 require("neogit").setup({
   integrations = { mini_pick = true, diffview = true },
   -- Preserve smart-splits navigation in the status view.
