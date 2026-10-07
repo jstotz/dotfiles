@@ -1,0 +1,9 @@
+# Match the Catppuccin flavors used by Neovim and Herdr.
+theme_dark = "catppuccin-mocha"
+theme_light = "catppuccin-latte"
+# Herdr launches tuicr from a login shell that does not read .zshrc.
+editor = "nvim"
+# Homebrew manages upgrades.
+no_update_check = true
+# Vim modes in the comment box; save with :w or Alt-Enter.
+comment_vim = true

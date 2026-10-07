@@ -1,13 +1,13 @@
 id = "dotfiles.review"
 name = "Code review"
-version = "0.1.0"
+version = "0.2.0"
 min_herdr_version = "0.9.0"
-description = "Review code and send comments to agents from Neovim."
+description = "Review code in tuicr and send comments to agents."
 platforms = ["macos", "linux"]
 
 [[panes]]
-id = "nvim"
+id = "tuicr"
 title = "Code review"
 # A normal tab keeps smart-splits from navigating into the pane behind a zoom.
 placement = "tab"
-command = ["sh", "-c", 'export HERDR_REVIEW_NVIM=1; exec "$HOME/.local/bin/herdr-nvim-shell" +Review']
+command = ["zsh", "-lc", 'exec bun "$HOME/.local/lib/herdr-review/session.ts"']

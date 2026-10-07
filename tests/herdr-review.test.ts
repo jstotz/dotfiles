@@ -31,7 +31,8 @@ test.each(['Code Review', '[3] Code Review', '[12] Code Review'])(
   `);
 
   const env = {...process.env, PATH:bin+':'+process.env.PATH, HERDR_BIN_PATH:join(bin,'herdr'),
-    HERDR_ENV:'1', HERDR_PANE_ID:'wrong', HERDR_ACTIVE_PANE_ID:'original', TEST_ROOT:root, TEST_REVIEW_LABEL:label};
+    HERDR_ENV:'1', HERDR_PANE_ID:'wrong', HERDR_ACTIVE_PANE_ID:'original', TEST_ROOT:root, TEST_REVIEW_LABEL:label,
+    XDG_STATE_HOME:join(root,'state')};
   try {
     for (let i = 0; i < 2; i++) {
       const child = Bun.spawn([process.execPath, launcher], {env, stdout:'pipe', stderr:'pipe'});
@@ -39,7 +40,7 @@ test.each(['Code Review', '[3] Code Review', '[12] Code Review'])(
     }
     const calls = readFileSync(join(root,'calls'),'utf8').trim().split('\n').map(x => JSON.parse(x));
     const open = calls.find(x => x[0] === 'plugin' && x[2] === 'open');
-    expect(open[open.indexOf('--entrypoint')+1]).toBe('nvim');
+    expect(open[open.indexOf('--entrypoint')+1]).toBe('tuicr');
     expect(open[open.indexOf('--placement')+1]).toBe('tab');
     expect(open[open.indexOf('--workspace')+1]).toBe('workspace');
     expect(open).not.toContain('--target-pane');
@@ -51,5 +52,7 @@ test.each(['Code Review', '[3] Code Review', '[12] Code Review'])(
     expect(existsSync(join(root,'clipboard'))).toBe(false);
 
     expect(calls).toContainEqual(['pane','get','original']);
+    // The review session sends comments back to the pane that asked for review.
+    expect(JSON.parse(readFileSync(join(root,'state/herdr-review/workspace.json'),'utf8'))).toEqual({pane_id:'original'});
   } finally { rmSync(root,{recursive:true,force:true}); }
 });

@@ -61,9 +61,9 @@ Inspect work before proposing cleanup. Do not delete worktrees, discard changes,
 close unrelated agents, commit, push, or send external messages without user
 authorization. Normal setup and navigation should not require repeated approval.
 
-Use herdr-review to open or focus the workspace's Neovim Code Review tab.
+Use herdr-review to open or focus the workspace's tuicr Code Review tab.
 Launch it with a pane context from the intended workspace. Review exports
-select a receiving agent in that workspace and paste without submitting.
+go to the requesting agent (or one chosen in that workspace) without submitting.
 
 Generic durable configuration belongs in dotfiles; project-specific setup stays
 in each project repository. Runtime context and

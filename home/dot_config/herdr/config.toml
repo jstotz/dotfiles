@@ -94,7 +94,7 @@ description = "open current branch PR in GitHub"
 key = "prefix+r"
 type = "shell"
 command = "$HOME/.local/bin/herdr-review"
-description = "review changes in Neovim"
+description = "review changes in tuicr"
 
 [[keys.command]]
 key = "prefix+e"

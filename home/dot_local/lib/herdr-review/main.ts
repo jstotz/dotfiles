@@ -1,4 +1,7 @@
 import { spawnSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
+import { sourceStatePath } from './source';
 
 const herdr = process.env.HERDR_BIN_PATH || 'herdr';
 function command(bin: string, args: string[]): string {
@@ -16,12 +19,19 @@ function launch() {
   const tabs = query('tab', 'list', '--workspace', pane.workspace_id).tabs;
   // herdr-automatic-rename adds a jump-key number even to manually named tabs.
   const existing = tabs.find((tab: any) => tab.label.replace(/^\[\d+\]\s+/, '') === 'Code Review');
+  // The review session sends comments to the agent in the pane that most
+  // recently asked for review, so record it even when reusing the tab.
+  if (pane.tab_id !== existing?.tab_id) {
+    const state = sourceStatePath(pane.workspace_id);
+    mkdirSync(dirname(state), { recursive: true });
+    writeFileSync(state, JSON.stringify({ pane_id: pane.pane_id }));
+  }
   if (existing) {
     query('tab', 'focus', existing.tab_id);
     return;
   }
   const repo = command('git', ['-C', pane.foreground_cwd || pane.cwd, 'rev-parse', '--show-toplevel']);
-  const opened = query('plugin', 'pane', 'open', '--plugin', 'dotfiles.review', '--entrypoint', 'nvim',
+  const opened = query('plugin', 'pane', 'open', '--plugin', 'dotfiles.review', '--entrypoint', 'tuicr',
     '--placement', 'tab', '--workspace', pane.workspace_id, '--cwd', repo, '--focus');
   query('tab', 'rename', opened.plugin_pane.pane.tab_id, 'Code Review');
   // Explicit focus also updates the attached client's selected tab.
