@@ -5,6 +5,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { captureSession } from './session';
 import { moveWorkspaceFirst } from './workspace';
+import { findMicroAgent } from './agent';
 
 const herdr = process.env.HERDR_BIN_PATH || 'herdr';
 const config = join(homedir(), '.config/herdr/micro');
@@ -38,10 +39,8 @@ async function main() {
   save(join(lockPath, 'owner.json'), { pid: process.pid });
   try {
     const state = read(statePath);
-    let agent;
+    let agent = findMicroAgent(query, state, config);
     let resumedSession: string | undefined;
-    try { agent = query('agent', 'get', 'micro').agent; } catch {}
-    if (agent && agent.cwd !== config) throw new Error('An agent named micro already exists outside the micro directory');
     if (agent) {
       state.pane = agent.pane_id;
       state.session = agent.agent_session?.value;
@@ -67,7 +66,7 @@ async function main() {
       // Explicitly requested for micro only; other agents keep their defaults.
       args.push('--dangerously-bypass-approvals-and-sandbox');
       query('agent', 'start', 'micro', '--kind', 'codex', '--pane', pane.pane_id, '--', ...args);
-      agent = query('agent', 'get', 'micro').agent;
+      agent = query('agent', 'get', pane.pane_id).agent;
     }
     // Readiness can precede the integration's session report. Never associate
     // an old conversation ID with a newly detected agent.
@@ -76,11 +75,11 @@ async function main() {
     query('pane', 'rename', agent.pane_id, 'micro');
     // Restore the first position on every launch; Herdr persists workspace order.
     await moveWorkspaceFirst(process.env.HERDR_SOCKET_PATH || join(homedir(), '.config/herdr/herdr.sock'), agent.workspace_id);
-    query('agent', 'focus', 'micro');
+    query('agent', 'focus', agent.pane_id);
     // A resume ID explicitly passed above is known even before the first hook
     // report. Never use a previous ID for an independently started agent.
     const session = agent.agent_session?.value || resumedSession
-      || await captureSession(agent, () => query('agent', 'get', 'micro').agent);
+      || await captureSession(agent, () => query('agent', 'get', agent.pane_id).agent);
     save(statePath, { pane: agent.pane_id, session });
   } finally { rmSync(lockPath, { recursive: true, force: true }); }
 }
