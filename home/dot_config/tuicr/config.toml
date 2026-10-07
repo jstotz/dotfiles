@@ -9,3 +9,5 @@ no_update_check = true
 comment_vim = true
 # Re-read the local diff so commits and new edits appear without :e.
 diff_watch_interval_ms = 2000
+# libgit2 keeps a stale index after outside commits; the git CLI stays current.
+backend = "cli"
