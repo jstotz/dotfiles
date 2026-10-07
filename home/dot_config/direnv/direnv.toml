@@ -1,0 +1,8 @@
+[whitelist]
+# Automatically allow .envrc files throughout the shared worktree root.
+prefix = [
+  "~/Projects/axleauto",
+  "~/conductor/workspaces",
+  "~/orca/workspaces",
+  "~/worktrees",
+]

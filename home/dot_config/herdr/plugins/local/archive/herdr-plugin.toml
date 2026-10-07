@@ -1,0 +1,12 @@
+id = "dotfiles.archive"
+name = "Archive workspace"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Archive the associated linked worktree and close its workspace."
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "archive"
+title = "Archive"
+contexts = ["workspace", "tab", "pane"]
+command = ["sh", "-c", 'exec "$HOME/.local/bin/herdr-archive"']

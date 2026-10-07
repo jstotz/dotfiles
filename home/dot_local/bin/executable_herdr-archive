@@ -1,0 +1,2 @@
+#!/bin/zsh -l
+exec bun "$HOME/.local/lib/herdr-archive/main.ts" "$@"

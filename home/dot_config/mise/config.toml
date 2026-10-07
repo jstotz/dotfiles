@@ -1,7 +1,20 @@
+[settings]
+# Keep these trusted roots in sync with direnv/direnv.toml's whitelist.prefix.
+trusted_config_paths = [
+  "~/Projects/axleauto",
+  "~/conductor/workspaces",
+  "~/orca/workspaces",
+  "~/worktrees",
+]
+
 # Global fallback only; each project declares its own runtime requirements.
 [tools]
 # Keep the language server and its fallback compiler in the same npm prefix.
 node = { version = "lts", postinstall = "npm install -g typescript@5.9.3 typescript-language-server@6.0.0" }
+# Build the Git snapshot and Worktrunk archive helpers on chezmoi apply.
+go = "1.25.4"
+# Also used by the helper integration tests.
+python = "3"
 rust = "stable"
 zig = "latest"
 

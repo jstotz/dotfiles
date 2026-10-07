@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+# Build once on apply, never during snapshot/archive or worktree removal.
+# Go source: {{ include "dot_local/lib/dotfiles/worktree-tools/main.go" | sha256sum }}
+# Go module: {{ include "dot_local/lib/dotfiles/worktree-tools/go.mod" | sha256sum }}
+source_dir="$HOME/.local/lib/dotfiles/worktree-tools"
+mkdir -p "$source_dir/bin"
+mise exec --cd "$HOME" -- go -C "$source_dir" build -trimpath -o "$source_dir/bin/worktree-tools" .

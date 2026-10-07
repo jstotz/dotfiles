@@ -1,0 +1,3 @@
+#!/bin/sh
+# Built by run_onchange_after_install-worktree-tools.sh.tmpl during chezmoi apply.
+exec "$HOME/.local/lib/dotfiles/worktree-tools/bin/worktree-tools" snapshot "$@"
