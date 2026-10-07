@@ -1,5 +1,9 @@
 onboarding = false
 
+# Shared checkout root for Herdr and other worktree tools.
+[worktrees]
+directory = "~/worktrees"
+
 # Declare the theme explicitly so plugins can inherit it.
 [theme]
 name = "catppuccin"
@@ -9,6 +13,7 @@ kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
+switch_workspace = "ctrl+alt+1..9"
 goto = ""
 last_pane = "prefix+o"
 edit_scrollback = "prefix+shift+e"
@@ -110,6 +115,8 @@ command = "$HOME/.local/bin/micro"
 description = "open micro"
 
 [ui]
+# Automatic naming adopts new tabs; manually named tabs keep their labels.
+prompt_new_tab_name = false
 status_indicators = "dots"
 sidebar_max_width = 40
 
@@ -120,8 +127,8 @@ delivery = "off"
 # Distinguish micro while preserving the normal colors of other workspaces.
 [ui.sidebar.agents]
 rows = [
-  ["state_icon", "machine", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }, "tab"],
-  ["agent"],
+  ["state_icon", "machine", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }],
+  ["tab"],
 ]
 
 [ui.sidebar.spaces]

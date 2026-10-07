@@ -72,6 +72,13 @@ alias vimdiff='nvim -d'
 (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 
+# Update Herdr tab names as commands start and return to the prompt.
+for herdr_rename_hook in "$HOME"/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
+  source "$herdr_rename_hook"
+  break
+done
+unset herdr_rename_hook
+
 # Plain Zsh history in both vi keymaps, including application cursor mode.
 for keymap in viins vicmd; do
   bindkey -M "$keymap" '^[[A' up-line-or-history

@@ -4,7 +4,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 const launcher = resolve('home/dot_local/lib/herdr-review/main.ts');
 
-test('opens and focuses one Code Review tab per workspace, including from a shell', async () => {
+test.each(['Code Review', '[3] Code Review', '[12] Code Review'])(
+  'reuses the review tab after it is labeled %s, including from a shell', async (label) => {
   const root = mkdtempSync(join(tmpdir(), 'herdr-review-test-'));
   const bin = join(root, 'bin'); mkdirSync(bin);
   const writeExe = (name: string, text: string) => writeFileSync(join(bin, name), '#!/usr/bin/env bun\n' + text, {mode:0o700});
@@ -15,7 +16,9 @@ test('opens and focuses one Code Review tab per workspace, including from a shel
     appendFileSync(root + '/calls', JSON.stringify(args) + '\\n');
     if (args[0] === 'tab' && args[1] === 'list') {
       if (args[2] !== '--workspace' || args[3] !== 'workspace') process.exit(1);
-      console.log(JSON.stringify({result:{tabs:existsSync(root+'/review-named') ? [{tab_id:'review-tab',label:'Code Review'}] : []}})); process.exit(0);
+      const tabs = [{tab_id:'unrelated-tab',label:'[1] Code Review notes'}];
+      if (existsSync(root+'/review-named')) tabs.push({tab_id:'review-tab',label:process.env.TEST_REVIEW_LABEL});
+      console.log(JSON.stringify({result:{tabs}})); process.exit(0);
     }
     if (args[0] === 'tab' && args[1] === 'rename' && args[3] === 'Code Review') writeFileSync(root+'/review-named','');
     if (args[0] === 'plugin' && args[2] === 'open') {
@@ -28,7 +31,7 @@ test('opens and focuses one Code Review tab per workspace, including from a shel
   `);
 
   const env = {...process.env, PATH:bin+':'+process.env.PATH, HERDR_BIN_PATH:join(bin,'herdr'),
-    HERDR_ENV:'1', HERDR_PANE_ID:'wrong', HERDR_ACTIVE_PANE_ID:'original', TEST_ROOT:root};
+    HERDR_ENV:'1', HERDR_PANE_ID:'wrong', HERDR_ACTIVE_PANE_ID:'original', TEST_ROOT:root, TEST_REVIEW_LABEL:label};
   try {
     for (let i = 0; i < 2; i++) {
       const child = Bun.spawn([process.execPath, launcher], {env, stdout:'pipe', stderr:'pipe'});

@@ -14,7 +14,8 @@ function launch() {
   if (!source) throw new Error('Herdr did not identify the calling pane');
   const pane = query('pane', 'get', source).pane;
   const tabs = query('tab', 'list', '--workspace', pane.workspace_id).tabs;
-  const existing = tabs.find((tab: any) => tab.label === 'Code Review');
+  // herdr-automatic-rename adds a jump-key number even to manually named tabs.
+  const existing = tabs.find((tab: any) => tab.label.replace(/^\[\d+\]\s+/, '') === 'Code Review');
   if (existing) {
     query('tab', 'focus', existing.tab_id);
     return;
