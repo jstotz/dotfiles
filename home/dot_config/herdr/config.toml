@@ -135,6 +135,8 @@ rows = [
 rows = [
   ["state_icon", { token = "workspace", rules = [{ equals = "micro", fg = "#fab387", bold = true }] }],
   ["branch", "git_status"],
-  [{ token = "$pr", fg = "#89b4fa", bold = true }, "$pr_checks", "$pr_review"],
+  # The PR number gets its own row so its status isn't truncated.
+  [{ token = "$pr", fg = "#89b4fa", bold = true }],
+  ["$pr_checks", "$pr_review"],
   [{ token = "$pr_threads", fg = "#9399b2" }],
 ]
