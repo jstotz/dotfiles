@@ -1,0 +1,41 @@
+Herdr Mods — Better Changes, Better Files, Better Sidebar, Better Tabs, Branch PR,
+and Branch Issue
+Copyright 2026 Tawsif Aqib
+
+Better Changes adapts behavior and code from Herdr Desktop's shipped Changes mod.
+Better Files adapts behavior and code from Herdr Desktop's shipped Files mod.
+Herdr Desktop is available at https://github.com/herdrdev/herdr-app and is
+licensed under the Apache License, Version 2.0.
+
+Better Sidebar adapts code from Herdr Desktop's shipped spaces and agents mods.
+Its bundled navigation and pull-request SVG icons are also adapted from
+Herdr Desktop.
+
+Better Tabs adapts Herdr Desktop's shipped tabs mod through the former Factory
+Tabs clone. Its bundled close, spinner, file, changes, and window-control SVG
+icons are adapted from Herdr Desktop as well. It adds configurable toolbar
+actions, trusted local hooks, an opt-in shared button registry, and overflow.
+
+Branch PR extracts the pull-request integration originally developed in
+herdr-workflow by Tawsif Aqib, including its native UI, GitHub CLI Go bridge,
+agent actions, and tests. Its bundled UI SVG icons are adapted from Herdr
+Desktop's icon set.
+
+Better Icons bundles icons from the Material Icon Theme for VS Code, version
+5.40.0, copyright (c) 2025 Material Extensions, licensed under the MIT License
+(https://github.com/material-extensions/vscode-material-icon-theme). The
+licence text ships beside them as LICENSE-material-icon-theme.txt.
+
+This distribution adds tree/flat file lists, staging controls, reusable diff
+tabs, inline/split views, configurable typography, right-aligned space branches,
+standalone GitHub CLI pull-request status, documentation, and tests.
+
+My Sidebar
+
+This mod is a modified copy of Better Sidebar 3.3.0 from
+https://github.com/munza/herdr-mods (commit ffbdb6d), changed by Jay Stotz:
+spaces roll up their tabs, agents and child spaces; spaces sort into named groups
+with pinned spaces; spaces nest under other spaces; and the mod has its own space
+and group menus. Modified files are views/spaces.js, views/lists.js, views/ui.js,
+views/agents.js, main.js and mod.json; added files are git/groups.js, views/space-menu.js, views/group-prompt.js,
+views/space-picker.js and three icons.

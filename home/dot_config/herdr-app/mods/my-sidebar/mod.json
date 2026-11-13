@@ -1,0 +1,6 @@
+{
+  "$schema": "./mod.schema.json",
+  "version": "3.3.0+jay.1",
+  "place": "none",
+  "title": "My Sidebar"
+}
