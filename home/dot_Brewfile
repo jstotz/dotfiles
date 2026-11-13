@@ -31,6 +31,7 @@ brew 'jq'
 brew 'yq'
 brew 'shellcheck'
 brew 'watchexec'
+brew 'uv' # Builds the Herdr app's terminal font.
 brew 'neovim'
 brew 'tree-sitter-cli' # Compile Neovim syntax parsers.
 
