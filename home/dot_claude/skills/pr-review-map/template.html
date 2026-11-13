@@ -1,0 +1,251 @@
+<title>__PAGE_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one reading column; a sticky progress bar; groups as checklist rows with their evidence underneath. */
+:root {
+  --bg: #f6f7f8;
+  --surface: #ffffff;
+  --fg: #1c2328;
+  --muted: #5d6b75;
+  --line: #dde3e7;
+  --accent: #0f6e6a;
+  --accent-soft: #e2f1ef;
+  --done: #1f7a3a;
+  --done-soft: #e3f3e7;
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --add: #1f7a3a;
+  --del: #b42318;
+  --code-bg: #f1f4f6;
+  --kw: #8a3ffc;
+  --str: #0b6b62;
+  --cmt: #6b7780;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171a; --surface: #192024; --fg: #e3e9ec; --muted: #94a3ad; --line: #2b353b;
+    --accent: #4fc1b7; --accent-soft: #173331; --done: #5cc77a; --done-soft: #183323;
+    --warn: #e8b056; --warn-soft: #3a2c13; --add: #5cc77a; --del: #f0857a;
+    --code-bg: #12191c; --kw: #c4a5ff; --str: #6fd6c9; --cmt: #7f8d96;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171a; --surface: #192024; --fg: #e3e9ec; --muted: #94a3ad; --line: #2b353b;
+  --accent: #4fc1b7; --accent-soft: #173331; --done: #5cc77a; --done-soft: #183323;
+  --warn: #e8b056; --warn-soft: #3a2c13; --add: #5cc77a; --del: #f0857a;
+  --code-bg: #12191c; --kw: #c4a5ff; --str: #6fd6c9; --cmt: #7f8d96;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: flex; flex-direction: column; gap: 28px; }
+a { color: var(--accent); }
+a:focus-visible, input:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code { font-family: var(--font-mono); font-size: 0.86em; background: var(--code-bg); padding: 0.08em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; font-weight: 600; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+header { display: flex; flex-direction: column; gap: 10px; }
+header p { margin: 0; color: var(--muted); max-width: 68ch; }
+.progress { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; font-size: 0.9rem; }
+.bar { flex: 1 1 200px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; min-width: 120px; }
+.bar > span { display: block; height: 100%; width: 0; background: var(--done); transition: width 0.25s ease; }
+.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.saved { color: var(--muted); font-size: 0.82rem; }
+.saved.warn { color: var(--warn); }
+section.important { background: var(--warn-soft); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+section.important > p { margin: 0; color: var(--fg); max-width: 72ch; }
+.imp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.imp-list li { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding-block: 9px; border-top: 1px solid color-mix(in srgb, var(--warn) 22%, transparent); }
+.imp-list li:first-child { border-top: 0; }
+.imp-list .why { color: var(--muted); font-size: 0.9rem; }
+.file-link { font-family: var(--font-mono); font-size: 0.84rem; overflow-wrap: anywhere; text-decoration: none; }
+.file-link:hover { text-decoration: underline; }
+.delta { font-family: var(--font-mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.delta .a { color: var(--add); } .delta .d { color: var(--del); }
+.groups { display: flex; flex-direction: column; gap: 14px; }
+article.group { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.2s, background 0.2s; }
+article.group.checked { border-color: color-mix(in srgb, var(--done) 55%, transparent); background: color-mix(in srgb, var(--done-soft) 55%, var(--surface)); }
+.ghead { display: flex; gap: 12px; align-items: flex-start; }
+.ghead label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; flex: 1; min-width: 0; }
+.ghead input[type=checkbox] { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--done); flex: none; cursor: pointer; }
+.ghead .meta { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+.status { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; flex: none; }
+article.group.checked .status { background: var(--done-soft); color: var(--done); }
+.summary { margin: 0; max-width: 75ch; }
+.look { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: 0.93rem; display: flex; flex-direction: column; gap: 3px; }
+.snip { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.snip .cap { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); overflow-wrap: anywhere; }
+pre { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; }
+pre code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+.hljs-keyword, .hljs-built_in, .hljs-literal { color: var(--kw); }
+.hljs-string, .hljs-template-string, .hljs-regexp { color: var(--str); }
+.hljs-comment { color: var(--cmt); font-style: italic; }
+.hljs-addition { color: var(--add); }
+.hljs-deletion { color: var(--del); }
+.hljs-title, .hljs-title.function_ { color: var(--accent); }
+details { border-top: 1px solid var(--line); padding-top: 8px; }
+summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; font-weight: 500; }
+.files { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; }
+.files li { display: flex; justify-content: space-between; gap: 12px; padding-block: 4px; border-bottom: 1px dashed var(--line); min-width: 0; }
+.files li:last-child { border-bottom: 0; }
+.files .from { display: block; color: var(--muted); font-family: var(--font-mono); font-size: 0.74rem; overflow-wrap: anywhere; }
+.files .left { min-width: 0; }
+footer { color: var(--muted); font-size: 0.85rem; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">Review map</div>
+    <h1 id="heading"></h1>
+    <p>The <a id="pr-link" href="#" target="_blank" rel="noopener">pull request's</a> <span id="total" class="num"></span> changed files, sorted into groups of routine or related changes you can approve together, plus the files worth reading line by line. Check a group once you're satisfied, then ask Claude to mark its files as viewed on GitHub.</p>
+  </header>
+
+  <div class="progress" role="status">
+    <span><span id="groups-done" class="num">0</span> of <span id="groups-total" class="num"></span> groups checked</span>
+    <div class="bar" aria-hidden="true"><span id="bar"></span></div>
+    <span><span id="files-done" class="num">0</span> of <span id="files-grouped" class="num"></span> grouped files ready to mark viewed</span>
+    <span id="saved" class="saved">Loading saved checks…</span>
+  </div>
+
+  <section class="important" id="close-read" aria-labelledby="imp-h">
+    <div class="eyebrow">Read these closely</div>
+    <h2 id="imp-h"><span id="imp-count" class="num"></span> files worth reading line by line</h2>
+    <p>These carry the risk in this change. They're in no group, so they have no checkbox: mark them viewed on GitHub yourself as you go.</p>
+    <ul class="imp-list" id="important"></ul>
+  </section>
+
+  <div class="groups" id="groups"></div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById('data').textContent);
+  const checked = {};
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'class') n.className = v; else if (k === 'html') n.innerHTML = v; else n.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) n.append(k);
+    return n;
+  };
+  const delta = (f) => el('span', { class: 'delta' },
+    el('span', { class: 'a' }, '+' + f.add), ' ', el('span', { class: 'd' }, '−' + f.del));
+  const fileLink = (f) => el('a', { class: 'file-link', href: f.url, target: '_blank', rel: 'noopener' }, f.path);
+
+  document.getElementById('pr-link').href = data.pr + '/files';
+  document.getElementById('eyebrow').textContent = 'Review map · ' + data.repo + ' #' + data.number;
+  document.getElementById('heading').textContent = data.title;
+  const shared = Object.values(data.membership).some((g) => g.length > 1);
+  document.getElementById('footer').textContent = (shared
+    ? 'Some files are in more than one group; a file is ready to mark viewed only when every group it is in is checked.'
+    : 'Each file is in exactly one group.') + " Links open the file's diff in the pull request.";
+  document.getElementById('total').textContent = data.total;
+  document.getElementById('groups-total').textContent = data.groups.length;
+  document.getElementById('imp-count').textContent = data.closeRead.length;
+  if (!data.closeRead.length) document.getElementById('close-read').hidden = true;
+  const grouped = Object.keys(data.membership).length;
+  document.getElementById('files-grouped').textContent = grouped;
+
+  const imp = document.getElementById('important');
+  for (const f of data.closeRead) {
+    imp.append(el('li', {},
+      el('div', { style: 'display:flex;justify-content:space-between;gap:12px;min-width:0' }, fileLink(f), delta(f)),
+      el('div', { class: 'why' }, f.why)));
+  }
+
+  const host = document.getElementById('groups');
+  const cards = {};
+  for (const g of data.groups) {
+    const adds = g.files.reduce((n, f) => n + f.add, 0);
+    const dels = g.files.reduce((n, f) => n + f.del, 0);
+    const box = el('input', { type: 'checkbox', id: 'cb-' + g.id });
+    const status = el('span', { class: 'status' }, 'To review');
+    const card = el('article', { class: 'group', id: g.id },
+      el('div', { class: 'ghead' },
+        el('label', { for: 'cb-' + g.id }, box,
+          el('div', {}, el('h2', {}, g.title),
+            el('div', { class: 'meta' }, g.files.length + ' files · ', el('span', { class: 'delta' },
+              el('span', { class: 'a' }, '+' + adds.toLocaleString()), ' ', el('span', { class: 'd' }, '−' + dels.toLocaleString()))))),
+        status),
+      el('p', { class: 'summary', html: g.summary }),
+      el('ul', { class: 'look' }, ...g.look.map((t) => el('li', { html: t }))));
+    for (const s of g.snippets) {
+      const code = el('code', { class: 'language-' + (s.lang === 'tsx' ? 'typescript' : s.lang === 'ts' ? 'typescript' : s.lang) }, s.code);
+      card.append(el('div', { class: 'snip' }, el('div', { class: 'cap' }, s.file), el('pre', {}, code)));
+    }
+    const list = el('ul', { class: 'files' });
+    for (const f of g.files) {
+      list.append(el('li', {},
+        el('div', { class: 'left' }, fileLink(f), f.prev ? el('span', { class: 'from' }, 'from ' + f.prev) : null),
+        delta(f)));
+    }
+    card.append(el('details', {}, el('summary', {}, 'All ' + g.files.length + ' files'), list));
+    host.append(card);
+    cards[g.id] = { card, box, status };
+  }
+
+  function render() {
+    let groupsDone = 0;
+    for (const [id, c] of Object.entries(cards)) {
+      const on = !!checked[id];
+      c.box.checked = on;
+      c.card.classList.toggle('checked', on);
+      c.status.textContent = on ? 'Checked' : 'To review';
+      if (on) groupsDone++;
+    }
+    const filesDone = Object.values(data.membership).filter((ids) => ids.every((id) => checked[id])).length;
+    document.getElementById('groups-done').textContent = groupsDone;
+    document.getElementById('files-done').textContent = filesDone;
+    document.getElementById('bar').style.width = (100 * groupsDone / data.groups.length) + '%';
+  }
+  render();
+  try { if (window.hljs) document.querySelectorAll('pre code').forEach((n) => window.hljs.highlightElement(n)); } catch (e) {}
+
+  const saved = document.getElementById('saved');
+  let db = null;
+  for (const [id, c] of Object.entries(cards)) {
+    c.box.addEventListener('change', async () => {
+      checked[id] = c.box.checked;
+      render();
+      if (!db) return;
+      saved.textContent = 'Saving…'; saved.classList.remove('warn');
+      try {
+        await db.collection('groups').doc(id).set({ checked: c.box.checked });
+        saved.textContent = 'Saved for Claude to read';
+      } catch (e) {
+        saved.textContent = "Couldn't save this check; Claude won't see it. Try again.";
+        saved.classList.add('warn');
+      }
+    });
+  }
+
+  (async () => {
+    try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+    if (!db) {
+      saved.textContent = "Checks aren't saved in this view, so Claude can't read them. Tell Claude which groups you checked.";
+      saved.classList.add('warn');
+      return;
+    }
+    db.collection('groups').onSnapshot((snap) => {
+      for (const d of snap.docs) checked[d.id] = !!(d.data() || {}).checked;
+      render();
+      saved.textContent = 'Checks are saved for Claude to read';
+    }, () => {
+      saved.textContent = "Lost the connection to saved checks. Reload to try again.";
+      saved.classList.add('warn');
+    });
+  })();
+})();
+</script>
