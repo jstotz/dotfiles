@@ -10,8 +10,8 @@ that guidance for subsequent commands. Do not reread it for each request or
 command. Read it again only if the guidance is no longer in context or Herdr has
 been upgraded. The installed CLI is authoritative: inspect help before using
 unfamiliar commands. Use the skill from the installed binary, not another copy
-under ~/.agents or ~/.codex. Query live Herdr and Git state rather than treating
-conversation history as current state.
+under ~/.agents, ~/.claude, or ~/.codex. Query live Herdr and Git state rather
+than treating conversation history as current state.
 Use explicit pane/workspace IDs and agent identities. Never stop the Herdr server.
 
 For reliable and efficient control:

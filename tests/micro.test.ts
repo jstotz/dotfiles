@@ -2,8 +2,8 @@ import { expect, test } from 'bun:test';
 import { captureSession } from '../home/dot_local/lib/micro/session';
 import { findMicroAgent } from '../home/dot_local/lib/micro/agent';
 
-const agent = { pane_id: 'pane', terminal_id: 'terminal', agent: 'codex' };
-const session = { kind: 'id', agent: 'codex', value: 'current-conversation' };
+const agent = { pane_id: 'pane', terminal_id: 'terminal', agent: 'claude' };
+const session = { kind: 'id', agent: 'claude', value: 'current-conversation' };
 const pause = async () => {};
 
 test('recovers the saved micro session when its agent name is missing', () => {
@@ -30,6 +30,10 @@ test('missing agents leave the normal resume path available', () => {
 
 test('refuses a named micro agent outside its directory', () => {
   expect(() => findMicroAgent(() => ({ agent: { ...agent, cwd: '/other' } }), {}, '/micro')).toThrow('outside');
+});
+
+test('refuses a named micro agent of another kind', () => {
+  expect(() => findMicroAgent(() => ({ agent: { ...agent, cwd: '/micro', agent: 'codex' } }), {}, '/micro')).toThrow('quit it');
 });
 
 test('waits for the session report after interactive readiness', async () => {
