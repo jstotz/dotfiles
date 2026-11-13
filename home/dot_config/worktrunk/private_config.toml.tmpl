@@ -1,0 +1,9 @@
+# chezmoi:template:left-delimiter="[[" right-delimiter="]]"
+# Shared checkout root for Worktrunk, Herdr, and other worktree tools.
+worktree-path = "~/worktrees/{{ repo }}/{{ branch | sanitize }}"
+[[- $private := joinPath .chezmoi.homeDir ".local/share/dotfiles-private/worktrunk/config.toml" ]]
+[[- if and (index . "private") (stat $private) ]]
+
+# Private per-repository settings from dotfiles-private.
+[[ include $private | trim ]]
+[[- end ]]

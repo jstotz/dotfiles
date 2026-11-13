@@ -35,6 +35,8 @@ Finish the machine-specific setup:
   with your Git hosts. See [SSH setup](https://developer.1password.com/docs/ssh/get-started/)
   and [CLI setup](https://developer.1password.com/docs/cli/get-started/).
 - Install and sign into your coding-agent CLIs separately, then launch Ghostty.
+- With access to `jstotz/dotfiles-private`, add `private = true` under `[data]`
+  in `chezmoi edit-config` to include it.
 
 ## Making changes
 
