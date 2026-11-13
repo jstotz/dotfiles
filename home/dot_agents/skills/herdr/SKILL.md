@@ -22,7 +22,10 @@ Then load that runtime's guide from its installed binary and follow it:
   spaces and tabs. The desktop app calls workspaces "spaces"; when the user
   says "workspace", they mean a space. Create spaces and tabs the user should
   see through `herdr-app` commands: a terminal started with `hc run` alone
-  stays out of the window.
+  stays out of the window. The sidebar sorts spaces into named groups, with
+  pinned spaces first; manage them with `herdr-space-group` (run it without
+  arguments for usage). When the user names a group for a new space, put the
+  space there using the ID that `space.new` returns.
 - **Terminal app:** run `herdr --skill`.
 
 Load each guide once per session and reuse it. Read it again only if it is no
