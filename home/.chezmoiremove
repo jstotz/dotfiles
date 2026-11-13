@@ -2,3 +2,5 @@
 .local/lib/herdr-review/difit.ts
 # Project setup now belongs in each repository's .config/wt.toml.
 .config/herdr/micro/repositories.toml
+# Removed the Codex create-pull-request skill.
+.codex/skills/create-pull-request
