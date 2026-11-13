@@ -57,6 +57,25 @@ For a requested new worktree:
 - Start workers only when requested or implied by the task, and give each one
   the task, correct working directory, and relevant constraints.
 
+For work on a GitHub issue:
+- Read the issue only to choose the branch, worktree, and workspace names.
+- Tell the agent to work on the issue by reference (number or URL) and let it
+  read the issue itself. Do not summarize the issue, propose an approach, or add
+  implementation instructions unless the user explicitly provides or asks for
+  them; pass along only what the user said.
+
+For a workspace to investigate a Sentry error:
+- Before creating anything, fetch the error's details with the `sentry` CLI.
+- Name the branch, worktree, and workspace after the underlying error (for
+  example, the exception type and failing area), not the raw Sentry ID.
+- If the details cannot be fetched, report why and ask before falling back to
+  a neutral name.
+
+For a workspace to review someone else's pull request:
+- Create the worktree on the PR's branch and open it as a workspace as above.
+- Start the user's agent with no prompt; do not send it the PR or any task.
+- Do not open the Code Review tab unless the user asks for it.
+
 Inspect work before proposing cleanup. Do not delete worktrees, discard changes,
 close unrelated agents, commit, push, or send external messages without user
 authorization. Normal setup and navigation should not require repeated approval.
