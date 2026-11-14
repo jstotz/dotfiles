@@ -455,7 +455,7 @@ export class Spaces {
     });
   }
 
-  // A group's heading: name, count, folded, its spaces' state, then the fold chevron.
+  // A group's heading: fold chevron, name, count, and folded, its spaces' state.
   groupRow(r, t) {
     const { group, rails } = r;
     const ids = new Set(group.rows.map((x) => x.w.id));
@@ -479,11 +479,11 @@ export class Spaces {
       .hover((s) => s.bg(t.hover).text_color(t.foreground))
       .on_click((_e, cx) => this.toggleGroup(group.id, cx))
       .when(group.name !== DEFAULT_GROUP, (el) => el.on_mouse_down("right", () => this.groupMenu(group)))
+      .child(Icon(group.folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim))
       .child(div().min_w(0).truncate().font_medium().child(group.name))
       .child(Badge(group.rows.length))
       .child(div().flex_1())
-      .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))))
-      .child(div().flex_none().p(2).child(Icon(group.folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim)));
+      .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))));
     if (!rails.length) return head;
     if (!this.under) return head.pl(8 + 22 * rails.length);
     return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 13))).child(head.flex_1().min_w(0));
@@ -635,7 +635,7 @@ export class Spaces {
   }
 
   // At the right: the checkout's pull request, and ahead/behind on the selected space.
-  // `trailing`, set by the lists view, adds the fold control and a folded space's status.
+  // `trailing`, set by the lists view, adds a folded space's status.
   gitTail(g, active, t, w) {
     const pr = w ? this.prBadge(w, t) : null;
     const trailing = w ? (this.trailing?.(w) ?? []) : [];
@@ -835,6 +835,8 @@ export class Spaces {
       .gap(9)
       .items_center()
       .when(rails.length > 0 && !this.under, (el) => el.pl(22 * rails.length))
+      // `leading`, set by the lists view, puts the fold control first, as groups have it.
+      .children(this.leading?.(w) ?? [])
       .when(worktree, (el) => el.child(Icon("branch", 13).text_color(t.dim)))
       .when(!worktree, (el) => el.child(this.avatar(w, t)))
       .when(pinned, (el) => el.child(Icon("pin", 12).text_color(t.dim).tooltip("Pinned in its group")))

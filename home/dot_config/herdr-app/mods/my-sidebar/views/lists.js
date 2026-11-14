@@ -49,6 +49,7 @@ export class Lists {
     return div()
       .id(`space-fold-${w.id}`)
       .flex_none()
+      .w(15)
       .p(2)
       .rounded(4)
       .text_color(t.dim)
@@ -87,6 +88,7 @@ export class Lists {
     this.spaces.quiet = null;
     this.spaces.above = null;
     this.spaces.trailing = null;
+    this.spaces.leading = null;
     this.spaces.rolledUp = null;
     this.spaces.statusIcon = (status) => this.agents.status(t, { status }, true);
     // The rail has no room for tabs: both lists, as numbers.
@@ -140,10 +142,15 @@ export class Lists {
       const ids = rolled ? this.spaces.descendants(w.id).add(w.id) : new Set([w.id]);
       const mine = all.filter((a) => ids.has(a.space));
       const top = mine.reduce((most, a) => ((RANK[a.status] ?? 0) > (RANK[most] ?? 0) ? a.status : most), null);
-      return [
-        ...(rolled && top ? [this.agents.status(t, { status: top }, true)] : []),
-        this.foldButton(w, rolled, t),
-      ];
+      return rolled && top ? [this.agents.status(t, { status: top }, true)] : [];
+    };
+    // Chevrons at the left, statuses at the right. A space with nothing to fold keeps
+    // the chevron's room so names line up; the -4 margin tightens the row's 9px gap.
+    this.spaces.leading = (w) => {
+      const items = itemsOf(w);
+      const kids = this.spaces.kidCount(w);
+      if (!items.length && !kids) return [div().w(15).mr(-4).flex_none()];
+      return [this.foldButton(w, this.isFolded(w, items, kids), t).mr(-4)];
     };
     this.spaces.under = ({ w, rails, kids }) => {
       const items = itemsOf(w);

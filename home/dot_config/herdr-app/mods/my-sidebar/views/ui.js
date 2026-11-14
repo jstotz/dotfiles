@@ -84,6 +84,7 @@ export function GroupHeader({
     .when(divided, (el) => el.mt(4).border_t(1).border_color(t.border))
     .hover((s) => s.text_color(t.foreground))
     .on_click((_e, cx) => onClick(cx))
+    .child(Icon(folded ? "chevron-right" : "chevron-down", 12).text_color(t.dim))
     .child(
       div()
         .min_w(0)
@@ -94,8 +95,7 @@ export function GroupHeader({
     )
     .child(Badge(count))
     .child(div().flex_1())
-    .when(Boolean(action), (el) => el.child(action))
-    .child(div().flex_none().p(2).child(Icon(folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim)));
+    .when(Boolean(action), (el) => el.child(action));
 }
 
 // One step of a tree's line, in front of a nested row: "│" carries on past it,
