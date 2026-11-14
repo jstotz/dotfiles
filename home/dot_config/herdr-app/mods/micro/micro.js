@@ -5,8 +5,6 @@ const NAME = "micro";
 const RETURN = "micro.return";
 const folder = () => `${home()}/.config/herdr/micro`;
 const contextFile = () => `${home()}/.local/state/micro/app/context.json`;
-// Micro only: a quick model, and no permission prompts (asked for explicitly).
-const FLAGS = "--model sonnet --effort low --dangerously-skip-permissions";
 
 async function terminal() {
   const r = await hc(["get", NAME, "--json"]);
@@ -18,7 +16,8 @@ async function terminal() {
 // Continue Micro's last conversation in its folder, else start one. When
 // Claude exits the terminal ends, and the next summon starts it again.
 async function start() {
-  const script = `export MICRO_CONTEXT_FILE='${contextFile()}'\nclaude --continue ${FLAGS} || exec claude ${FLAGS}`;
+  // Claude's own defaults: model, effort and permissions, as in any other session.
+  const script = `export MICRO_CONTEXT_FILE='${contextFile()}'\nclaude --continue || exec claude`;
   const r = await hc(["run", "--bg", "--json", "--name", NAME, "--cwd", folder(), "--no-parent",
     "--label", "micro=1", "--", "/bin/zsh", "-lc", script]);
   if (r.code !== 0) throw new Error((r.stderr || r.stdout).trim() || "hc run failed");
