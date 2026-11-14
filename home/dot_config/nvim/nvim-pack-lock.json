@@ -25,11 +25,6 @@
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
     },
-    "herdr-nvim": {
-      "rev": "0450dc7b4c40c986052541c00dba5cdcd1be7ac6",
-      "src": "https://github.com/ChmaraX/herdr-nvim",
-      "version": "'0450dc7b4c40c986052541c00dba5cdcd1be7ac6'"
-    },
     "mini.nvim": {
       "rev": "1345d191bb3da9c7b0e977f4387c5761f9bff68d",
       "src": "https://github.com/nvim-mini/mini.nvim",

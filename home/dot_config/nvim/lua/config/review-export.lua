@@ -79,7 +79,13 @@ function M.send(markdown)
       if close_after then finish(delivered[scope].agent) end
       return
     end
-    local agents = require("herdr-nvim.agents")
+    -- Delivery needs the terminal app's herdr-nvim plugin; without it the clipboard has them.
+    local loaded, agents = pcall(require, "herdr-nvim.agents")
+    if not loaded then
+      notify("Comments are on the clipboard")
+      if close_after then finish() end
+      return
+    end
     local list, err = agents.list()
     if not list or #list == 0 then
       notify(err or "No agent in this workspace; comments are on the clipboard", vim.log.levels.WARN)

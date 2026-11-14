@@ -97,18 +97,6 @@ command = "$HOME/.local/bin/herdr-review"
 description = "review changes in tuicr"
 
 [[keys.command]]
-key = "prefix+e"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.toggle"
-description = "toggle Neovim sidebar"
-
-[[keys.command]]
-key = "prefix+f"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.pick-file"
-description = "open file in Neovim sidebar"
-
-[[keys.command]]
 key = "prefix+m"
 type = "shell"
 command = "$HOME/.local/bin/micro"
