@@ -455,7 +455,7 @@ export class Spaces {
     });
   }
 
-  // A group's heading: fold chevron, name, count, and folded, its spaces' state.
+  // A group's heading: name, count, folded, its spaces' state, then the fold chevron.
   groupRow(r, t) {
     const { group, rails } = r;
     const ids = new Set(group.rows.map((x) => x.w.id));
@@ -479,11 +479,11 @@ export class Spaces {
       .hover((s) => s.bg(t.hover).text_color(t.foreground))
       .on_click((_e, cx) => this.toggleGroup(group.id, cx))
       .when(group.name !== DEFAULT_GROUP, (el) => el.on_mouse_down("right", () => this.groupMenu(group)))
-      .child(Icon(group.folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim))
       .child(div().min_w(0).truncate().font_medium().child(group.name))
       .child(Badge(group.rows.length))
       .child(div().flex_1())
-      .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))));
+      .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))))
+      .child(div().flex_none().p(2).child(Icon(group.folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim)));
     if (!rails.length) return head;
     if (!this.under) return head.pl(8 + 22 * rails.length);
     return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 13))).child(head.flex_1().min_w(0));
