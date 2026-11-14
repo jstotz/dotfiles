@@ -25,7 +25,7 @@ import { TEXT, Icon, IconButton, Badge, Rail } from "./ui.js";
 import { spaceGroups, DEFAULT_GROUP, within } from "../git/groups.js";
 
 const USUAL_BRANCHES = new Set(["main", "master"]);
-const rowHeight = ({ rails }) => (rails.length ? 28 : 30);
+const rowHeight = ({ rails }) => (rails.length ? 24 : 26);
 // A row's rails carried on beneath it: a branch becomes a line, an end becomes blank.
 export const carry = (rails) => rails.map((k) => (k === "├" ? "│" : k === "└" ? "" : k));
 const connector = (i, n) => (i === n - 1 ? "└" : "├");
@@ -467,7 +467,7 @@ export class Spaces {
       : null;
     const head = h_flex()
       .id(`group-${group.id}`)
-      .h(26)
+      .h(22)
       .px(8)
       .gap(6)
       .flex_none()
@@ -486,7 +486,7 @@ export class Spaces {
       .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))));
     if (!rails.length) return head;
     if (!this.under) return head.pl(8 + 22 * rails.length);
-    return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 13))).child(head.flex_1().min_w(0));
+    return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 11))).child(head.flex_1().min_w(0));
   }
 
   // The rows, under a header per machine once one isn't this computer.
@@ -768,7 +768,7 @@ export class Spaces {
       .h(rowHeight({ rails }) + (hasPRLine ? 22 : 0))
       .flex_none()
       .justify_center()
-      .rounded(8)
+      .rounded(6)
       .when(lit, (el) => el.bg(t.selected))
       .when(!lit, (el) => el.hover((s) => s.bg(t.hover)))
       .when(this.pressed === i && this.over !== i, (el) => el.opacity(0.5))
@@ -783,7 +783,7 @@ export class Spaces {
     return h_flex()
       .w_full()
       .min_w(0)
-      .children(rails.map((k) => Rail(k, 14)))
+      .children(rails.map((k) => Rail(k, 12)))
       .child(dragged.flex_1().min_w(0));
   }
 
@@ -832,7 +832,7 @@ export class Spaces {
     return h_flex()
       .w_full()
       .min_w(0)
-      .gap(9)
+      .gap(7)
       .items_center()
       .when(rails.length > 0 && !this.under, (el) => el.pl(22 * rails.length))
       // `leading`, set by the lists view, puts the fold control first, as groups have it.
