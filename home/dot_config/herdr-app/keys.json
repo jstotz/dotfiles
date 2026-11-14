@@ -58,7 +58,7 @@
     "ctrl-8": "space.select:8",
     "ctrl-9": "space.select:9",
     "cmd-shift-b": "my-sidebar.toggle-panel",
-    "cmd-e": "mod.open:herdr-nvim",
+    "cmd-e": "my-sidebar.editor",
     "cmd-o": "herdr-nvim.pick",
     "cmd-shift-e": "herdr-nvim.reveal",
     "cmd-k": "micro.toggle"
