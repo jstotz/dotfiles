@@ -5,5 +5,6 @@
   },
   "minimum_contrast": 1,
   "font": "FiraCode Nerd Font Herdr",
-  "font_size": 12
+  "font_size": 12,
+  "theme": "catppuccin-mocha"
 }
