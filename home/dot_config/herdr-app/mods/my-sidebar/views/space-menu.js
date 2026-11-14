@@ -29,6 +29,11 @@ function pickParent(space) {
   openOverlay({ mod: "my-sidebar", kind: "dialog", width: 380, height: 460, props: { view: "space-picker", space } });
 }
 
+// Through Worktrunk, so the repository's hooks run (worktree-new.js).
+function newWorktree(space) {
+  openOverlay({ mod: "my-sidebar", kind: "dialog", width: 440, height: 190, props: { view: "worktree-new", space } });
+}
+
 function confirmArchive(id) {
   const space = spaces().find((s) => s.id === id);
   const folder = space && spaceFolder(space, panes());
@@ -82,7 +87,7 @@ export class SpaceMenu {
       ["Rename", "square-pen", () => run("space.rename", { id })],
       ...(this.git
         ? [
-            ["New worktree", "git-branch", () => worktreeDialog({ space: id, action: "new" })],
+            ["New worktree", "git-branch", () => newWorktree(id)],
             ["Open worktree", "git-branch", () => worktreeDialog({ space: id, action: "open" })],
           ]
         : []),

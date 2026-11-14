@@ -1,6 +1,6 @@
 // My Sidebar, from munza/herdr-mods' Better Sidebar 3.3.0: spaces, agents, both in one
 // block (lists), a footer, a right panel toggle, the space and group menus with
-// their name prompt, the parent picker, and the archive confirmation. A layout or overlay puts one copy per block, and `view` picks the part.
+// their name prompt, the parent picker, the archive confirmation, and the Worktrunk new-worktree dialog. A layout or overlay puts one copy per block, and `view` picks the part.
 import { View } from "gpui-kit";
 import { props } from "herdr";
 import { Spaces } from "./views/spaces.js";
@@ -12,6 +12,7 @@ import { SpaceMenu } from "./views/space-menu.js";
 import { GroupPrompt } from "./views/group-prompt.js";
 import { SpacePicker } from "./views/space-picker.js";
 import { ArchiveConfirm } from "./views/archive-confirm.js";
+import { WorktreeNew } from "./views/worktree-new.js";
 
 const PARTS = {
   lists: Lists,
@@ -23,6 +24,7 @@ const PARTS = {
   "group-prompt": GroupPrompt,
   "space-picker": SpacePicker,
   "archive-confirm": ArchiveConfirm,
+  "worktree-new": WorktreeNew,
 };
 
 export default class BetterSidebar extends View {
