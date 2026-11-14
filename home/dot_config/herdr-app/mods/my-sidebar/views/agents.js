@@ -666,7 +666,6 @@ export class Agents {
     const namesSpace = !view.nested;
     // A row is its tab's title, as Herdr's tab bar shows it; the icon says which agent.
     const name = a.tab_name || label;
-    const prog = a.program?.name;
     const idle = a.status === "idle" && !a.focused;
     return h_flex()
       .flex_1()
@@ -676,7 +675,8 @@ export class Agents {
       .child(
         div()
           .min_w(0)
-          .max_w(namesSpace ? 140 : 200)
+          .when(namesSpace, (el) => el.max_w(140))
+          .when(!namesSpace, (el) => el.flex_1())
           .truncate()
           .text_color(idle ? t.muted : t.foreground)
           .child(name),
@@ -684,9 +684,7 @@ export class Agents {
       // The space, quietly after the name.
       .when(namesSpace && Boolean(a.space_name), (el) =>
         el.child(div().flex_1().min_w(0).truncate().text_size(TEXT.caption).text_color(t.dim).child(a.space_name)),
-      )
-      // Under its space, the program instead.
-      .when(view.nested && Boolean(prog) && prog !== name, (el) => el.child(this.programName(prog, t)));
+      );
   }
 
   // The fold chevron; folded, the count too, colored by the most urgent one.
