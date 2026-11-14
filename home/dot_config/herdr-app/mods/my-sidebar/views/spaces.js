@@ -26,7 +26,7 @@ import { spaceGroups, DEFAULT_GROUP, within } from "../git/groups.js";
 import { isArchiving, runArchives } from "../git/archive.js";
 
 const USUAL_BRANCHES = new Set(["main", "master"]);
-const rowHeight = ({ rails }) => (rails.length ? 24 : 26);
+const rowHeight = ({ rails }) => (rails.length ? 26 : 28);
 // A row's rails carried on beneath it: a branch becomes a line, an end becomes blank.
 export const carry = (rails) => rails.map((k) => (k === "├" ? "│" : k === "└" ? "" : k));
 const connector = (i, n) => (i === n - 1 ? "└" : "├");
@@ -470,26 +470,27 @@ export class Spaces {
       : null;
     const head = h_flex()
       .id(`group-${group.id}`)
-      .h(22)
+      .h(24)
       .px(8)
       .gap(6)
       .flex_none()
       .items_center()
       .rounded(7)
-      .text_size(TEXT.caption)
+      .text_size(TEXT.body)
       .text_color(t.muted)
       .cursor_pointer()
       .hover((s) => s.bg(t.hover).text_color(t.foreground))
       .on_click((_e, cx) => this.toggleGroup(group.id, cx))
       .when(group.name !== DEFAULT_GROUP, (el) => el.on_mouse_down("right", () => this.groupMenu(group)))
       .child(Icon(group.folded ? "chevron-right" : "chevron-down", 11).text_color(t.dim))
-      .child(div().min_w(0).truncate().font_medium().child(group.name))
+      // The theme's accent, softened: apart from the gray rows beneath spaces and the white names.
+      .child(div().min_w(0).truncate().font_medium().text_color(t.accent + "cc").child(group.name))
       .child(Badge(group.rows.length))
       .child(div().flex_1())
       .when(Boolean(top), (el) => el.child(this.statusIcon?.(top) ?? div().text_color(tone(t, top)).child(glyph(top))));
     if (!rails.length) return head;
     if (!this.under) return head.pl(8 + 22 * rails.length);
-    return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 11))).child(head.flex_1().min_w(0));
+    return h_flex().w_full().min_w(0).children(rails.map((k) => Rail(k, 12))).child(head.flex_1().min_w(0));
   }
 
   // The rows, under a header per machine once one isn't this computer.
@@ -796,7 +797,7 @@ export class Spaces {
     return h_flex()
       .w_full()
       .min_w(0)
-      .children(rails.map((k) => Rail(k, 12)))
+      .children(rails.map((k) => Rail(k, 13)))
       .child(dragged.flex_1().min_w(0));
   }
 

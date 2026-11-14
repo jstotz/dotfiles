@@ -101,7 +101,7 @@ export function GroupHeader({
 // One step of a tree's line, in front of a nested row: "│" carries on past it,
 // "├" branches to it, "└" ends at it, "" leaves the column blank. `mid` is how far
 // down the row its title sits, where the branch turns.
-export function Rail(kind, mid = 12) {
+export function Rail(kind, mid = 13) {
   const t = theme();
   const line = () => div().absolute().left(15).top(0).border_color(t.input);
   return div()
