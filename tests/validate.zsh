@@ -50,7 +50,6 @@ git config --file "$validation_home/.gitconfig.local" user.email 'test@example.i
 cm apply --exclude=scripts
 [[ -z $(cm diff --exclude=scripts) ]]
 cm verify --exclude=scripts
-sh -n "$repo_dir/home/run_onchange_after_install-herdr-plugins.sh"
 for install_script in "$repo_dir"/home/run_*.tmpl; do
   cm execute-template < "$install_script" | sh -n
 done

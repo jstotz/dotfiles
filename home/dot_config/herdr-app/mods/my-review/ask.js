@@ -14,7 +14,7 @@ export function pickAgent() {
  *  `sent`: a shared key the dialog sets to the send time once the text went out.
  *  Resolves "dialog" (opened), "sent" (sent directly) or "none" (nowhere to send). */
 export async function ask({ title, context, sent }) {
-  try { openOverlay({ mod: "reviewer", kind: "dialog", width: context ? 680 : 560, height: context ? 560 : 250, props: { dialog: true, title, context, sent } }); return "dialog"; }
+  try { openOverlay({ mod: "my-review", kind: "dialog", width: context ? 680 : 560, height: context ? 560 : 250, props: { dialog: true, title, context, sent } }); return "dialog"; }
   catch (e) { console.log(`the send dialog could not open, sending directly: ${e}`); }
   const agent = pickAgent();
   if (!agent) { notify({ title: "No agent in this space", body: "Start an agent in this space first.", level: "warning" }); return "none"; }

@@ -55,7 +55,6 @@ Where to change dependencies:
 
 - Applications and CLI tools: [Brewfile](home/dot_Brewfile).
 - Language runtimes: [mise config](home/dot_config/mise/config.toml).
-- Herdr plugins and integrations: [install script](home/run_onchange_after_install-herdr-plugins.sh).
 
 Removing a declaration does not uninstall it. Upgrades remain explicit:
 

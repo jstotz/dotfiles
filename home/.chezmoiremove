@@ -1,6 +1,23 @@
-# Removed browser review backend; Neovim exports comments directly.
-.local/lib/herdr-review/difit.ts
+# The Herdr terminal app's setup, replaced by the Herdr desktop app.
+.config/herdr/config.toml
+.config/herdr/patches
+.config/herdr/plugins
+.config/herdr-automatic-rename
+.config/tuicr
+.agents/skills/tuicr
+.claude/skills/tuicr
+.local/bin/herdr-archive
+.local/bin/herdr-dev
+.local/bin/herdr-review
+.local/bin/micro
+.local/lib/herdr-archive
+.local/lib/herdr-review
+.local/lib/micro
 # Project setup now belongs in each repository's .config/wt.toml.
 .config/herdr/micro/repositories.toml
 # Removed the Codex create-pull-request skill.
 .codex/skills/create-pull-request
+# The reviewer mod and its command, renamed to my-review.
+.config/herdr-app/mods/reviewer
+.local/bin/reviewer-viewed
+.local/lib/reviewer-viewed

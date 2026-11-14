@@ -3,9 +3,7 @@ tap 'vjeantet/tap'
 
 # Terminal and shell
 brew 'chezmoi'
-brew 'herdr'
-brew 'vjeantet/tap/alerter' # Clickable Herdr agent notifications.
-brew 'bun' # Herdr workflow launchers.
+brew 'bun' # Herdr helper scripts (herdr-space-group, my-review-viewed).
 brew 'starship'
 brew 'atuin'
 brew 'zoxide'
@@ -23,7 +21,6 @@ brew 'git-lfs'
 brew 'gh'
 brew 'git-delta'
 brew 'difftastic'
-brew 'tuicr'
 brew 'lazygit'
 brew 'ripgrep'
 brew 'fd'

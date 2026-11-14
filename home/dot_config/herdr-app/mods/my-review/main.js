@@ -1,7 +1,6 @@
-// Modified from Herdr's shipped "changes" mod (0.1.8), Apache License 2.0.
-// Changes by Vytas Gavelis, MIT License. See LICENSE and THIRD-PARTY-NOTICES.
-// This dotfiles copy (from reviewer 0.6.0, 01e6d10) adds GitHub-style Viewed marks
-// on the file list; see viewed.js.
+// My Review: the Herdr app's Changes panel as a GitHub-style review. Started from
+// vytasgavelis/herdr-reviewer 0.6.0 (MIT), itself built on Herdr's shipped
+// "changes" mod (Apache License 2.0); see README.md, LICENSE and THIRD-PARTY-NOTICES.
 //
 // Changes, for code review: the diff rows are syntax colored (highlight.js,
 // palette.js), and the diff is reviewed like a pull request: click a line
@@ -18,14 +17,14 @@
 // The unchanged lines between hunks (and before the first, after the
 // last) are read from the file and folded into a "N unchanged lines" row:
 // a click opens that fold, and "Full file" in the header opens them all
-// (remembered in shared "reviewer.full"), so the whole file scrolls.
-// Keys: "reviewer.submit", "reviewer.ask" (about the whole
-// diff), "reviewer.clear" (drops the draft comments), "reviewer.full"
-// (folds or unfolds the unchanged lines), "reviewer.next" / "reviewer.prev"
-// (files; j/k with the panel focused), "reviewer.viewed" (v), "reviewer.edit"
+// (remembered in shared "my-review.full"), so the whole file scrolls.
+// Keys: "my-review.submit", "my-review.ask" (about the whole
+// diff), "my-review.clear" (drops the draft comments), "my-review.full"
+// (folds or unfolds the unchanged lines), "my-review.next" / "my-review.prev"
+// (files; j/k with the panel focused), "my-review.viewed" (v), "my-review.edit"
 // (e: the file in the tab's nvim, through herdr-nvim); in the send
-// dialog (dialog.js) "reviewer.send" and "reviewer.close".
-// Another mod opens a file's diff by setting shared "reviewer.open" to
+// dialog (dialog.js) "my-review.send" and "my-review.close".
+// Another mod opens a file's diff by setting shared "my-review.open" to
 // { id, at: Date.now(), path (absolute), on (machine or null), ref? }: the panel
 // picks it up on its next refresh, selects the file (or notes that it has no
 // diff in the shown scope) and clears the key. `path` may be the repo folder
@@ -35,7 +34,7 @@
 // The header's scope picker chooses what is reviewed: the uncommitted
 // changes, the last commit plus them, everything on the branch since it
 // left its base (the pull-request view), or any one commit from the log on
-// its own; "reviewer.scope" cycles the first three.
+// its own; "my-review.scope" cycles the first three.
 // Props: { palette: "one-dark-pro" | "theme" | "dark-plus" (default: one-dark-pro),
 //          font_size: px (default: the terminal's font size minus one),
 //          base: the branch reviews are against (default: origin/HEAD, else main, else master) }.
@@ -50,7 +49,7 @@ import { fingerprints, loadMarks, saveMark } from "./viewed.js";
 import * as fs from "fs/promises";
 
 // One file's diff state; see withView.
-const VIEW = ["lines", "linesPath", "rows", "gaps", "index", "unfolded", "items", "sizes", "gutter", "diffWidth", "builtFull", "builtWidth", "scroll"];
+const VIEW = ["lines", "linesPath", "rows", "gaps", "index", "unfolded", "items", "sizes", "gutter", "diffWidth", "builtFull", "builtWidth"];
 
 // This dotfiles copy: a focused pane with no folder of its own (a mod pane, such
 // as a preview) keeps the last place, so the review stays put.
@@ -66,13 +65,13 @@ function location() {
 }
 const key = () => JSON.stringify(location());
 const countLines = (text) => text ? text.split("\n").length - Number(text.endsWith("\n")) : 0;
-const NONE = "#00000000", SENT = "reviewer.sent", DRAFTS = "reviewer.drafts", SCOPE = "reviewer.scope";
+const NONE = "#00000000", SENT = "my-review.sent", DRAFTS = "my-review.drafts", SCOPE = "my-review.scope";
 // The review scopes, in picker order; "commit" (one picked commit vs its
 // parent) is chosen from the log, not cycled. A scope's id is its name, or
 // "commit:<sha>" for a picked commit: the id keys the remembered scope and the drafts.
 const SCOPES = ["work", "last", "branch"];
 const LOG_SIZE = 100;
-const OPEN = "reviewer.open", OPEN_TTL = 30_000, FULL = "reviewer.full";
+const OPEN = "my-review.open", OPEN_TTL = 30_000, FULL = "my-review.full";
 // Diff lines shown at most; with the unchanged lines filled in, file lines at
 // most (a bigger file shows its hunks only). A fold this short is just shown.
 const DIFF_LINES = 1500, FILE_LINES = 30000, FILE_BYTES = 2_000_000, SHORT_GAP = 2;
@@ -174,10 +173,10 @@ export default class Changes extends View {
     this.noteText = "";
     this.refresh(cx);
     cx.timer.every(10000, (cx) => this.refresh(cx));
-    // Viewed marks set elsewhere (the reviewer-viewed command, another window) show at once.
+    // Viewed marks set elsewhere (the my-review-viewed command, another window) show at once.
     cx.spawn(async (cx) => {
-      await fs.mkdir(`${appHome()}/data/reviewer`, { recursive: true }).catch(() => {});
-      for (;;) { await watchFolder(`${appHome()}/data/reviewer`); this.refresh(cx); }
+      await fs.mkdir(`${appHome()}/data/my-review`, { recursive: true }).catch(() => {});
+      for (;;) { await watchFolder(`${appHome()}/data/my-review`); this.refresh(cx); }
     });
     cx.spawn(async (cx) => {
       for (;;) {
@@ -383,21 +382,21 @@ export default class Changes extends View {
         const parts = f.path.split("/"), name = parts.pop(), k = perFile[f.path], viewed = this.viewedState(f.path);
         return h_flex().id(`change-${f.path}`).h(28).flex_none().px(8).gap(8).items_center().rounded(7).cursor_pointer().when((this.focus ?? this.open) === f.path && !this.isExpanded(f.path), (e) => e.bg(t.selected)).hover((s) => s.bg(t.hover)).on_click((_e, cx) => { this.handle.focus(); this.pick(f.path, cx); })
           // Whether this file's diff is the one shown below (a click on the row toggles it).
-          .child(svg(`mods/reviewer/chevron-${this.isExpanded(f.path) ? "down" : "right"}.svg`).size(12).flex_none().text_color(this.isExpanded(f.path) ? t.foreground : t.dim))
+          .child(svg(`mods/my-review/chevron-${this.isExpanded(f.path) ? "down" : "right"}.svg`).size(12).flex_none().text_color(this.isExpanded(f.path) ? t.foreground : t.dim))
           // The viewed box (viewed.js): checked while this diff is the one you viewed.
           .child(div().id(`viewed-${f.path}`).size(15).flex_none().flex().items_center().justify_center().rounded(4).border_1().cursor_pointer()
             .border_color(viewed === "viewed" ? t.accent : viewed === "changed" ? t.blocked : t.input).when(viewed === "viewed", (e) => e.bg(t.accent).text_color(t.accent_foreground))
             .hover((s) => s.border_color(t.accent))
             .tooltip(viewed === "viewed" ? "Viewed · click to unmark" : viewed === "changed" ? "Changed since you viewed it · click to mark viewed" : "Mark as viewed")
             .on_click((_e, cx) => { cx.stop_propagation(); this.handle.focus(); this.toggleViewed(f.path, cx); })
-            .when(viewed === "viewed", (e) => e.child(svg("mods/reviewer/check.svg").size(11))))
+            .when(viewed === "viewed", (e) => e.child(svg("mods/my-review/check.svg").size(11))))
           .child(div().w(14).text_size(11).text_color(f.status === "A" ? t.ansi2 : f.status === "D" ? t.ansi1 : f.status === "U" ? t.ansi1 : t.blocked).child(f.status))
           .child(h_flex().flex_1().min_w(0).when(viewed === "viewed", (e) => e.opacity(0.55)).child(div().text_color(t.dim).truncate().child(parts.length ? parts.join("/") + "/" : "")).child(div().max_w(260).min_w(0).truncate().child(name)))
           .when(viewed === "changed", (e) => e.child(div().text_size(10.5).text_color(t.blocked).child("changed")))
           // Open in the tab's nvim (e), at the line clicked last or the first change.
           .child(div().id(`edit-file-${f.path}`).size(18).flex_none().flex().items_center().justify_center().rounded(4).cursor_pointer().text_color(t.muted)
             .hover((s) => s.bg(t.hover).text_color(t.foreground)).tooltip("Open in nvim (e)")
-            .on_click((_e, cx) => { cx.stop_propagation(); this.editFile(f.path, cx); }).child(svg("mods/reviewer/edit.svg").size(12)))
+            .on_click((_e, cx) => { cx.stop_propagation(); this.editFile(f.path, cx); }).child(svg("mods/my-review/edit.svg").size(12)))
           // One speech bubble: the draft count when there are drafts, and a click comments on the whole file.
           .child(h_flex().id(`comment-file-${f.path}`).h(18).min_w(18).px(k ? 5 : 0).gap(3).items_center().justify_center().rounded(4).cursor_pointer()
             .when(Boolean(k), (e) => e.bg(t.accent + "33").text_size(10).text_color(t.foreground))
@@ -405,7 +404,7 @@ export default class Changes extends View {
             .hover((s) => s.bg(k ? t.accent + "55" : t.hover).text_color(t.foreground))
             .tooltip(k ? `${k} draft comment${k > 1 ? "s" : ""} · click to comment on the whole file` : "Comment on the whole file")
             .on_click((_e, cx) => { cx.stop_propagation(); this.commentFile(f.path, cx); })
-            .when(Boolean(k), (e) => e.child(String(k))).child(svg("mods/reviewer/comment.svg").size(k ? 10 : 12)))
+            .when(Boolean(k), (e) => e.child(String(k))).child(svg("mods/my-review/comment.svg").size(k ? 10 : 12)))
           .when(f.add > 0, (e) => e.child(div().text_size(11).text_color(t.ansi2).child(`+${f.add}`))).when(f.del > 0, (e) => e.child(div().text_size(11).text_color(t.ansi1).child(`−${f.del}`)));
   }
   // --- Several files open at once. The methods above work on "the open file"
@@ -413,7 +412,7 @@ export default class Changes extends View {
   // those fields, swapped in to draw its card or handle a click in it. this.open
   // is also the current file: the one j/k/v/e and the header act on.
   freshView() {
-    return { lines: null, linesPath: null, rows: [], gaps: [], index: new Map(), unfolded: new Set(), items: [], sizes: [], gutter: 30, diffWidth: 0, builtFull: this.full(), scroll: VirtualListScrollHandle.new() };
+    return { lines: null, linesPath: null, rows: [], gaps: [], index: new Map(), unfolded: new Set(), items: [], sizes: [], gutter: 30, diffWidth: 0, builtFull: this.full() };
   }
   storeView() {
     if (!this.open) return;
@@ -919,8 +918,8 @@ export default class Changes extends View {
       { scope: "branch", label: i.base ? `vs ${i.base}` : "vs base branch", detail: i.merge ? `everything on ${i.branch} since it left ${i.base}` : i.base ? `on ${i.base} itself` : "no main or master branch", ok: Boolean(i.merge) },
     ];
     const box = h_flex().id("scope-box").h(24).px(8).gap(6).items_center().rounded(6).border_1().border_color(this.choosingScope ? t.accent : t.border).bg(t.raised).cursor_pointer().hover((s) => s.bg(t.hover))
-      .tooltip("What is reviewed: the uncommitted changes, the last commit, the whole branch, or one commit").child(div().text_size(12).child(this.scopeLabel())).child(svg("mods/reviewer/chevron-down.svg").size(11).text_color(t.dim));
-    const check = (on) => on ? svg("mods/reviewer/check.svg").size(12).text_color(t.accent) : div().w(12);
+      .tooltip("What is reviewed: the uncommitted changes, the last commit, the whole branch, or one commit").child(div().text_size(12).child(this.scopeLabel())).child(svg("mods/my-review/chevron-down.svg").size(11).text_color(t.dim));
+    const check = (on) => on ? svg("mods/my-review/check.svg").size(12).text_color(t.accent) : div().w(12);
     // The recent commits, newest first: a click reviews that commit on its own.
     const commits = (this.log ?? []).map((c) =>
       h_flex().id(`scope-commit-${c.sha}`).px(10).py(5).gap(8).items_center().rounded(6).cursor_pointer().hover((s) => s.bg(t.hover)).on_click((_e, cx) => this.setScope("commit", cx, c.sha)).tooltip(`${c.short} · ${c.author} · ${c.when}\n${c.subject}`)
@@ -1052,7 +1051,7 @@ export default class Changes extends View {
         // Full file: the icon shows what a click does (unfold when folded, fold when the whole file shows).
         .when(this.gaps?.length > 0, (e) => e.child(div().id("full-file").size(24).flex().items_center().justify_center().rounded(6).border_1().border_color(this.full() ? t.accent : t.border).bg(this.full() ? t.accent + "22" : NONE).text_color(this.full() ? t.accent : t.dim).cursor_pointer().hover((s) => s.bg(t.hover).text_color(t.foreground))
           .tooltip(this.full() ? "Fold the unchanged lines" : "Show the whole file").on_click((_e, cx) => this.toggleFull(cx))
-          .child(svg(this.full() ? "mods/reviewer/fold-vertical.svg" : "mods/reviewer/unfold-vertical.svg").size(13))))
+          .child(svg(this.full() ? "mods/my-review/fold-vertical.svg" : "mods/my-review/unfold-vertical.svg").size(13))))
         .child(div().text_size(11).text_color(t.ansi2).child(`+${add}`)).child(div().text_size(11).text_color(t.ansi1).child(`−${del}`))
         .when(n > 0, (e) => e.child(link("review-discard", "Discard", (_e, cx) => this.setComments([], cx))).child(button("review-submit", `Submit review · ${n}`, true, (_e, cx) => this.submit(cx))))
         .when(n === 0 && canAsk, (e) => e.child(button("ask", "Ask about diff", false, (_e, cx) => this.askAbout(null, cx)))))

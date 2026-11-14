@@ -1,13 +1,4 @@
-# tuicr's agent skill for Claude and Codex (Claude links it from dot_claude).
-# Keep the release in step with the Brewfile's tuicr.
-[".agents/skills/tuicr"]
-type = "archive"
-url = "https://github.com/agavra/tuicr/archive/refs/tags/v0.27.0.tar.gz"
-exact = true
-stripComponents = 3
-include = ["*/skills/tuicr/**"]
 {{- if index . "private" }}
-
 # Private additions; opt in with `private = true` under [data] in chezmoi.toml.
 [".local/share/dotfiles-private"]
 type = "git-repo"

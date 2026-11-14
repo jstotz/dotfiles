@@ -1,5 +1,5 @@
-// The send dialog of reviewer, opened as an overlay of the same mod:
-//   openOverlay({ mod: "reviewer", kind: "dialog", width, height, props: { dialog: true, title, context, sent } })
+// The send dialog of my-review, opened as an overlay of the same mod:
+//   openOverlay({ mod: "my-review", kind: "dialog", width, height, props: { dialog: true, title, context, sent } })
 // (main.js hands the copy over to this class when props().dialog is set).
 // `context` is text the caller already formatted (a file, lines, a hunk);
 // `title` is the short label at the top; `sent` (optional) is a shared key
@@ -9,7 +9,7 @@
 // It goes to the focused agent of the space (else an idle one, else the
 // first); a dropdown picks another. The context is read-only: it scrolls
 // both ways and can be copied.
-// Enter or cmd-enter sends, Esc closes. Commands: "reviewer.send", "reviewer.close".
+// Enter or cmd-enter sends, Esc closes. Commands: "my-review.send", "my-review.close".
 import { div, svg } from "gpui-kit";
 import { v_flex, h_flex, TextareaState, Textarea, Popover } from "gpui-base";
 import { agents, focused, spaces, knownAgents, hc, run, notify, props, closeOverlay, theme, settings, nextCommand, setShared } from "herdr";
@@ -108,13 +108,13 @@ export class Dialog {
     const contextLines = this.context.split("\n"), shown = contextLines.slice(0, 600);
     const contextWidth = Math.max(...shown.map((l) => l.length)) * 6.7 + 24;
     const link = (id, text, action, icon) => h_flex().id(id).h(20).px(5).gap(4).items_center().rounded(4).text_size(11).text_color(t.dim).cursor_pointer().hover((s) => s.text_color(t.foreground).bg(t.hover)).on_click(action)
-      .when(Boolean(icon), (e) => e.child(svg(`mods/reviewer/${icon}.svg`).size(12))).child(text);
+      .when(Boolean(icon), (e) => e.child(svg(`mods/my-review/${icon}.svg`).size(12))).child(text);
     const dot = (a) => div().size(7).rounded(4).bg(t[DOT[a.status]] ?? t.unknown);
     // The target as a select-looking box; with a chevron when there is a list to open.
     const agentBox = (a, opens) => h_flex().id("to-box").h(28).px(9).gap(7).items_center().rounded(7).border_1().border_color(this.choosing ? t.accent : t.input).bg(t.raised)
       .when(opens, (e) => e.cursor_pointer().hover((s) => s.bg(t.hover)))
       .child(dot(a)).child(div().text_size(12).child(`${name(a)} · ${a.tab_name}`)).child(div().text_size(10.5).text_color(t.dim).child(a.status))
-      .when(opens, (e) => e.child(svg("mods/reviewer/chevron-down.svg").size(12).text_color(t.dim)));
+      .when(opens, (e) => e.child(svg("mods/my-review/chevron-down.svg").size(12).text_color(t.dim)));
     return v_flex().id("ask-agent").track_focus(this.handle)
       .on_key_down((e, cx) => {
         if (e.key === "escape") { this.close(); cx.stop_propagation(); }
@@ -139,7 +139,7 @@ export class Dialog {
                       .child(dot(a))
                       .child(div().flex_1().text_size(12).child(`${name(a)} · ${a.tab_name}`))
                       .child(div().text_size(10.5).text_color(t.dim).child(a.status))
-                      .child(isTarget(a) ? svg("mods/reviewer/check.svg").size(12).text_color(t.accent) : div().w(12)))))
+                      .child(isTarget(a) ? svg("mods/my-review/check.svg").size(12).text_color(t.accent) : div().w(12)))))
               : agentBox(agent, false)))
       .child(Textarea.new(this.input).w_full().px(10).py(8).rounded(9).border_1().border_color(t.input).bg(t.background).text_size(12.8).text_color(t.foreground))
       // The context, read-only: what the caller built (a review, a hunk). Scrolls both ways.

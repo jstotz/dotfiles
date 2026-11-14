@@ -1,6 +1,6 @@
 // The button that hides and shows the right panel, in its own small block beside
 // the tab bar, and the key command that does the same. Also `editor` (cmd-e):
-// with the Changes tab showing, reviewer opens its file in the tab's nvim;
+// with the Changes tab showing, My Review opens its file in the tab's nvim;
 // otherwise herdr-nvim's own cmd-e (its tree and nvim).
 import { h_flex } from "gpui-base";
 import { theme, run, props, layout, nextCommand } from "herdr";
@@ -30,7 +30,7 @@ export class PanelToggle {
 
   editor() {
     const panel = this.panel(), stack = findNode(layout(), "panel-body");
-    if (panel && !panel.hidden && stack?.active === "changes") run("reviewer.edit");
+    if (panel && !panel.hidden && stack?.active === "changes") run("my-review.edit");
     else run("mod.open", { name: "herdr-nvim" });
   }
 

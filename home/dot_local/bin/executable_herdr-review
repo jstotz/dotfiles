@@ -1,3 +1,0 @@
-#!/bin/zsh -l
-# Both agent requests and prefix+r use the same captured-target review workflow.
-exec bun "$HOME/.local/lib/herdr-review/main.ts" "$@"

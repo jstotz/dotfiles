@@ -1,7 +1,7 @@
-// Reads and sets the Herdr reviewer mod's Viewed marks from the command line, so
+// Reads and sets the Herdr My Review mod's Viewed marks from the command line, so
 // agents can mark files viewed. It lists a scope's changed files and computes
-// each one's diff fingerprint exactly as the mod does (mods/reviewer/viewed.js),
-// then writes the same file the mod reads: <app home>/data/reviewer/viewed.json,
+// each one's diff fingerprint exactly as the mod does (mods/my-review/viewed.js),
+// then writes the same file the mod reads: <app home>/data/my-review/viewed.json,
 // keyed "<machine>:<repo>:<scope>" (machine empty: this computer).
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
@@ -11,20 +11,20 @@ import { join, resolve } from 'node:path';
 export type File = { path: string; status: string };
 export type Marks = Record<string, Record<string, string>>;
 
-const USAGE = `usage: reviewer-viewed [--repo DIR] [--scope SCOPE] <command>
+const USAGE = `usage: my-review-viewed [--repo DIR] [--scope SCOPE] <command>
 
   list [--json]              the scope's files: viewed, changed or unviewed
   mark <glob>... | --all     mark matching files viewed
   unmark <glob>... | --all   clear their marks
 
-SCOPE is what the reviewer panel's scope picker shows: work (uncommitted
+SCOPE is what the My Review panel's scope picker shows: work (uncommitted
 changes, the default), last (the last commit plus them), branch (everything
 since the branch left its base), or commit:<sha>. Globs match paths relative
 to the repository root ("src/**/*.test.ts"); a folder matches what's under it.`;
 
 const ZERO = /^0+$/;
 const READ = ['--no-optional-locks', '-c', 'core.fsmonitor=false', '-c', 'diff.autoRefreshIndex=false'];
-const marksFile = () => join(process.env.HERDR_APP_HOME || join(homedir(), '.config/herdr-app'), 'data/reviewer/viewed.json');
+const marksFile = () => join(process.env.HERDR_APP_HOME || join(homedir(), '.config/herdr-app'), 'data/my-review/viewed.json');
 
 // `git diff --raw -z`: path -> base blob, and path -> reviewed blob when committed.
 export function parseRaw(stdout: string) {
@@ -39,7 +39,7 @@ export function parseRaw(stdout: string) {
   return { base, side };
 }
 
-// The reviewer's letter for a file: A for untracked, D/A/U as git says, else M.
+// My Review's letter for a file: A for untracked, D/A/U as git says, else M.
 export function statusOf(letter: string, fresh: boolean) {
   if (fresh) return 'A';
   return letter === 'D' || letter === 'A' || letter === 'U' ? letter : 'M';
@@ -74,7 +74,7 @@ function git(cwd: string, args: string[], allowFail = false) {
   return r.status === 0 ? r.stdout : null;
 }
 
-// What a scope diffs, as the reviewer panel works it out.
+// What a scope diffs, as the My Review panel works it out.
 function rangeOf(root: string, scope: string): string[] {
   if (scope === 'work') return ['HEAD'];
   if (scope === 'last') {

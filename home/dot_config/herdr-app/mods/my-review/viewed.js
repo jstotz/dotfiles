@@ -1,5 +1,4 @@
-// Viewed marks, like a GitHub review's "Viewed" box (added to reviewer in this
-// dotfiles copy; not upstream). Each mark is saved with a fingerprint of that
+// Viewed marks, like a GitHub review's "Viewed" box. Each mark is saved with a fingerprint of that
 // file's diff in that scope, so when the diff changes the mark no longer
 // matches: the file shows unchecked again, flagged as changed since viewed.
 //
@@ -8,14 +7,14 @@
 // `git hash-object --no-filters`: two git runs for the whole list, and the same
 // diff always gives the same fingerprint.
 //
-// Marks live in <app home>/data/reviewer/viewed.json:
+// Marks live in <app home>/data/my-review/viewed.json:
 //   { "<machine>:<repo>:<scope id>": { "<path>": "<fingerprint>" } }
-// The reviewer-viewed command (dotfiles) reads and writes the same file, for agents.
+// The my-review-viewed command (dotfiles) reads and writes the same file, for agents.
 import { appHome, readTextFile, writeTextFile } from "herdr";
 import * as fs from "fs/promises";
 
 const ZERO = /^0+$/;
-const folder = () => `${appHome()}/data/reviewer`;
+const folder = () => `${appHome()}/data/my-review`;
 const file = () => `${folder()}/viewed.json`;
 
 // path -> fingerprint, for the files in the list. `git` runs git in the repo.

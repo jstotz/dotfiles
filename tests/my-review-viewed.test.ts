@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { applyMarks, fingerprint, matches, parseRaw, statusOf } from '../home/dot_local/lib/reviewer-viewed/main';
+import { applyMarks, fingerprint, matches, parseRaw, statusOf } from '../home/dot_local/lib/my-review-viewed/main';
 
 test('raw diff gives base blobs, and reviewed blobs only when committed', () => {
   const raw = [
@@ -10,7 +10,7 @@ test('raw diff gives base blobs, and reviewed blobs only when committed', () => 
   expect(parseRaw(raw)).toEqual({ base: { 'src/a.ts': 'aaaa', 'src/b.ts': '0000000000' }, side: { 'src/b.ts': 'bbbb' } });
 });
 
-test('statuses follow the reviewer panel', () => {
+test('statuses follow the My Review panel', () => {
   expect(statusOf('?', true)).toBe('A');
   expect(statusOf('D', false)).toBe('D');
   expect(statusOf('T', false)).toBe('M');

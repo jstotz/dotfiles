@@ -5,9 +5,8 @@ require("codediff").setup({
 -- Code review: closing exports comments to the clipboard and archives them.
 require("review").setup({
   keymaps = { send_sidekick = false },
-  export = { clipboard = true, on_export = require("config.review-export").send },
+  export = { clipboard = true },
 })
-require("config.review-export").setup()
 require("config.review-scope").setup()
 require("neogit").setup({
   integrations = { mini_pick = true, diffview = true },

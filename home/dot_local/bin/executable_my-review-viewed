@@ -1,0 +1,2 @@
+#!/bin/zsh -l
+exec bun "$HOME/.local/lib/my-review-viewed/main.ts" "$@"
