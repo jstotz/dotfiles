@@ -25,7 +25,10 @@ Then load that runtime's guide from its installed binary and follow it:
   stays out of the window. The sidebar sorts spaces into named groups, with
   pinned spaces first; manage them with `herdr-space-group` (run it without
   arguments for usage). When the user names a group for a new space, put the
-  space there using the ID that `space.new` returns.
+  space there using the ID that `space.new` returns. The Changes panel
+  (reviewer) keeps GitHub-style Viewed marks per file; read and set them with
+  `reviewer-viewed` (run it without arguments for usage), for example when the
+  user asks to mark files matching a pattern as viewed.
 - **Terminal app:** run `herdr --skill`.
 
 Load each guide once per session and reuse it. Read it again only if it is no
