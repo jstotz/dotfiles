@@ -1,9 +1,11 @@
 // The sidebar's last line: Settings, Mod settings and Add machine as icons. Herdr's
 // own footer gives each a labelled row, which costs twice the height. Mod settings
-// opens Better Config, and shows only when that mod is installed.
+// opens Better Config, and shows only when that mod is installed. At the right,
+// Micro (the micro mod's agent, which lives outside every space) and its status;
+// a click summons it.
 import { div } from "gpui-kit";
 import { h_flex } from "gpui-base";
-import { theme, run, updates, readTextFile, appHome } from "herdr";
+import { theme, run, updates, readTextFile, appHome, terminals } from "herdr";
 import { Icon, SIZE } from "./ui.js";
 
 export class Footer {
@@ -36,6 +38,38 @@ export class Footer {
       .children(icons);
   }
 
+  // Micro's state: its terminal's status word, or "off" when it isn't running.
+  micro(t) {
+    const term = terminals().find((x) => x.name === "micro" && x.state === "live");
+    const status = term ? (term.status ?? "idle") : "off";
+    const mark =
+      status === "working"
+        ? Icon("spinner", 12).text_color(t.working).spin(900)
+        : div()
+            .size(8)
+            .rounded_full()
+            .flex_none()
+            .when(status === "blocked" || status === "done", (el) => el.bg(status === "blocked" ? t.blocked : t.done))
+            .when(status === "idle" || status === "off", (el) => el.border_1().border_color(status === "off" ? t.dim : t.muted));
+    const words = { working: "working", blocked: "needs you", done: "done", idle: "idle", off: "not running" };
+    return h_flex()
+      .id("micro")
+      .h(SIZE.icon)
+      .px(8)
+      .gap(6)
+      .flex_none()
+      .items_center()
+      .rounded(6)
+      .text_size(12)
+      .text_color(status === "blocked" ? t.foreground : t.muted)
+      .cursor_pointer()
+      .hover((s) => s.bg(t.hover).text_color(t.foreground))
+      .tooltip(`Micro: ${words[status] ?? status} (cmd-k)`)
+      .on_click(() => run("micro.show"))
+      .child("Micro")
+      .child(mark);
+  }
+
   render() {
     const t = theme();
     const updateDot = updates().app.ready ? [div().size(6).rounded_full().bg(t.accent)] : [];
@@ -66,6 +100,8 @@ export class Footer {
           Icon("plus", 12),
           Icon("server"),
         ]),
-      );
+      )
+      .child(div().flex_1())
+      .child(this.micro(t));
   }
 }

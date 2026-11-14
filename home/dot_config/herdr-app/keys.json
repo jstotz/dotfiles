@@ -16,7 +16,7 @@
     "cmd-shift-l": "layout.switch",
     "cmd-n": "space.new",
     "cmd-p": "mod.open:picker",
-    "cmd-shift-p": "app.palette",
+    "cmd-shift-p": "mod.open:my-palette",
     "cmd-,": "app.settings",
     "cmd-d": "pane.split:right",
     "cmd-shift-d": "pane.split:down",
@@ -60,7 +60,8 @@
     "cmd-shift-b": "my-sidebar.toggle-panel",
     "cmd-e": "mod.open:herdr-nvim",
     "cmd-o": "herdr-nvim.pick",
-    "cmd-shift-e": "herdr-nvim.reveal"
+    "cmd-shift-e": "herdr-nvim.reveal",
+    "cmd-k": "micro.toggle"
   },
   "terminal": {
     "cmd-f": "terminal.search",

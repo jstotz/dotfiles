@@ -220,6 +220,17 @@
       },
       "edge": "bottom",
       "align": "end"
+    },
+    {
+      "id": "micro",
+      "content": {
+        "mod": "micro",
+        "props": {
+          "role": "controller"
+        }
+      },
+      "edge": "bottom",
+      "align": "start"
     }
   ]
 }
