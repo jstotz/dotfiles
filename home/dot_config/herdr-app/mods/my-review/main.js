@@ -22,7 +22,8 @@
 // diff), "my-review.clear" (drops the draft comments), "my-review.full"
 // (folds or unfolds the unchanged lines), "my-review.next" / "my-review.prev"
 // (files; j/k with the panel focused), "my-review.viewed" (v), "my-review.edit"
-// (e: the file in the tab's nvim, through herdr-nvim); in the send
+// (e: the file in the tab's nvim, through herdr-nvim), "my-review.focus" /
+// "my-review.toggle-focus" (cmd-r, through my-sidebar's review); in the send
 // dialog (dialog.js) "my-review.send" and "my-review.close".
 // Another mod opens a file's diff by setting shared "my-review.open" to
 // { id, at: Date.now(), path (absolute), on (machine or null), ref? }: the panel
@@ -189,6 +190,10 @@ export default class Changes extends View {
         else if (c === "next" || c === "prev") this.step(c === "next" ? 1 : -1, cx);
         else if (c === "viewed" && this.open) this.toggleViewed(this.open, cx);
         else if (c === "edit") this.editFile(this.open, cx);
+        // cmd-r (my-sidebar's review): take the keyboard; with it already, hand it
+        // back to where it was and hide the panel. "focus" is also what Herdr sends.
+        else if (c === "focus") this.takeFocus();
+        else if (c === "toggle-focus") { if (this.handle.is_focused()) this.giveBackFocus(); else this.takeFocus(); }
         cx.notify();
       }
     });
@@ -406,6 +411,15 @@ export default class Changes extends View {
             .on_click((_e, cx) => { cx.stop_propagation(); this.commentFile(f.path, cx); })
             .when(Boolean(k), (e) => e.child(String(k))).child(svg("mods/my-review/comment.svg").size(k ? 10 : 12)))
           .when(f.add > 0, (e) => e.child(div().text_size(11).text_color(t.ansi2).child(`+${f.add}`))).when(f.del > 0, (e) => e.child(div().text_size(11).text_color(t.ansi1).child(`−${f.del}`)));
+  }
+  takeFocus() {
+    const f = focused();
+    if (f?.terminal) this.back = f.terminal;
+    this.handle.focus();
+  }
+  giveBackFocus() {
+    run("layout.hide", { id: "panel" });
+    if (this.back) run("pane.focus", { terminal: this.back });
   }
   // --- Several files open at once. The methods above work on "the open file"
   // (this.open and the VIEW fields); each expanded file keeps its own copy of

@@ -103,6 +103,7 @@ function entries() {
 // the same thing when it's bound to another command of that mod.
 const MOD_ENTRIES = [
   { name: "micro.show", args: {}, group: "Micro", title: "Focus Micro", words: "micro agent coordinator orchestrator", key: "micro.toggle" },
+  { name: "my-sidebar.review", args: {}, group: "Review", title: "Review changes", words: "changes diff code review my-review panel" },
 ];
 
 // The key bound to an entry: `name` or `name:value` in keys.json.
