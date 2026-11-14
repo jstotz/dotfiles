@@ -6,6 +6,7 @@ import { v_flex, h_flex } from "gpui-base";
 import { run, props, closeOverlay, openOverlay, theme, spaces, panes, exec } from "herdr";
 import { spaceGroups, DEFAULT_GROUP } from "../git/groups.js";
 import { spaceFolder } from "../git/checkouts.js";
+import { isArchiving } from "../git/archive.js";
 import { TEXT, Icon } from "./ui.js";
 
 // A space's checkout: "main" (a repo's own), "linked" (a worktree), or null.
@@ -26,6 +27,19 @@ function prompt(props) {
 
 function pickParent(space) {
   openOverlay({ mod: "my-sidebar", kind: "dialog", width: 380, height: 460, props: { view: "space-picker", space } });
+}
+
+function confirmArchive(id) {
+  const space = spaces().find((s) => s.id === id);
+  const folder = space && spaceFolder(space, panes());
+  if (!folder) return;
+  openOverlay({
+    mod: "my-sidebar",
+    kind: "dialog",
+    width: 400,
+    height: 160,
+    props: { view: "archive-confirm", space: id, folder, name: space.name },
+  });
 }
 
 function worktreeDialog(args) {
@@ -73,7 +87,10 @@ export class SpaceMenu {
           ]
         : []),
       ...(this.git === "linked"
-        ? [["Remove worktree", "git-branch", () => worktreeDialog({ space: id, action: "remove" })]]
+        ? [
+            ["Remove worktree", "git-branch", () => worktreeDialog({ space: id, action: "remove" })],
+            ...(isArchiving(id) ? [] : [["Archive worktree…", "archive", () => confirmArchive(id)]]),
+          ]
         : []),
       ...others.map((name, n) => [
         `Move to ${name}`,

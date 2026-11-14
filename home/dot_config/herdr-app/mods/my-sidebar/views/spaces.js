@@ -23,6 +23,7 @@ import { loadSettings, duration } from "../settings.js";
 import { findNode } from "./find-node.js";
 import { TEXT, Icon, IconButton, Badge, Rail } from "./ui.js";
 import { spaceGroups, DEFAULT_GROUP, within } from "../git/groups.js";
+import { isArchiving, runArchives } from "../git/archive.js";
 
 const USUAL_BRANCHES = new Set(["main", "master"]);
 const rowHeight = ({ rails }) => (rails.length ? 24 : 26);
@@ -99,6 +100,8 @@ export class Spaces {
     // `git status` walks the whole tree, on another machine a process there:
     // only when its answer could have changed (see `due`).
     cx.timer.every(250, (cx) => this.checkNew(cx));
+    // Archives asked for in the confirm dialog run here, where they outlive it.
+    cx.timer.every(250, (cx) => runArchives(cx));
   }
 
   // Read the installed mod.json once; Herdr restarts the mod when it changes.
@@ -637,6 +640,15 @@ export class Spaces {
   // At the right: the checkout's pull request, and ahead/behind on the selected space.
   // `trailing`, set by the lists view, adds a folded space's status.
   gitTail(g, active, t, w) {
+    if (w && isArchiving(w.id))
+      return h_flex()
+        .flex_none()
+        .gap(5)
+        .items_center()
+        .text_size(TEXT.label)
+        .text_color(t.dim)
+        .child("archiving")
+        .child(Icon("spinner", 12).text_color(t.muted).spin(900));
     const pr = w ? this.prBadge(w, t) : null;
     const trailing = w ? (this.trailing?.(w) ?? []) : [];
     return h_flex()
@@ -772,6 +784,7 @@ export class Spaces {
       .when(lit, (el) => el.bg(t.selected))
       .when(!lit, (el) => el.hover((s) => s.bg(t.hover)))
       .when(this.pressed === i && this.over !== i, (el) => el.opacity(0.5))
+      .when(isArchiving(w.id), (el) => el.opacity(0.4))
       .on_mouse_down("right", () => this.menu(w))
       .child(this.rowTitle(r, t))
       .when(hasPRLine, (el) => el.child(this.prLine(w, t, rails.length > 0)));

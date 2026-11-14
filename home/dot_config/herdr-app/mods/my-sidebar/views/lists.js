@@ -5,6 +5,7 @@ import { div } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
 import { agents, focused, spaces, theme, setAgentOrder } from "herdr";
 import { Spaces, carry } from "./spaces.js";
+import { isArchiving } from "../git/archive.js";
 import { Agents } from "./agents.js";
 import { TEXT, Badge, Rail, Icon } from "./ui.js";
 
@@ -158,11 +159,15 @@ export class Lists {
       order.push(...items.filter((x) => x.a).map((x) => x.a.address));
       if (folded(w)) return [];
       const before = carry(rails);
+      // An archiving space's agents and tabs go dim with it.
+      const fade = isArchiving(w.id) ? (el) => el.opacity(0.4) : (el) => el;
       return items.flatMap((x, i) => {
         const last = i === items.length - 1 && !kids;
-        const [row, ...subs] = x.a
-          ? this.agents.agentWithSubs(x.a, i, nested, t)
-          : [this.agents.tabRow(w, x.tab, x.tab.id === shownTab, t)];
+        const [row, ...subs] = (
+          x.a
+            ? this.agents.agentWithSubs(x.a, i, nested, t)
+            : [this.agents.tabRow(w, x.tab, x.tab.id === shownTab, t)]
+        ).map(fade);
         return [nest([...before, last ? "└" : "├"], row), ...subs.map((s) => nest([...before, last ? "" : "│"], s))];
       });
     };
