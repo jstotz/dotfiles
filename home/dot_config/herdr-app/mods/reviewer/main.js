@@ -1,5 +1,7 @@
 // Modified from Herdr's shipped "changes" mod (0.1.8), Apache License 2.0.
 // Changes by Vytas Gavelis, MIT License. See LICENSE and THIRD-PARTY-NOTICES.
+// This dotfiles copy (from reviewer 0.6.0, 01e6d10) adds GitHub-style Viewed marks
+// on the file list; see viewed.js.
 //
 // Changes, for code review: the diff rows are syntax colored (highlight.js,
 // palette.js), and the diff is reviewed like a pull request: click a line
@@ -19,7 +21,9 @@
 // (remembered in shared "reviewer.full"), so the whole file scrolls.
 // Keys: "reviewer.submit", "reviewer.ask" (about the whole
 // diff), "reviewer.clear" (drops the draft comments), "reviewer.full"
-// (folds or unfolds the unchanged lines); in the send
+// (folds or unfolds the unchanged lines), "reviewer.next" / "reviewer.prev"
+// (files; j/k with the panel focused), "reviewer.viewed" (v), "reviewer.edit"
+// (e: the file in the tab's nvim, through herdr-nvim); in the send
 // dialog (dialog.js) "reviewer.send" and "reviewer.close".
 // Another mod opens a file's diff by setting shared "reviewer.open" to
 // { id, at: Date.now(), path (absolute), on (machine or null), ref? }: the panel
@@ -37,17 +41,28 @@
 //          base: the branch reviews are against (default: origin/HEAD, else main, else master) }.
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input, TextareaState, Textarea, Scrollbar, v_virtual_list, VirtualListScrollHandle, Popover } from "gpui-base";
-import { spaces, panes, focused, exec, readTextFile, watchFolder, theme, settings, nextCommand, props, shared, setShared } from "herdr";
+import { spaces, panes, focused, exec, run, notify, appHome, readTextFile, watchFolder, theme, settings, nextCommand, props, shared, setShared } from "herdr";
 import { tokenize, languageOf } from "./highlight.js";
 import { ask } from "./ask.js";
 import { palette } from "./palette.js";
 import { Dialog } from "./dialog.js";
+import { fingerprints, loadMarks, saveMark } from "./viewed.js";
+import * as fs from "fs/promises";
 
+// One file's diff state; see withView.
+const VIEW = ["lines", "linesPath", "rows", "gaps", "index", "unfolded", "items", "sizes", "gutter", "diffWidth", "builtFull", "builtWidth", "scroll"];
+
+// This dotfiles copy: a focused pane with no folder of its own (a mod pane, such
+// as a preview) keeps the last place, so the review stays put.
+let lastPlace = null;
 function location() {
   const space = spaces().find((s) => s.active), f = focused();
   const pane = f?.pane ? panes().find(p => p.pane === f.pane) : null;
+  if (pane && !pane.terminal && lastPlace?.space === space?.id) return lastPlace.where;
   const on = f?.pane === null ? (f.terminal?.includes("/") ? f.terminal.split("/")[0] : null) : space?.machine ?? null;
-  return { cwd: pane?.cwd || f?.cwd || space?.folder, on };
+  const where = { cwd: pane?.cwd || f?.cwd || space?.folder, on };
+  lastPlace = { space: space?.id, where };
+  return where;
 }
 const key = () => JSON.stringify(location());
 const countLines = (text) => text ? text.split("\n").length - Number(text.endsWith("\n")) : 0;
@@ -136,6 +151,9 @@ export default class Changes extends View {
     // Opened as the send dialog (ask.js): this copy is the dialog, nothing else.
     if (props()?.dialog) { this.dialog = Object.create(Dialog.prototype); this.dialog.init(_props, cx); return; }
     this.files = []; this.rows = []; this.index = new Map(); this.items = []; this.sizes = []; this.diffWidth = 0; this.gutter = 30; this.message = "";
+    // Each expanded file's own diff state (VIEW fields), and the expand/collapse
+    // choices made by hand (else unviewed files are expanded, viewed ones not).
+    this.views = new Map(); this.toggled = new Map();
     this.comments = []; this.composer = null; this.handle = cx.focus_handle(); this.scroll = VirtualListScrollHandle.new();
     this.fontSize = codeSize(); this.row = rowOf(this.fontSize); this.unfolded = new Set();
     this.scope = "work"; this.sha = null; this.scopeInfo = null; this.choosingScope = false; this.range = ["HEAD"]; this.log = null;
@@ -156,6 +174,11 @@ export default class Changes extends View {
     this.noteText = "";
     this.refresh(cx);
     cx.timer.every(10000, (cx) => this.refresh(cx));
+    // Viewed marks set elsewhere (the reviewer-viewed command, another window) show at once.
+    cx.spawn(async (cx) => {
+      await fs.mkdir(`${appHome()}/data/reviewer`, { recursive: true }).catch(() => {});
+      for (;;) { await watchFolder(`${appHome()}/data/reviewer`); this.refresh(cx); }
+    });
     cx.spawn(async (cx) => {
       for (;;) {
         const c = await nextCommand();
@@ -164,6 +187,9 @@ export default class Changes extends View {
         else if (c === "clear") this.setComments([], cx);
         else if (c === "scope") this.cycleScope(cx);
         else if (c === "full") this.toggleFull(cx);
+        else if (c === "next" || c === "prev") this.step(c === "next" ? 1 : -1, cx);
+        else if (c === "viewed" && this.open) this.toggleViewed(this.open, cx);
+        else if (c === "edit") this.editFile(this.open, cx);
         cx.notify();
       }
     });
@@ -188,17 +214,21 @@ export default class Changes extends View {
     // The request this refresh answers; render never starts another refresh
     // for the same id, so a repo whose git keeps failing is read once, not in a loop.
     this.tried = request?.id ?? this.tried;
-    if (context !== this.context) {
-      this.context = context; this.root = null; this.log = null; this.files = []; this.open = null; this.comments = []; this.composer = null;
-      this.setLines([]); this.message = ""; this.input.set_value(""); this.error = null; this.note_ = null; this.watched = null; this.closed = false; this.limited = false;
-    }
+    // This dotfiles copy: a new place resets the view only once it turns out to be
+    // another repo (below); moving between panes of the same repo keeps your place.
+    if (context !== this.context) this.context = context;
+    const reset = () => {
+      this.root = null; this.log = null; this.files = []; this.views.clear(); this.toggled.clear(); this.bindView(null); this.comments = []; this.composer = null;
+      this.message = ""; this.input.set_value(""); this.error = null; this.note_ = null; this.watched = null; this.closed = false; this.limited = false;
+    };
     if (!cwd) return;
     this.loading = true;
     cx.spawn(async (cx) => {
       try {
         const top = await exec("git", [...READ, "rev-parse", "--show-toplevel"], { cwd, on });
         if (key() !== context) return;
-        if (top.code !== 0) { this.root = null; this.files = []; this.setLines([]); this.open = null; this.error = "Not a git repository"; return; }
+        if (top.code !== 0) { reset(); this.error = "Not a git repository"; return; }
+        if (top.stdout.trim() !== this.root || (on ?? null) !== (this.on ?? null)) reset();
         const root = top.stdout.trim(), git = (args) => exec("git", [...READ, ...args], { cwd: root, on });
         const status = await git(["status", "--porcelain=v1", "-z", "--no-renames", "--untracked-files=all"]);
         if (status.code !== 0) throw new Error(status.stderr);
@@ -258,31 +288,35 @@ export default class Changes extends View {
           const stat = stats[path] ?? { add: 0, del: 0 };
           files.push({ path, status: s, fresh, ...stat });
         }
+        // Viewed marks (viewed.js): this list's fingerprints and the scope's saved marks.
+        const prints = await fingerprints(git, { range, scope, hasHead, files }).catch(() => ({}));
+        const marks = await loadMarks(`${on ?? ""}:${root}:${this.scopeId(scope, sha)}`).catch(() => ({}));
         if (key() !== context) return;
-        if (root !== this.root || scope !== this.scope || sha !== this.sha || range.join(" ") !== this.range.join(" ")) { this.setLines([]); }
+        if (root !== this.root || scope !== this.scope || sha !== this.sha || range.join(" ") !== this.range.join(" ")) { this.views.clear(); this.toggled.clear(); this.bindView(null); }
         const changedSet = root !== this.root || scope !== this.scope || sha !== this.sha;
         this.root = root; this.on = on; this.hasHead = hasHead; this.scope = scope; this.sha = sha; this.scopeInfo = info; this.range = range;
         // Each scope keeps its own comments: switching swaps the set, the others stay saved.
         if (changedSet) { this.comments = this.loadDrafts(this.scopeId()); this.composer = null; }
-        this.files = files; this.limited = changed.size > 1000; this.error = null;
+        this.files = files; this.prints = prints; this.marks = marks; this.limited = changed.size > 1000; this.error = null;
         this.watch(root, cx);
         if (requested !== null) {
           // "": the repo itself, no file to select.
           if (requested !== "") {
-            this.open = files.some(f => f.path === requested) ? requested : null;
-            this.closed = !this.open; this.composer = null; this.note_ = this.open ? null : "Requested file has no diff in this scope (or is outside the first 1,000 files).";
-            this.setLines([]);
-            if (this.open) this.scroll.scroll_to_item(0);
+            const found = files.some(f => f.path === requested);
+            if (found) { this.toggled.set(requested, true); this.focusFile(requested); }
+            this.composer = null; this.note_ = found ? null : "Requested file has no diff in this scope (or is outside the first 1,000 files).";
           } else this.note_ = null;
           if (refNote) this.note_ = refNote;
           if (shared(OPEN)?.id === request.id) setShared(OPEN, null);
         }
-        if (this.open && !files.some((f) => f.path === this.open)) { this.open = null; this.setLines([]); }
-        // The first file's diff shows until you pick another.
-        if (!this.open && !this.closed && files.length) this.open = files[0].path;
-        if (this.open) {
-          try { await this.load(this.open, context); }
-          catch { if (key() === context) this.setLines(["Cannot preview this diff (too large or unreadable)"]); }
+        for (const p of [...this.views.keys()]) if (!files.some((f) => f.path === p)) this.views.delete(p);
+        if (this.open && !files.some((f) => f.path === this.open)) this.bindView(null);
+        // The current file: kept, else the first expanded one.
+        if (!this.open && files.length) this.bindView((files.find((f) => this.isExpanded(f.path)) ?? files[0]).path);
+        // Every expanded file's diff (the first 60).
+        for (const f of files.filter((f) => this.isExpanded(f.path)).slice(0, 60)) {
+          try { await this.load(f.path, context); }
+          catch { if (key() === context) this.withView(f.path, () => this.setLines(["Cannot preview this diff (too large or unreadable)"], f.path)); }
         }
       } catch (e) { if (key() === context) this.error = String(e); }
       finally { this.loading = false; cx.notify(); }
@@ -306,6 +340,228 @@ export default class Changes extends View {
   }
 
   // The shown scope's id: its name, or "commit:<sha>" for a picked commit.
+  // A file's viewed box: checked while its saved mark matches its diff now.
+  viewedState(path) {
+    const mark = this.marks?.[path];
+    return !mark ? "unviewed" : mark === this.prints?.[path] ? "viewed" : "changed";
+  }
+  // The new-file line to open the shown file at: the comment selection's first
+  // line, else the last clicked row's, else
+  // the first added line, else the first line shown. A removed line opens at
+  // the line that follows it.
+  editLine() {
+    // A line or range selected for a comment wins: its first line.
+    const selected = this.composer && !this.composer.whole && this.composer.path === this.open ? this.at(this.composer.from) : -1;
+    const rows = this.rows, picked = selected >= 0 ? selected : this.lastRow?.path === this.open ? this.lastRow.i : -1;
+    const from = picked >= 0 ? picked : Math.max(0, rows.findIndex((r) => r.kind === "+"));
+    for (let j = from; j < rows.length; j++) if (rows[j].kind === "+" || rows[j].kind === " ") return rows[j].number;
+    return 1;
+  }
+  // Opens a file in the tab's nvim, as the Files tree does (herdr-nvim's
+  // `open`), and gives nvim the keyboard. This machine's repos only.
+  editFile(path, cx) {
+    if (!this.root || !path) return;
+    if (this.on) { notify({ title: "Open in nvim", body: "herdr-nvim opens files on this computer only.", level: "warning" }); return; }
+    const f = focused(), line = path === this.open ? this.editLine() : 1;
+    const where = f?.space && f?.tab ? JSON.stringify({ space: f.space, tab: f.tab, terminal: null, cwd: null }) : null;
+    if (!where) return;
+    // An image or SVG previews in nvim's place, as the Files tree does; opening
+    // it in nvim as well would make herdr-nvim show a second preview.
+    if (/\.(png|jpe?g|gif|webp|bmp|ico|svg)$/i.test(path)) { run(`herdr-nvim.swap:${f.tab}:${encodeURIComponent(`${this.root}/${path}`)}`); return; }
+    cx.spawn(async (cx) => {
+      try {
+        const r = await exec(`${appHome()}/mods/herdr-nvim/bin/herdr-nvim`, ["open", "--no-focus", `${this.root}/${path}:${line}`, "--ctx", where]);
+        if (r.code !== 0) throw new Error((r.stderr || r.stdout).trim().slice(-300) || `exit ${r.code}`);
+        let out = {};
+        try { out = JSON.parse(r.stdout); } catch {}
+        if (out.terminal) run("pane.focus", { terminal: out.terminal });
+      } catch (e) { this.note_ = `Couldn't open in nvim: ${e.message ?? e}`; cx.notify(); }
+    });
+  }
+  // One file's row: chevron, viewed box, status, path, buttons and counts.
+  fileRow(f, t, perFile) {
+        const parts = f.path.split("/"), name = parts.pop(), k = perFile[f.path], viewed = this.viewedState(f.path);
+        return h_flex().id(`change-${f.path}`).h(28).flex_none().px(8).gap(8).items_center().rounded(7).cursor_pointer().when((this.focus ?? this.open) === f.path && !this.isExpanded(f.path), (e) => e.bg(t.selected)).hover((s) => s.bg(t.hover)).on_click((_e, cx) => { this.handle.focus(); this.pick(f.path, cx); })
+          // Whether this file's diff is the one shown below (a click on the row toggles it).
+          .child(svg(`mods/reviewer/chevron-${this.isExpanded(f.path) ? "down" : "right"}.svg`).size(12).flex_none().text_color(this.isExpanded(f.path) ? t.foreground : t.dim))
+          // The viewed box (viewed.js): checked while this diff is the one you viewed.
+          .child(div().id(`viewed-${f.path}`).size(15).flex_none().flex().items_center().justify_center().rounded(4).border_1().cursor_pointer()
+            .border_color(viewed === "viewed" ? t.accent : viewed === "changed" ? t.blocked : t.input).when(viewed === "viewed", (e) => e.bg(t.accent).text_color(t.accent_foreground))
+            .hover((s) => s.border_color(t.accent))
+            .tooltip(viewed === "viewed" ? "Viewed · click to unmark" : viewed === "changed" ? "Changed since you viewed it · click to mark viewed" : "Mark as viewed")
+            .on_click((_e, cx) => { cx.stop_propagation(); this.handle.focus(); this.toggleViewed(f.path, cx); })
+            .when(viewed === "viewed", (e) => e.child(svg("mods/reviewer/check.svg").size(11))))
+          .child(div().w(14).text_size(11).text_color(f.status === "A" ? t.ansi2 : f.status === "D" ? t.ansi1 : f.status === "U" ? t.ansi1 : t.blocked).child(f.status))
+          .child(h_flex().flex_1().min_w(0).when(viewed === "viewed", (e) => e.opacity(0.55)).child(div().text_color(t.dim).truncate().child(parts.length ? parts.join("/") + "/" : "")).child(div().max_w(260).min_w(0).truncate().child(name)))
+          .when(viewed === "changed", (e) => e.child(div().text_size(10.5).text_color(t.blocked).child("changed")))
+          // Open in the tab's nvim (e), at the line clicked last or the first change.
+          .child(div().id(`edit-file-${f.path}`).size(18).flex_none().flex().items_center().justify_center().rounded(4).cursor_pointer().text_color(t.muted)
+            .hover((s) => s.bg(t.hover).text_color(t.foreground)).tooltip("Open in nvim (e)")
+            .on_click((_e, cx) => { cx.stop_propagation(); this.editFile(f.path, cx); }).child(svg("mods/reviewer/edit.svg").size(12)))
+          // One speech bubble: the draft count when there are drafts, and a click comments on the whole file.
+          .child(h_flex().id(`comment-file-${f.path}`).h(18).min_w(18).px(k ? 5 : 0).gap(3).items_center().justify_center().rounded(4).cursor_pointer()
+            .when(Boolean(k), (e) => e.bg(t.accent + "33").text_size(10).text_color(t.foreground))
+            .when(!k, (e) => e.text_color(t.muted))
+            .hover((s) => s.bg(k ? t.accent + "55" : t.hover).text_color(t.foreground))
+            .tooltip(k ? `${k} draft comment${k > 1 ? "s" : ""} · click to comment on the whole file` : "Comment on the whole file")
+            .on_click((_e, cx) => { cx.stop_propagation(); this.commentFile(f.path, cx); })
+            .when(Boolean(k), (e) => e.child(String(k))).child(svg("mods/reviewer/comment.svg").size(k ? 10 : 12)))
+          .when(f.add > 0, (e) => e.child(div().text_size(11).text_color(t.ansi2).child(`+${f.add}`))).when(f.del > 0, (e) => e.child(div().text_size(11).text_color(t.ansi1).child(`−${f.del}`)));
+  }
+  // --- Several files open at once. The methods above work on "the open file"
+  // (this.open and the VIEW fields); each expanded file keeps its own copy of
+  // those fields, swapped in to draw its card or handle a click in it. this.open
+  // is also the current file: the one j/k/v/e and the header act on.
+  freshView() {
+    return { lines: null, linesPath: null, rows: [], gaps: [], index: new Map(), unfolded: new Set(), items: [], sizes: [], gutter: 30, diffWidth: 0, builtFull: this.full(), scroll: VirtualListScrollHandle.new() };
+  }
+  storeView() {
+    if (!this.open) return;
+    const v = {};
+    for (const k of VIEW) v[k] = this[k];
+    this.views.set(this.open, v);
+  }
+  bindView(path) {
+    const v = (path && this.views.get(path)) || this.freshView();
+    for (const k of VIEW) this[k] = v[k];
+    this.open = path;
+  }
+  // Runs fn with `path`'s diff state in place, then puts the current file's back.
+  withView(path, fn) {
+    if (path === this.open) return fn();
+    const prev = this.open;
+    this.storeView(); this.bindView(path);
+    try { return fn(); } finally { this.storeView(); this.bindView(prev); }
+  }
+  focusFile(path) {
+    if (path === this.open) return;
+    this.storeView(); this.bindView(path);
+  }
+  isExpanded(path) {
+    return this.toggled.has(path) ? this.toggled.get(path) : this.viewedState(path) !== "viewed";
+  }
+  // Collapsing a card you're partway through (its header pinned) scrolls back to
+  // its row, so what follows doesn't jump up past where you were.
+  keepPlace(path) {
+    const b = this.layout().blocks.find((b) => b.f.path === path);
+    if (b && b.top < (this.scrollY ?? 0)) this.scrollTo = path;
+  }
+  // Expand a file if needed and make it current, loading its diff the first time.
+  focusAndShow(path, cx) {
+    if (!this.isExpanded(path)) this.toggled.set(path, true);
+    this.scrollTo = path;
+    this.focusFile(path);
+    this.ensureLoaded(path, cx);
+  }
+  ensureLoaded(path, cx) {
+    if (this.withView(path, () => this.lines)) return;
+    const context = this.context;
+    cx.spawn(async (cx) => {
+      try { await this.load(path, context); }
+      catch (e) { if (key() === context) this.withView(path, () => this.setLines([`Cannot preview this diff (too large or unreadable): ${e}`], path)); }
+      cx.notify();
+    });
+  }
+  // --- The list draws itself: one scroll position (scrollY, and scrollX for long
+  // lines), only what's on screen, and the header of the card you're scrolling
+  // through pinned to the top until the card ends, as on GitHub.
+  layout() {
+    const HEAD = 34, GAP = 4, ROW = 28, blocks = [];
+    let y = GAP;
+    for (const f of this.files) {
+      if (!this.isExpanded(f.path)) { blocks.push({ f, kind: "row", top: y, bottom: y + ROW }); y += ROW; continue; }
+      const sizes = this.withView(f.path, () => {
+        if (this.full() !== this.builtFull || this.builtWidth !== this.size?.width) { this.builtWidth = this.size?.width; this.rebuild(); }
+        return this.lines ? this.items.map((it) => it.height) : [this.row];
+      });
+      const top = y + GAP, body = top + HEAD, bottom = body + sizes.reduce((a, b) => a + b, 0) + 6;
+      blocks.push({ f, kind: "card", top, body, bottom });
+      y = bottom + GAP;
+    }
+    return { blocks, total: y + 8 };
+  }
+  // A card's header; pinned, it's square so no diff row shows past its corners.
+  cardHead(b, t, perFile, focus, y, pinned = false) {
+    return div().absolute().left(6).right(6).top(y).h(34).p(2).bg(t.raised).border_1().border_color(b.f.path === focus ? t.accent + "88" : t.border).when(!pinned, (e) => e.rounded_t(8))
+      .child(this.fileRow(b.f, t, perFile));
+  }
+  // A card's frame, its visible diff rows and its header, with its file's state in place.
+  cardParts(b, t, colors, perFile, n, focus, sy, H) {
+    const path = b.f.path, target = this.target(), commented = new Set(), parts = [];
+    for (const it of this.items) if (it.kind === "comment") for (let j = it.from; j <= it.to; j++) commented.add(j);
+    parts.push(div().absolute().left(6).right(6).top(b.body - sy).h(b.bottom - b.body).bg(t.background).border_1().border_t(0).border_color(t.border).rounded_b(8));
+    if (!this.lines) parts.push(div().absolute().left(18).top(b.body - sy + 4).text_color(t.dim).child("Loading…"));
+    let y = b.body;
+    for (const it of this.items) {
+      const top = y; y += it.height;
+      if (y <= sy || top >= sy + H) continue;
+      const key = it.key;
+      parts.push(div().id(`it-${path}-${key}`).absolute().left(7).right(7).top(top - sy).h(it.height).overflow_hidden().font_family(codeFont()).text_size(this.fontSize)
+        .on_click((_e, cx) => { this.focusFile(path); if (key.startsWith("f:")) this.unfold(Number(key.slice(2)), cx); else if (key.startsWith("c:")) { if (key.slice(2) !== this.composer?.editing) this.editComment(key.slice(2), cx); } else this.clickRow(Number(key.slice(2)), cx); })
+        .on_mouse_down("right", (_e, cx) => { this.focusFile(path); if (!key.startsWith("r:")) return; const i = Number(key.slice(2)); const r = this.rows[i]; if (!r || r.kind === "") return; this.askAbout(r.kind === "@" ? this.rows.map((_r, j) => j).filter((j) => this.rows[j].hunk === i && this.rows[j].kind !== "") : [i], cx); })
+        .child(this.item(it, t, colors, target, commented)));
+    }
+    // Scrolled above the top, the header is drawn pinned instead (viewport); two copies
+    // would share element ids, and a click needs its press and release on one element.
+    if (b.top >= sy) parts.push(this.cardHead(b, t, perFile, focus, b.top - sy));
+    return parts;
+  }
+  viewport(t, colors, perFile, n, focus, empty) {
+    const { blocks, total } = this.layout(), H = this.viewH ?? 600;
+    if (this.scrollTo) { const b = blocks.find((b) => b.f.path === this.scrollTo); if (b) this.scrollY = b.top - 4; this.scrollTo = null; }
+    this.scrollY = Math.min(Math.max(0, total - H), Math.max(0, this.scrollY ?? 0));
+    const widest = Math.max(0, ...[...this.views.values()].map((v) => v.diffWidth ?? 0), this.diffWidth ?? 0);
+    this.scrollX = Math.min(Math.max(0, widest - ((this.size?.width ?? 400) - 20)), Math.max(0, this.scrollX ?? 0));
+    const sy = this.scrollY, kids = [];
+    for (const b of blocks) {
+      if (b.bottom <= sy || b.top >= sy + H) continue;
+      if (b.kind === "row") kids.push(div().absolute().left(6).right(6).top(b.top - sy).h(28).child(this.fileRow(b.f, t, perFile)));
+      else kids.push(...this.withView(b.f.path, () => this.cardParts(b, t, colors, perFile, n, focus, sy, H)));
+    }
+    // The card you're inside keeps its header at the top, pushed up as the card ends.
+    // The list is clipped below that header, so nothing under it takes its clicks.
+    const inside = blocks.find((b) => b.kind === "card" && b.top < sy && b.bottom > sy);
+    const pinY = inside ? Math.min(0, inside.bottom - 34 - sy) : 0, clip = inside ? Math.max(0, pinY + 34) : 0;
+    const list = div().absolute().left(0).right(0).top(clip).bottom(0).overflow_hidden()
+      .child(div().absolute().left(0).right(0).top(-clip).h(H).children(kids.splice(0)));
+    kids.push(list);
+    if (inside) kids.push(this.cardHead(inside, t, perFile, focus, pinY, true).shadow_md());
+    // The comment box floats over the top right of the list (a strip under it on a narrow panel).
+    if (this.composer && !this.narrow()) kids.push(this.withView(this.composer.path, () => this.box(t, this.target(), false)));
+    if (focus && n === 0 && !this.composer && this.rows.length) kids.push(div().absolute().bottom(6).right(14).px(8).py(3).rounded(6).bg(t.raised + "e0").text_size(10).text_color(t.dim).child("Click a line to comment · right-click to ask · j/k files · v viewed · e nvim"));
+    if (total > H) kids.push(div().absolute().right(1).w(4).rounded(2).bg(t.dim + "66").top((sy / total) * H).h(Math.max(24, (H / total) * H)));
+    return div().id("changes-scroll").relative().flex_1().min_h(0).overflow_hidden()
+      .on_size_change((size, cx) => { if (this.viewH !== size.height) { this.viewH = size.height; cx.notify(); } })
+      .on_scroll_wheel((e, cx) => { this.scrollY = (this.scrollY ?? 0) - (e.delta?.y ?? 0); this.scrollX = (this.scrollX ?? 0) - (e.delta?.x ?? 0); cx.notify(); })
+      .children(kids)
+      .when(!this.files.length, (e) => e.child(empty))
+      .when(this.files.length > 0 && this.files.every((f) => this.viewedState(f.path) === "viewed"), (e) => e.child(div().absolute().top(blocks.at(-1).bottom - sy + 8).px(14).text_color(t.dim).child(`All ${this.files.length} files viewed`)));
+  }
+  // The next (+1) or previous (-1) file in the list, from the shown one.
+  step(by, cx) {
+    if (!this.files.length) return;
+    const at = this.files.findIndex((f) => f.path === this.open);
+    const next = this.files[at < 0 ? (by > 0 ? 0 : this.files.length - 1) : Math.min(this.files.length - 1, Math.max(0, at + by))];
+    if (next && next.path !== this.open) { this.focusAndShow(next.path, cx); cx.notify(); }
+  }
+  toggleViewed(path, cx) {
+    const print = this.prints?.[path];
+    if (!print || !this.root) return;
+    const viewed = this.viewedState(path) === "viewed";
+    this.marks = { ...(this.marks ?? {}), [path]: viewed ? undefined : print };
+    cx.notify();
+    const key = this.draftKey(), listed = new Set(this.files.map((f) => f.path));
+    // Marking collapses the file's card (viewed files start collapsed); unmarking
+    // expands it again.
+    if (!viewed) this.keepPlace(path);
+    this.toggled.delete(path);
+    if (viewed) this.ensureLoaded(path, cx);
+    cx.spawn(async (cx) => {
+      try { this.marks = await saveMark(key, path, viewed ? null : print, listed); }
+      catch (e) { this.note_ = `Couldn't save the viewed mark: ${e.message ?? e}`; }
+      cx.notify();
+    });
+  }
   scopeId(scope = this.scope, sha = this.sha) { return scope === "commit" ? `commit:${sha}` : scope; }
   // The draft comments of one scope (by id) of the shown repo. Drafts saved before
   // scopes existed (keyed by repo alone) were all on the uncommitted changes.
@@ -415,7 +671,7 @@ export default class Changes extends View {
       }
     }
     if (lines.length > (lines.some((l) => l[0] === "=") ? FILE_LINES + DIFF_LINES : DIFF_LINES)) lines = lines.slice(0, DIFF_LINES);
-    if (key() === context && this.open === path) this.setLines(lines.map(line => line.length > 4000 ? line.slice(0, 4000) + "… (line truncated)" : line), path);
+    if (key() === context) this.withView(path, () => this.setLines(lines.map(line => line.length > 4000 ? line.slice(0, 4000) + "… (line truncated)" : line), path));
   }
 
   setLines(lines, path) {
@@ -450,7 +706,11 @@ export default class Changes extends View {
     return this.full() || this.unfolded.has(g) || (this.gaps[g]?.length ?? 0) <= SHORT_GAP || keep.has(g);
   }
   full() { return shared(FULL) === true; }
-  toggleFull(cx) { setShared(FULL, !this.full()); this.unfolded = new Set(); this.rebuild(); cx.notify(); }
+  toggleFull(cx) {
+    setShared(FULL, !this.full());
+    for (const p of new Set([...this.views.keys(), this.open].filter(Boolean))) this.withView(p, () => { this.unfolded = new Set(); this.rebuild(); });
+    cx.notify();
+  }
   unfold(g, cx) { this.unfolded.add(g); this.rebuild(); cx.notify(); }
 
   // The list's items: diff rows, with each comment under its last line;
@@ -500,6 +760,7 @@ export default class Changes extends View {
   clickRow(i, cx) {
     const row = this.rows[i];
     if (!row || row.kind === "") return;
+    this.lastRow = { path: this.open, i };
     let from = i, to = i;
     if (row.kind === "@") {
       const members = this.rows.map((r, j) => j).filter((j) => j !== i && this.rows[j].hunk === i && this.rows[j].kind !== "");
@@ -526,7 +787,6 @@ export default class Changes extends View {
   openBox(cx, scrollTo = -1) {
     this.rebuild();
     this.note.focus();
-    if (scrollTo >= 0) this.scroll.scroll_to_item(scrollTo);
     cx.timer.after(300, () => this.note.focus());
     cx.notify();
   }
@@ -534,7 +794,7 @@ export default class Changes extends View {
   // Comment on a file as a whole (an image, a deleted file, anything without lines to click).
   commentFile(path, cx) {
     if (this.composer?.whole && this.composer.path === path && !this.composer.editing && !this.noteText.trim()) { this.closeComposer(cx); return; }
-    if (this.open !== path) this.pick(path, cx);
+    this.focusAndShow(path, cx);
     this.composer = { path, whole: true, editing: null };
     this.openBox(cx, 0);
   }
@@ -744,7 +1004,7 @@ export default class Changes extends View {
       .when(!tint && on, (e) => e.bg(t.selected))
       .child(div().w(this.gutter).flex_none().text_right().pr(4).when(Boolean(tint), (e) => e.bg(tint + "26")).text_color(on ? t.foreground : tint ? t.foreground + "cc" : t.dim).child(number === undefined ? "" : String(number)))
       .child(div().w(16).flex_none().text_center().font_bold().text_color(tint ?? NONE).child(kind === "+" ? "+" : kind === "-" ? "−" : " "))
-      .child(h_flex().flex_1().min_w(0).whitespace_nowrap().children(spans.map((s) => s.cls ? div().text_color(colors[s.cls] ?? t.foreground).child(s.text) : div().child(s.text))));
+      .child(h_flex().flex_1().min_w(0).overflow_hidden().child(h_flex().flex_none().ml(-(this.scrollX ?? 0)).whitespace_nowrap().children(spans.map((s) => s.cls ? div().text_color(colors[s.cls] ?? t.foreground).child(s.text) : div().child(s.text)))));
   }
 
   render(cx) {
@@ -753,7 +1013,7 @@ export default class Changes extends View {
     if (request != null && this.stale(request)) cx.timer.after(1, () => setShared(OPEN, null));
     else if (key() !== this.context || (request?.id !== this.tried && this.requestedFile(request) !== null)) this.refresh(cx);
     const size = codeSize();
-    if (size !== this.fontSize) { this.fontSize = size; this.row = rowOf(size); this.measure(); }
+    if (size !== this.fontSize) { this.fontSize = size; this.row = rowOf(size); for (const p of new Set([...this.views.keys(), this.open].filter(Boolean))) this.withView(p, () => this.measure()); }
     // "Full file" may have been switched in another copy of the panel.
     else if (this.full() !== this.builtFull) this.rebuild();
     // The dialog reports a sent review through a shared key; the draft goes.
@@ -766,6 +1026,8 @@ export default class Changes extends View {
     for (const it of this.items) if (it.kind === "comment") for (let j = it.from; j <= it.to; j++) commented.add(j);
     const perFile = {};
     for (const c of this.comments) perFile[c.path] = (perFile[c.path] ?? 0) + 1;
+    // The current file, for the rows and cards (drawing a card swaps this.open for a moment).
+    const focus = this.open; this.focus = focus;
     const button = (id, label, primary, action) => div().id(id).h(24).px(10).flex().items_center().rounded(6).bg(primary ? t.solid : t.raised).text_color(primary ? t.solid_foreground : t.foreground).text_size(12).font_medium().cursor_pointer().hover((s) => s.opacity(0.88)).on_click(action).child(label);
     const link = (id, label, action) => div().id(id).h(24).px(8).flex().items_center().rounded(6).text_size(12).text_color(t.dim).cursor_pointer().hover((s) => s.bg(t.hover).text_color(t.foreground)).on_click(action).child(label);
     return v_flex().id("changes").size_full().min_h(0).relative().rounded(10).overflow_hidden().bg(t.background).border_1().border_color(t.border).text_color(t.foreground).text_size(13).track_focus(this.handle)
@@ -774,10 +1036,17 @@ export default class Changes extends View {
         if (e.key === "escape" && this.typing) { this.typing = false; this.handle.focus(); cx.stop_propagation(); cx.notify(); }
         else if (e.key === "escape" && this.composer) { this.closeComposer(cx); cx.stop_propagation(); }
         else if (e.key === "enter" && (e.modifiers?.platform || e.modifiers?.control) && this.composer) { this.addComment(cx); cx.stop_propagation(); }
+        // Moving through the files (viewed.js): j/k next and previous, v viewed. Not while typing.
+        else if (!this.typing && !this.composer && !e.modifiers?.platform && !e.modifiers?.control && !e.modifiers?.alt && ["j", "k", "v", "e"].includes(e.key)) {
+          if (e.key === "e") this.editFile(this.open, cx);
+          else if (e.key === "v") { if (this.open) this.toggleViewed(this.open, cx); } else this.step(e.key === "j" ? 1 : -1, cx);
+          cx.stop_propagation();
+        }
       })
       .child(h_flex().h(42).flex_none().px(14).gap(8).items_center().border_b(1).border_color(t.border)
         .child(div().font_semibold().child("Changes"))
         .child(div().h(24).px(8).flex().items_center().rounded(6).border_1().border_color(t.border).text_size(12).text_color(t.muted).child(`${this.files.length} files`))
+        .when(this.files.length > 0, (e) => e.child(div().text_size(12).text_color(t.dim).child(`${this.files.filter((f) => this.viewedState(f.path) === "viewed").length}/${this.files.length} viewed`)))
         .when(Boolean(this.root) && this.hasHead, (e) => e.child(this.scopePicker(t)))
         .child(div().flex_1())
         // Full file: the icon shows what a click does (unfold when folded, fold when the whole file shows).
@@ -787,34 +1056,9 @@ export default class Changes extends View {
         .child(div().text_size(11).text_color(t.ansi2).child(`+${add}`)).child(div().text_size(11).text_color(t.ansi1).child(`−${del}`))
         .when(n > 0, (e) => e.child(link("review-discard", "Discard", (_e, cx) => this.setComments([], cx))).child(button("review-submit", `Submit review · ${n}`, true, (_e, cx) => this.submit(cx))))
         .when(n === 0 && canAsk, (e) => e.child(button("ask", "Ask about diff", false, (_e, cx) => this.askAbout(null, cx)))))
-      .child(v_flex().id("changes-list").flex_none().h(Math.min(200, Math.max(44, this.files.length * 28 + 12))).overflow_y_scrollbar().p(6).border_b(1).border_color(t.border).children(this.files.map((f) => {
-        const parts = f.path.split("/"), name = parts.pop(), k = perFile[f.path];
-        return h_flex().id(`change-${f.path}`).h(28).flex_none().px(8).gap(8).items_center().rounded(7).cursor_pointer().when(this.open === f.path, (e) => e.bg(t.selected)).hover((s) => s.bg(t.hover)).on_click((_e, cx) => this.pick(f.path, cx))
-          .child(div().w(14).text_size(11).text_color(f.status === "A" ? t.ansi2 : f.status === "D" ? t.ansi1 : f.status === "U" ? t.ansi1 : t.blocked).child(f.status))
-          .child(h_flex().flex_1().min_w(0).child(div().text_color(t.dim).truncate().child(parts.length ? parts.join("/") + "/" : "")).child(div().max_w(260).min_w(0).truncate().child(name)))
-          // One speech bubble: the draft count when there are drafts, and a click comments on the whole file.
-          .child(h_flex().id(`comment-file-${f.path}`).h(18).min_w(18).px(k ? 5 : 0).gap(3).items_center().justify_center().rounded(4).cursor_pointer()
-            .when(Boolean(k), (e) => e.bg(t.accent + "33").text_size(10).text_color(t.foreground))
-            .when(!k, (e) => e.text_color(t.muted))
-            .hover((s) => s.bg(k ? t.accent + "55" : t.hover).text_color(t.foreground))
-            .tooltip(k ? `${k} draft comment${k > 1 ? "s" : ""} · click to comment on the whole file` : "Comment on the whole file")
-            .on_click((_e, cx) => { cx.stop_propagation(); this.commentFile(f.path, cx); })
-            .when(Boolean(k), (e) => e.child(String(k))).child(svg("mods/reviewer/comment.svg").size(k ? 10 : 12)))
-          .when(f.add > 0, (e) => e.child(div().text_size(11).text_color(t.ansi2).child(`+${f.add}`))).when(f.del > 0, (e) => e.child(div().text_size(11).text_color(t.ansi1).child(`−${f.del}`)));
-      })).when(!this.files.length, (e) => e.child(div().p(8).text_color(t.dim).child(this.error || (this.loading ? "Loading changes…" : !this.root ? "No folder" : this.scope === "work" ? "No uncommitted changes" : "No changes in this scope")))))
+      // One scroll position for every file: expanded ones as cards, the rest as rows.
+      .child(this.viewport(t, colors, perFile, n, focus, div().p(8).text_color(t.dim).child(this.error || (this.loading ? "Loading changes…" : !this.root ? "No folder" : this.scope === "work" ? "No uncommitted changes" : "No changes in this scope"))))
       .when(this.limited, el => el.child(div().px(12).py(4).text_size(11).text_color(t.dim).child("Showing the first 1,000 changed files")))
-      .child(h_flex().flex_1().min_h(0).items_stretch()
-        .child(div().flex_1().min_w(0).min_h(0).relative().font_family(codeFont()).text_size(this.fontSize)
-        .child(div().id("changes-diff-x").size_full().overflow_x_scrollbar()
-          .child(div().w_full().min_w(this.diffWidth).h_full().child(v_virtual_list("changes-diff", this.items.length, this.sizes.length ? this.sizes : this.row, (i) => this.items[i].key,
-            (range) => this.items.slice(range.start, range.end).map((it) => this.item(it, t, colors, target, commented))).size_full().track_scroll(this.scroll)
-            .on_item_click((k, cx) => { if (k.startsWith("f:")) this.unfold(Number(k.slice(2)), cx); else if (k.startsWith("c:")) { if (k.slice(2) !== this.composer?.editing) this.editComment(k.slice(2), cx); } else this.clickRow(Number(k.slice(2)), cx); })
-            .on_item_secondary_click((k, _e, cx) => { if (!k.startsWith("r:")) return; const i = Number(k.slice(2)); const r = this.rows[i]; if (!r || r.kind === "") return; this.askAbout(r.kind === "@" ? this.rows.map((_r, j) => j).filter((j) => this.rows[j].hunk === i && this.rows[j].kind !== "") : [i], cx); }))))
-        .child(Scrollbar.vertical("changes-diff").viewport_from_layout().absolute().inset_0())
-        .when(!this.open && this.files.length > 0, (e) => e.child(div().absolute().top(6).px(12).text_color(t.dim).child("Select a file to view its changes")))
-        .when(canAsk && !this.composer && n === 0, (e) => e.child(div().absolute().bottom(6).right(14).px(8).py(3).rounded(6).bg(t.raised + "e0").text_size(10).text_color(t.dim).child("Click a line to comment · right-click to ask"))))
-        // The comment box, a card floating over the top-right of the diff while it is open (a strip below it on a narrow panel).
-        .when(Boolean(this.composer) && !this.narrow(), (e) => e.child(this.box(t, target, false))))
       // Narrow panel: the comment box is a strip under the diff instead of a column beside it.
       .when(Boolean(this.composer) && this.narrow(), (e) => e.child(this.box(t, target, true)))
       .when(Boolean(this.note_), (e) => e.child(div().px(10).pb(8).text_size(11).text_color(t.ansi1).child(this.note_)))
@@ -823,15 +1067,13 @@ export default class Changes extends View {
         .child(div().id("commit").h(32).px(14).flex().items_center().rounded(8).bg(enabled ? t.solid : t.raised).text_color(enabled ? t.solid_foreground : t.dim).text_size(12).when(enabled, (e) => e.cursor_pointer()).on_click((_e, cx) => this.commit(cx)).child(this.busy ? "Committing…" : "Commit")));
   }
 
+  // A click on a file's row: expand or collapse it, and make it current.
   pick(path, cx) {
-    this.open = this.open === path ? null : path; this.setLines([]); this.note_ = null;
-    this.closed = !this.open;
-    const context = this.context;
-    if (this.open) cx.spawn(async (cx) => {
-      try { await this.load(path, context); }
-      catch (e) { if (key() === context && this.open === path) this.note_ = `Cannot preview this diff (too large or unreadable): ${e}`; }
-      cx.notify();
-    });
+    const open = !this.isExpanded(path);
+    if (!open) this.keepPlace(path);
+    this.toggled.set(path, open); this.note_ = null;
+    this.focusFile(path);
+    if (open) this.ensureLoaded(path, cx);
     cx.notify();
   }
 }
