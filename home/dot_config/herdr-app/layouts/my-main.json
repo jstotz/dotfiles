@@ -149,7 +149,7 @@
                       "id": "changes",
                       "type": "block",
                       "content": {
-                        "mod": "changes"
+                        "mod": "reviewer"
                       }
                     }
                   ],
@@ -160,7 +160,7 @@
                 "px": 368
               },
               "min": 280,
-              "max": 900,
+              "max": 2000,
               "hidden": true
             }
           ],
